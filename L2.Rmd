@@ -1,0 +1,146 @@
+---
+title: "Lesson 2 Exercises"
+author: "Introduction to Data Science"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+## Part 1
+
+By using R calculate the following exercises
+
+32 + 98
+
+42 -22
+
+6*6
+
+sqrt(81)
+
+5^2
+
+(7 + 5) / 2 
+
+22 %% 4
+
+1:10
+
+## Part 2
+
+Assign the value 35 to Object_1
+
+Assign the text value - Ben Gurion University - to Object_2
+
+Divide Object_1 by Object_2, What do you get?
+
+Reassign Object_2 to 5
+
+Divide again Object_1 by Object_2, What do you get?
+
+Create the **new** variable Object_3 by subtracting object 1 and object 2
+
+Assign the text value - Good - to Object_x
+
+Assign the text value - Morning - to Object_y
+
+Add Object_x to Object_y, What do you get?
+
+## Part 3
+
+Assign the value 28 to x
+
+Assign the text value -BGU- to y
+
+Assign the value TRUE  to z
+
+Assign the value FALSE  to q
+
+Check the class of x,y,z,q by using the class() command, What do you get?
+
+
+#Part4
+
+Create a matrix with 3 rows and 3 columns, containing the numbers 1 up to 9, Print out the result.
+
+
+Create a matrix with 2 rows and 3 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+Create a matrix with 4 rows and 4 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+Create a matrix with **only** 3 rows and with **no** columns specification, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+By using the ? function find how to fill the matrix by rows first and not by columns.
+
+## Part 5
+
+Daniel graduated from the Department of Geography, currently, he is a manager of 2 companies. The first company is a gis consulting company, the second company is an ecological consulting company.
+ 
+You are given a table of each company's daily profits and losses throughout the days of the week. Assign to GIS and Ecology the values of the daily profit or loss. In addition, create a vector of the days of the week. 
+
+Day | GIS | Ecology 
+----|-----|-------
+Sunday|500|-50
+Monday|300|-150 
+Tuesday|-100|300 
+Wednesday|-250|600 
+Thursday|450|-100 
+Friday|-50|150 
+Saturday|800|-200 
+
+
+## Part  6
+
+Find the mean value, max value, min value of GIS.
+
+Find the mean value, max value, min value of Ecology.
+
+Create a new vector to calculate how much money Daniel made or lost this week.
+
+Crete a data frame named df from the vectors above and print out the result.
+
+
+## Part  7
+
+explore and explain what each of functions does.
+
+View(df)
+
+str(df)
+
+nrow(df)
+
+ncol(df)
+
+dim(df)
+
+## Part  8
+
+The following week, Daniel had server failures and because of this, the new table lacks information on certain days.
+
+Day | GIS | Ecology 
+----|-----|-------
+Sunday|NA|100
+Monday|200|200 
+Tuesday|NA|300 
+Wednesday|-320|-500 
+Thursday|250|NA 
+Friday|NA|50
+Saturday|-100|NA 
+
+Assign to GIS and Ecology the values of the daily profit or loss, including the NA.
+
+Despite the missing information find the mean value, max value, min value of GIS.
+
+Despite the missing information find the mean value, max value, min value of Ecology.
+
+Create a new vector to calculate how much money Daniel made or lost this week.
+
+
+
+
+
+
+
+
