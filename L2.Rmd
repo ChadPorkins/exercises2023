@@ -60,7 +60,7 @@ Assign the value FALSE  to q
 Check the class of x,y,z,q by using the class() command, What do you get?
 
 
-#Part4
+## Part 4
 
 Create a matrix with 3 rows and 3 columns, containing the numbers 1 up to 9, Print out the result.
 
