@@ -1,0 +1,160 @@
+---
+title: "Lesson 2 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+At the heart of almost everything you will do in R is the concept that everything in R is an object. These objects can be almost anything, from a single number or character string (like a word) to highly complex structures like the output of a plot, a summary of your statistical analysis or a set of R commands that perform a specific task. Understanding how you create objects and assign values to objects is key to understanding R.
+
+1.  By using R calculate the following exercises.
+
+-   32 + 98
+
+-   42 - 22
+
+-   6\*6
+
+-   sqrt(81)
+
+-   5\^2
+
+-   (7 + 5) / 2
+
+-   22 %% 4
+
+-   1:10
+
+-   100:90
+
+2.  Assign values to the different vectors.
+
+-   Assign the value 35 to the vector Object_1
+
+-   Assign the text value "*Ben Gurion University* " to the vector Object_2
+
+-   Divide the vector Object_1 by the vector Object_2, What do you get?
+
+-   Reassign the vector Object_2 to the value 5
+
+-   Divide again the vector Object_1 by the vector Object_2, What do you get?
+
+-   Create a **new** vector Object_3 by subtracting the vector Object_1 and the vector Object_2
+
+-   Assign the text value "*Good* " to the vecor Object_x
+
+-   Assign the text value "*Morning"* to the vector Object_y
+
+-   Add the vector Object_x to the vector Object_y, What do you get?
+
+## Question 2
+
+Understanding the different types of data and how R deals with these data is important. The temptation is to glaze over and skip these technical details, but beware, this can come back and cause problems if you don't pay attention. We've already seen an example of this when we tried (and failed) to add two character objects together using the + operator.
+
+R has six basic types of data; numeric, integer, logical, complex and character. The keen eyed among you will notice we've only listed five data types here, the final data type is raw which we won't cover.
+
+1.  Assign values to the different vectors, then check the class of each vector.
+
+-   Assign the value 28 to the vector x
+
+-   Assign the text value "BGU" to the vector y
+
+-   Assign the logical value TRUE to the vector z
+
+-   Assign the logical value FALSE to the vector q
+
+-   Check the classes of the vectors x,y,z,q by using the class() command, What do you get?
+
+------------------------------------------------------------------------
+
+A matrix is a two-dimensional collection of values of **the same type**. The number of values in all columns of a matrix is equal, and the same can be said about the rows. It is important to know how to work with matrices because it is a commonly used data structure, with many uses in data processing and analysis, including spatial data. For example, many R function accept a matrix as an argument, or return a matrix as a returned object.
+
+2.  create the following matrices.
+
+-   Create a matrix with 3 rows and 3 columns, containing the numbers 1 up to 9, Print out the result.
+
+-   Create a matrix with 2 rows and 3 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+-   Create a matrix with 4 rows and 4 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+-   Create a matrix with **only** 3 rows and with **no** columns specification, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+-   By using the ***?** function* find how to fill the matrix by rows first and not by columns.
+
+## Question 3
+
+Using the tools we have practiced so far to solve a real life problem!
+
+Daniel graduated from the Department of Geography, currently, he is a manager of 2 companies. The first company is a GIS consulting company, the second company is an ecological consulting company.
+
+You are given a table of each company's daily profits and losses throughout the days of the week.
+
+| Day       | GIS  | Ecology |
+|-----------|------|---------|
+| Sunday    | 500  | -50     |
+| Monday    | 300  | -150    |
+| Tuesday   | -100 | 300     |
+| Wednesday | -250 | 600     |
+| Thursday  | 450  | -100    |
+| Friday    | -50  | 150     |
+| Saturday  | 800  | -200    |
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss. In addition, create a vector of the days of the week.
+
+-   Find the mean value, max value, min value of GIS.
+
+-   Find the mean value, max value, min value of Ecology.
+
+-   Create a new vector to calculate how much money Daniel made or lost this week.
+
+-   Create a data frame named **df** from the table above and **only** the vector from the previous section, and print out the result.
+
+2.  explore and explain what each of functions does.
+
+-   View(df)
+
+-   str(df)
+
+-   nrow(df)
+
+-   ncol(df)
+
+-   dim(df)
+
+## Question 4
+
+The following week, Daniel had server failures and because of this, the new table lacks information on certain days.
+
+| Day       | GIS    | Ecology |
+|-----------|--------|---------|
+| Sunday    | **NA** | 100     |
+| Monday    | 200    | 200     |
+| Tuesday   | **NA** | 300     |
+| Wednesday | -320   | -500    |
+| Thursday  | 250    | **NA**  |
+| Friday    | **NA** | 50      |
+| Saturday  | -100   | **NA**  |
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss, including the NA.
+
+-   Despite the missing information find the mean value, max value, min value of GIS.
+
+-   Despite the missing information find the mean value, max value, min value of Ecology.
+
+-   Create a new vector to calculate how much money Daniel made or lost this week.
+
+## Bonus question! That is for those who want to go further beyond!
+
+Try to think by yourself first what the result of the following code will be, then run the code to check if you were right.
+
+```{r, eval = FALSE}
+c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
+```
+
+```{r, eval = FALSE}
+counts = c(2, 0, 3, 1, 3, 2, 9, 0, 2, 1, 11, 2)
+
+counts[c(1:3, 7:9)] = c(NA, 99)
+```
