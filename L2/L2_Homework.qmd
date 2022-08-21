@@ -1,0 +1,109 @@
+## Question 1
+
+**Continuation of question 3**
+
+The following week, Daniel had server failures and because of this, the new table lacks information on certain days.
+
+| Day       | GIS    | Ecology |
+|-----------|--------|---------|
+| Sunday    | **NA** | 100     |
+| Monday    | 200    | 200     |
+| Tuesday   | **NA** | 300     |
+| Wednesday | -320   | -500    |
+| Thursday  | 250    | **NA**  |
+| Friday    | **NA** | 50      |
+| Saturday  | -100   | **NA**  |
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss, including the NA.
+
+-   Despite the missing information find the mean value, max value, and min value of GIS.
+
+-   Despite the missing information find the mean value, max value, and min value of Ecology.
+
+-   Create a new vector to calculate how much money Daniel made or lost this week.
+
+-   From the GIS vector find the third value
+
+-   From the Ecology vector find the values between the second value and the fifth value
+
+## Question 2
+
+```{r}
+#| echo: true
+#| eval: false
+random_vector = sample(1:10, size = 6)
+
+random_vector
+
+#This code creates a vector with random values between 1 and 10, feel free to run the code as many times as you want to get new numbers.
+```
+
+Run the following code, from random_vector and use a logical index to find the following values:
+
+-   values less than 8
+
+-   values less than or equal to 7
+
+-   values equal to 5
+
+-   values not equal to 6
+
+-   extract values in m which are less than 6 AND greater than 2
+
+-   extract values in m which are less than 9 AND greater than 5
+
+-   replace the 6th and 7th values with 1
+
+-   replace values that are less than or equal to 4 with 5
+
+-   use `sort()` and `order()` functions on random_vector , what is the difference between the two functions?
+
+## Question 3
+
+As part of Sarah's research on US Presidents, she created two separate data frames, help her connect the two data frames using only **one function**.
+
+```{r}
+usa_presidents = data.frame(year=c(1789,1829,1861,1980,2000),
+order = c(1,7,16,40,43))
+names = data.frame(president_name =
+c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George_W._Bush"))
+
+```
+
+## Question 4
+
+As part of a population survey you received two data frames, combine the two data frames into one data frame using **only one function**.
+
+
+```{r}
+Student_Name<-c("John","Barak","Sara","Yuval","Muhammad")
+Student_class<-c("High school","College","High school","High school","College")
+df1<-data.frame(Student_class,Student_Name)
+
+
+Student_Name<-c("Tal","Amir","Noya")
+Student_class<-c("High school","College","University")
+df2<-data.frame(Student_Name,Student_class)
+
+```
+
+
+## Bonus question! That is for those who want to go further beyond!
+
+Try to think by yourself first what the result of the following code will be, then run the code to check if you were right.
+
+```{r, eval = FALSE}
+c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
+```
+
+```{r, eval = FALSE}
+counts = c(2, 0, 3, 1, 3, 2, 9, 0, 2, 1, 11, 2)
+
+counts[c(1:3, 7:9)] = c(NA, 99)
+```
+
+```{r, eval = FALSE}
+paste("I", "want", "to", "combine", "text", "values")
+
+
+```

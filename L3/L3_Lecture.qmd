@@ -1,0 +1,51 @@
+---
+title: "Lesson 3 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+Open a new folder on your personal computer named l3, into the new folder save the whale data file.
+
+-   Use the `read.csv` function in Rstudio to read the whale data file.
+
+___
+
+Using the `getwd()` function get your working directory location, and afterward copy the whale data file to your **working directory**. 
+
+If we need to read a big file, sometimes it will be better to use functions from different libraries. In this case, we want to use the package readr to read the same file as before. Install the package if needed, load it to R.
+
+-   Use the `read_csv` function in Rstudio to read the whale data file from **your working directory**.
+
+## Question 2
+
+After uploading a csv file to R, the best thing to do is to examine it.
+
+Try the following functions and write down what the outcome means.
+
+head(whaledata)
+
+head(whaledata, n=20)
+
+tail(whaledata)
+
+colnames(whaledata)
+
+str(whaledata)
+
+summary(whaledata)
+
+length(whaledata$gradient)
+
+## Question 3
+
+As part of your research on whales, you want to focus on specific information.
+
+-   Extract all the elements of the first 20 rows and the first 4 columns of the whaledata and assign them to a new variable called whale_new.
+
+-   Next, extract all observations (remember - rows) from the whale dataframe and the columns month, water.noise, and number.whales and assign them to a variable called whale_spec. (Do this in 2 ways, the first way by the specific number of columns and the second way by the names of the columns.)
+
+-   Now, extract the first 50 rows and all columns from the original dataframe and assign them to a variable whale_month_may
+

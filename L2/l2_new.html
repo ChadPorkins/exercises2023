@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.80">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lesson 2 Exercises</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+
+  <script src="l2_new_files/libs/clipboard/clipboard.min.js"></script>
+  <script src="l2_new_files/libs/quarto-html/quarto.js"></script>
+  <script src="l2_new_files/libs/quarto-html/popper.min.js"></script>
+  <script src="l2_new_files/libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="l2_new_files/libs/quarto-html/anchor.min.js"></script>
+  <link href="l2_new_files/libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="l2_new_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="l2_new_files/libs/bootstrap/bootstrap.min.js"></script>
+  <link href="l2_new_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="l2_new_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body class="fullcontent">
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+<header id="title-block-header" class="quarto-title-block default">
+
+<div class="quarto-title"><h1 class="title display-7">Lesson 2 Exercises</h1></div></header>
+<section id="question-1" class="level2">
+<h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
+<p>At the heart of almost everything you will do in R is the concept that everything in R is an object. These objects can be almost anything, from a single number or character string (like a word) to highly complex structures like the output of a plot, a summary of your statistical analysis or a set of R commands that perform a specific task. Understanding how you create objects and assign values to objects is key to understanding R.</p>
+<ol type="1">
+<li>By using R calculate the following exercises.</li>
+</ol>
+<ul>
+<li><p>32 + 98</p></li>
+<li><p>42 - 22</p></li>
+<li><p>6*6</p></li>
+<li><p>sqrt(81)</p></li>
+<li><p>5^2</p></li>
+<li><p>(7 + 5) / 2</p></li>
+<li><p>22 %% 4</p></li>
+<li><p>1:10</p></li>
+<li><p>100:90</p></li>
+</ul>
+<ol start="2" type="1">
+<li>Assign values to the different vectors.</li>
+</ol>
+<ul>
+<li><p>Assign the value 35 to the vector Object_1</p></li>
+<li><p>Assign the text value “<em>Ben Gurion University</em>” to the vector Object_2</p></li>
+<li><p>Divide the vector Object_1 by the vector Object_2, What do you get?</p></li>
+<li><p>Reassign the vector Object_2 to the value 5</p></li>
+<li><p>Divide again the vector Object_1 by the vector Object_2, What do you get?</p></li>
+<li><p>Create a <strong>new</strong> vector Object_3 by subtracting the vector Object_1 and the vector Object_2</p></li>
+<li><p>Assign the text value “<em>Good</em>” to the vecor Object_x</p></li>
+<li><p>Assign the text value “<em>Morning”</em> to the vector Object_y</p></li>
+<li><p>Add the vector Object_x to the vector Object_y, What do you get?</p></li>
+</ul>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<p>Understanding the different types of data and how R deals with these data is important. The temptation is to glaze over and skip these technical details, but beware, this can come back and cause problems if you don’t pay attention. We’ve already seen an example of this when we tried (and failed) to add two character objects together using the + operator.</p>
+<p>R has six basic types of data; numeric, integer, logical, complex and character. The keen eyed among you will notice we’ve only listed five data types here, the final data type is raw which we won’t cover.</p>
+<ol type="1">
+<li>Assign values to the different vectors, then check the class of each vector.</li>
+</ol>
+<ul>
+<li><p>Assign the value 28 to the vector x</p></li>
+<li><p>Assign the text value “BGU” to the vector y</p></li>
+<li><p>Assign the logical value TRUE to the vector z</p></li>
+<li><p>Assign the logical value FALSE to the vector q</p></li>
+<li><p>Check the classes of the vectors x,y,z,q by using the <code>class()</code> function, What do you get?</p></li>
+</ul>
+<hr>
+<p>A matrix is a two-dimensional collection of values of <strong>the same type</strong>. The number of values in all columns of a matrix is equal, and the same can be said about the rows. It is important to know how to work with matrices because it is a commonly used data structure, with many uses in data processing and analysis, including spatial data. For example, many R function accept a matrix as an argument, or return a matrix as a returned object.</p>
+<ol start="2" type="1">
+<li>create the following matrices.</li>
+</ol>
+<ul>
+<li><p>Create a matrix with 3 rows and 3 columns, containing the numbers 1 up to 9, Print out the result.</p></li>
+<li><p>Create a matrix with 2 rows and 3 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?</p></li>
+<li><p>Create a matrix with 4 rows and 4 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?</p></li>
+<li><p>Create a matrix with <strong>only</strong> 3 rows and with <strong>no</strong> columns specification, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?</p></li>
+<li><p>By using the <em><strong>?</strong> function</em> find how to fill the matrix by rows first and not by columns.</p></li>
+</ul>
+</section>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<p>Using the tools we have practiced so far to solve a real life problem!</p>
+<p>Daniel graduated from the Department of Geography, currently, he is a manager of 2 companies. The first company is a GIS consulting company, the second company is an ecological consulting company.</p>
+<p>You are given a table of each company’s daily profits and losses throughout the days of the week.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th>GIS</th>
+<th>Ecology</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunday</td>
+<td>500</td>
+<td>-50</td>
+</tr>
+<tr class="even">
+<td>Monday</td>
+<td>300</td>
+<td>-150</td>
+</tr>
+<tr class="odd">
+<td>Tuesday</td>
+<td>-100</td>
+<td>300</td>
+</tr>
+<tr class="even">
+<td>Wednesday</td>
+<td>-250</td>
+<td>600</td>
+</tr>
+<tr class="odd">
+<td>Thursday</td>
+<td>450</td>
+<td>-100</td>
+</tr>
+<tr class="even">
+<td>Friday</td>
+<td>-50</td>
+<td>150</td>
+</tr>
+<tr class="odd">
+<td>Saturday</td>
+<td>800</td>
+<td>-200</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Assign to GIS and Ecology vectors the values of the daily profit or loss. In addition, create a vector of the days of the week.</li>
+</ol>
+<ul>
+<li><p>Find the mean value, max value, min value of GIS.</p></li>
+<li><p>Find the mean value, max value, min value of Ecology.</p></li>
+<li><p>Create a new vector to calculate how much money Daniel made or lost this week.</p></li>
+<li><p>Create a data frame named <strong>df</strong> from the table above and <strong>only</strong> the vector from the previous section, and print out the result.</p></li>
+</ul>
+<ol start="2" type="1">
+<li>explore and explain what each of functions does.</li>
+</ol>
+<ul>
+<li><p>View(df)</p></li>
+<li><p>str(df)</p></li>
+<li><p>nrow(df)</p></li>
+<li><p>ncol(df)</p></li>
+<li><p>dim(df)</p></li>
+</ul>
+<hr>
+</section>
+</main>
+<!-- /main column -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    setTimeout(function() {
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+</body></html>
