@@ -1,0 +1,109 @@
+---
+title: "Lesson 3 Exercises Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+```{r, echo=FALSE}
+whaledata = read.csv("whaledata.csv")
+```
+
+
+```{r}
+whaledata.1200 <- whaledata[whaledata$depth > 1200, ]
+
+whaledata.200 <- whaledata[whaledata$gradient > 200, ]
+
+whaledata.low <- whaledata[whaledata$water.noise == "low", ]
+
+whaledata.h.may <- whaledata[whaledata$water.noise == "high" & whaledata$month == "May", ]
+
+whaledata.subset <- whaledata[whaledata$month == "October" & whaledata$water.noise == "low" & whaledata$gradient > 132, ]
+
+whaledata.lat.long <- whaledata[whaledata$latitude > 60 & whaledata$latitude < 61 & whaledata$longitude > -6 & whaledata$longitude < -4, ]
+
+whaledata.nomed <- whaledata[whaledata$water.noise != "medium", ]
+
+whaledata.new <- whaledata[whaledata$depth > 1500 & whaledata$number.whales > mean(whaledata$number.whales, na.rm = TRUE), ]
+
+#the variable number.whales contains 1 NA value. By default the mean function will return an NA. we will use the na.rm argument to ignore NAs.
+
+```
+
+## Question 2
+
+Creating top 10:
+
+```{r}
+
+TOP10 = whaledata[order(-whaledata$depth),]
+TOP10 = TOP10[1:10,]
+
+
+```
+
+Delete the gradient and noise columns:
+
+```{r}
+TOP10 = TOP10[,-c(3,8)]
+```
+
+## Question 3
+
+```{r}
+#Create a new data frame named noise_location
+noise_location = whaledata[,c(3,5:6)]
+
+#Rename water.noise to noise_level
+colnames(noise_location)[1] =  "noise_level"
+
+#Order the data frame by noise_level
+noise_location$noise_level = factor(noise_location$noise_level,levels = c("low", "medium", "high"))
+noise_location = noise_location[order(noise_location$noise_level),]
+
+#Add a column of the average latitude value
+noise_location$avg_lat = mean(noise_location$latitude)
+
+#Add a column of the average longitude value
+noise_location$avg_long = mean(noise_location$longitude)
+
+write.csv(noise_location, file = "noise_location.csv")
+#save the noise_location data frame in csv format to your local folder.
+
+
+```
+
+## Question 4
+
+```{r, eval=FALSE}
+    c(1:10)*10 == seq(10, 100, 10)
+    
+    rep(10,10) == seq(100,10,-10)
+```
+
+In the first code on the left side, all values between 1 and 10 will be multiplied by 10, on the right side, on the other hand, an arithmetic progression series will be created that increases by 10 each time, therefore according to the comparison parameter in the code, all values will receive the value true.
+
+In the second code on the left side the numerical value of 10 will be repeated 10 times, on the right side we will have a descending series between 100 and 10, therefore all the values will receive false except for the last value.
+
+## Question 5
+```{r,eval=FALSE}
+#Save your entire workspace, naming it the third_lesson, afterward upload the third_lesson file back into R.
+
+save.image("third_lesson.rdata")
+
+load("third_lesson.rdata")
+
+```
+
+## Bonus question
+
+```{r}
+
+hist(whaledata$depth, breaks = length(whaledata$depth) ,col="blue", main="Histogram of the depth vector") 
+
+```
+
+Although the histogram has a shape with a potential for a normal distribution, the information is not normally distributed, in the upcoming lessons you will learn why.

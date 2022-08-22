@@ -11,9 +11,9 @@ Open a new folder on your personal computer named l3, into the new folder save t
 
 -   Use the `read.csv` function in Rstudio to read the whale data file.
 
-___
+------------------------------------------------------------------------
 
-Using the `getwd()` function get your working directory location, and afterward copy the whale data file to your **working directory**. 
+Using the `getwd()` function get your working directory location, and afterward copy the whale data file to your **working directory**.
 
 If we need to read a big file, sometimes it will be better to use functions from different libraries. In this case, we want to use the package readr to read the same file as before. Install the package if needed, load it to R.
 
@@ -37,7 +37,7 @@ str(whaledata)
 
 summary(whaledata)
 
-length(whaledata$gradient)
+length(whaledata\$gradient)
 
 ## Question 3
 
@@ -49,3 +49,4 @@ As part of your research on whales, you want to focus on specific information.
 
 -   Now, extract the first 50 rows and all columns from the original dataframe and assign them to a variable whale_month_may
 
+-   Finally, extract all rows except the first 10 rows and all columns except the last column. Remember, for some of these questions you can specify the columns you want either by position or by name. Practice both ways.
