@@ -123,4 +123,4 @@ You are given a table of each company's daily profits and losses throughout the 
 
 -   dim(df)
 
-___
+------------------------------------------------------------------------

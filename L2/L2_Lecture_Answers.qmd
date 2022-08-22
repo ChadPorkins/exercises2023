@@ -1,0 +1,190 @@
+---
+title: "Lesson 2 Exercises Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1 Answer
+
+```{r}
+32 + 98
+
+42 - 22
+
+6*6
+
+sqrt(81)
+
+5^2
+
+(7 + 5) / 2
+
+#We get the remainder of the division operation
+
+22 %% 4
+
+1:10
+
+100:90
+```
+
+```{r, eval=FALSE}
+
+Object_1 = 35
+
+Object_2 = "Ben Gurion University"
+
+Object_1 / Object_2
+
+#We get an error because a numeric value cannot be divided by a text value
+```
+
+```{r, eval=FALSE}
+Object_2 = 5
+
+Object_1 / Object_2
+
+Now we get proper numerical output result.
+
+Object_3 = Object_1 - Object_2
+
+Object_x = "Good"
+
+Object_y = "Morning"
+
+Object_x + Object_y
+
+# We get an error because we cannot use a math operation on vectors with text values
+```
+
+## Question 2 Answer
+
+```{r}
+
+x = 28
+
+y = "BGU"
+
+z = T
+
+q = F
+```
+
+```{r}
+class(x)
+
+class(y)
+
+class(z)
+
+class(q)
+```
+
+x is a numeric vector.
+
+y is character vector.
+
+z & q are logical vectors.
+
+___
+
+
+```{r}
+matrix(ncol = 3, nrow = 3, 1:9)
+```
+
+___
+
+
+```{r}
+matrix(ncol = 3, nrow = 2, 1:9)
+
+#We do not have enough rows to complete all the numerical values of the matrix
+
+```
+
+___
+
+```{r}
+matrix(ncol = 4, nrow = 4, 1:9)
+
+#The matrix is larger than the numbers entered in the code, therefore the matrix will complete the missing places by repeating the numbers between 1 and 9.
+```
+
+___
+
+```{r}
+matrix( nrow = 3, 1:9)
+
+#The matrix automatically completed the amount of columns to contain the numbers between 1 and 9.
+```
+
+___
+
+
+```{r}
+matrix(ncol = 3, nrow = 3, 1:9, byrow = TRUE)
+
+```
+
+## Question 3 Answer
+
+```{r}
+GIS = c(500,300,-100,-250,450,-50,800)
+Ecology = c(-50,-150,300,600,-100,150,-200)
+Day = c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+```
+
+```{r}
+mean(GIS)
+max(GIS)
+min(GIS)
+```
+
+___
+
+```{r}
+mean(Ecology)
+max(Ecology)
+min(Ecology)
+```
+
+```{r}
+# New vector
+Profit = sum(Ecology) + sum(GIS)
+Profit
+
+
+```
+
+___
+
+```{r}
+# New data frame 
+df = data.frame(Day,GIS,Ecology,Profit)
+df
+```
+
+```{r, eval=FALSE}
+View(df)
+
+# The function will invoke a spreadsheet-style data viewer on a matrix-like R object.
+
+str(df)
+ 
+#The function displays the internal structure of an R object compactly.
+
+nrow(df)
+
+# nrow() function in R is used to return the number of rows of the the matrix, array, or data frame.
+
+ncol(df)
+
+# ncol() function in R is used to return the number of rows of the matrix, array, or data frame.
+
+dim(df)
+
+# The function returns the dimension of the matrix, array, or data frame.
+```
+

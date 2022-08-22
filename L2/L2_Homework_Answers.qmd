@@ -1,0 +1,131 @@
+---
+title: "Lesson 2 Homework Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1 Answer
+
+```{r}
+GIS = c(NA,200,NA,-320,250,NA,-100)
+
+Ecology = c(100,200,300,-500,NA,50,NA)
+
+```
+
+___
+
+```{r}
+mean(GIS, na.rm = T)
+max(GIS, na.rm = T)
+min(GIS, na.rm = T)
+
+```
+
+___
+
+```{r}
+mean(Ecology, na.rm = T)
+max(Ecology, na.rm = T)
+min(Ecology, na.rm = T)
+```
+
+___
+
+```{r}
+Profit = sum(Ecology,na.rm = T) + sum(GIS,na.rm = T)
+Profit
+```
+
+___
+
+```{r}
+GIS[3]
+
+Ecology[2:5]
+```
+
+## Question 2 Answer
+
+```{r}
+random_vector = sample(1:10, size = 6)
+
+random_vector
+```
+
+```{r}
+random_vector[random_vector>8]
+random_vector[random_vector<=7]
+random_vector[random_vector == 5]
+random_vector[random_vector!=6]
+random_vector[random_vector<6 & random_vector >2]
+random_vector[random_vector<9 & random_vector >5]
+random_vector[random_vector<=4] = 5
+random_vector
+```
+
+___
+
+```{r}
+
+sort(random_vector)
+
+order(random_vector)
+```
+
+`sort()` sorts the vector in an ascending order, however `order()` returns the indices of the vector in a sorted order.
+
+## Question 3 Answer
+
+```{r}
+usa_presidents = data.frame(year=c(1789,1829,1861,1980,2000),
+order = c(1,7,16,40,43))
+names = data.frame(president_name =
+c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George_W._Bush"))
+```
+
+```{r}
+cbind(usa_presidents,names)
+```
+
+## Question 4 Answer
+
+```{r}
+Student_Name<-c("John","Barak","Sara","Yuval","Muhammad")
+Student_class<-c("High school","College","High school","High school","College")
+df1<-data.frame(Student_class,Student_Name)
+
+
+Student_Name<-c("Tal","Amir","Noya")
+Student_class<-c("High school","College","University")
+df2<-data.frame(Student_Name,Student_class)
+```
+
+```{r}
+rbind(df1,df2)
+```
+
+## Bonus Question Answer
+
+```{r}
+c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
+```
+When one of the vectors is of length 3 and the other is of length 6, the shorter vector (of length 3) is replicated 2 times.
+
+```{r}
+counts = c(2, 0, 3, 1, 3, 2, 9, 0, 2, 1, 11, 2)
+
+counts[c(1:3, 7:9)] = c(NA, 99)
+```
+
+Here, c(NA,99) is replicated three times, also to match the subset of length 6.
+
+```{r}
+paste("I", "want", "to", "combine", "text", "values")
+```
+
+The proper way to combine text values in R. 
+
+
+

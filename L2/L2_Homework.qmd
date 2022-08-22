@@ -52,7 +52,7 @@ Run the following code, from random_vector and use a logical index to find the f
 
 -   extract values in m which are less than 9 AND greater than 5
 
--   replace the 6th and 7th values with 1
+-   replace the 5th and 6th values with 1
 
 -   replace values that are less than or equal to 4 with 5
 
