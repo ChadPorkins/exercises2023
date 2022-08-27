@@ -1,6 +1,57 @@
+---
+title: "Lecture 4 Homework"
+format:
+  html: 
+    theme: literal
+---
+
 ## Question 1
 
-**Continuation of question 3**
+We have already learned about histograms, however in this homework we will learn to control their output.
+
+-   Load beersheva.csv from moodle and plot a histogram of the column tempcmax.
+
+-   Add the title "Max Temperature in Beersheva".
+
+-   Name x-axis "Max Temp" and make the histogram to be gold-colored.
+
+-   Make the histogram to have 9 breaks.
+
+## Question 2
+
+Histograms are great, however Kernal density plots are usually a much more effective way to view the distribution of a variable.
+
+-   Create a kernel density plot from the same data as before
+
+-   The plot should be with the same title as before, filled with light green color and a dark green border.
+
+-   which one is better - histogram of kernel density plot?
+
+## Question 3
+
+let's check for outliers in the built-in mtcars dataset.
+
+using the `dotchart` function do you think there are outliers in the horsepower column?
+
+(Hint! you can use `boxplot` function to check your answer )
+
+
+## Bonus question! That is for those who want to go further beyond!
+
+Another good way to present this information is through a pie chart
+
+-   Create a pie chart showing the proportion of cars from the mtcars data set that have different gear values. Hint! use the `pie()` function.
+
+    ```{r, echo = FALSE}
+    gears = table(mtcars$gear)
+
+    percent = round(100*gears/sum(gears), 1)
+    pielabels = paste(percent)
+    pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', cex = 0.8)
+    legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
+    ```
+
+___
 
 A barplot is one of the most common types of plot.
 
@@ -8,7 +59,7 @@ It shows the relationship between a numerical variable and a categorical variabl
 
 For example, you can display the height of several individuals using a bar chart.
 
-In our case we want to display the calculated columns (tempcmax, tempcmin, tempcmean, rhmean, wsmean, wdmean).
+In our case we want to display the calculated columns (tempcmax, tempcmin, tempcmean, rhmean, wsmean, wdmean). 
 
 -   Using `?barplot` read how to create a bar plot with vertical or horizontal bars.
 
@@ -25,77 +76,3 @@ In our case we want to display the calculated columns (tempcmax, tempcmin, tempc
 -   Each bar will be with different color of your choice - to see all colors in R go to:
 
     <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>
-
-## Question 2
-
-Now we want to create a summary boxplot, using both speed and distance. To plot these we use the boxplot command with a slightly different syntax `boxplot(y ~ x)`.
-
--   Use boxplot to compare the column speed and dist from the built-in data set cars.
-
--   Add to this plot the title "Car Speed Against Stopping Distance" with font number 3
-
--   Give the axis Their proper names
-
--   The boxplot should be in red
-
--   Do it again with **violin plots**.
-
-## Question 3
-
-We will return to the data file of the whales
-
-Read the data file again as "whale".
-
--   Create a plot of the number of whales in relation to the depth, the plot should be categorized by the noise level.
-
--   Give suitable names to axes and give each category a different color.
-
--   An example of this can be seen in the presentation on slides 72-73
-
--   Save the plot to a pdf file
-
-```{r, echo = FALSE}
-whale = read.csv("whaledata.csv")
-```
-
-```{r,echo = FALSE}
-par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
-plot(whale$number.whales, whale$depth,
-       type = "n",
-       xlab = "Nnumber of whales",
-       ylab = expression(paste("Depth (m) ")),
-       xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
-       las = 1, cex.axis = 0.8, tcl = -0.2)
-points(x = whale$number.whales[whale$water.noise == "low"],
-       y = whale$depth[whale$water.noise == "low"],
-       pch = 16, col = "green")
-points(x = whale$number.whales[whale$water.noise == "medium"],
-       y = whale$depth[whale$water.noise == "medium"],
-       pch = 16, col = "orange")
-points(x = whale$number.whales[whale$water.noise == "high"],
-       y = whale$depth[whale$water.noise == "high"],
-       pch = 16, col = "red")
-text(x = 28, y = 1600, label = "A", cex = 2)
-leg_cols <- c("green", "orange", "red")
-leg_sym <- c(16, 16, 16)
-leg_lab <- c("low", "medium", "high")
-
-legend(x = 25, y = 800, col = leg_cols, pch = leg_sym, 
-        legend = leg_lab, bty = "n", 
-        title = "Noise level")
-```
-
-## Bonus question! That is for those who want to go further beyond!
-
-Another good way to present this information is through a pie chart
-
--   Create a pie chart showing the proportion of cars from the mtcars data set that have different gear values. Hint! use the `pie()` function.
-
-    ```{r, echo = FALSE}
-    gears = table(mtcars$gear)
-
-    percent = round(100*gears/sum(gears), 1)
-    pielabels = paste(percent)
-    pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', cex = 0.8)
-    legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
-    ```

@@ -1,5 +1,5 @@
 ---
-title: "Lesson 4 Exercises"
+title: "Lecture 4 Exercises"
 format:
   html: 
     theme: literal
@@ -27,22 +27,9 @@ plot(x,y)
 
 ------------------------------------------------------------------------
 
-There are many ways to change the plot we created in R and to change it to our needs!
-
--   using the `plot()` function, add the **pch** argument between 1 and 25, In addition use the **rainbow color** argument with 5 unique colors.
-
-you should get something like this:
-
-```{r, echo = FALSE}
-plot(x,y, pch = 1:25, col=rainbow(5))
-
-```
-
-------------------------------------------------------------------------
-
 Another useful argument is changing the type of the plot
 
--   using the `plot()` function, add the type argument for the following criteria,and **write down** what changed in the plot.
+-   using the `plot()` function, add the **type** argument for the following criteria,and **write down** what changed in the plot.
 
 1.  type = "p"
 
@@ -58,25 +45,81 @@ Another useful argument is changing the type of the plot
 
 7.  type = "n"
 
+------------------------------------------------------------------------
+
+There are many ways to change the plot we created in R and to change it to our needs!
+
+-   using the `plot()` function, add the **pch** argument between 1 and 25, In addition use the **rainbow color** argument with 5 unique colors.
+
+-   Save the plot to a pdf file, name it "fancy1"
+
+you should get something like this:
+
+```{r, echo = FALSE}
+fancy1 = plot(x,y, pch = 1:25, col=rainbow(5))
+
+fancy1
+
+```
 
 ## Question 2
 
-We have already learned about histograms, however in this lesson we will learn to control their output.
+Now we want to create a summary boxplot, using both speed and distance columns from the built-in data set **cars**.
 
--   Load beersheva.csv from moodle and plot a histogram of the column tempcmax.
+-   Use boxplot to plot the varriable speed, what can you learn from this boxplot?
 
--   Add the title "Max Temperature in Beersheva".
+-   Use boxplot to compare the column speed and dist from the built-in data set cars. (To plot these we use the boxplot command with a slightly different syntax `boxplot(y ~ x)`.)
 
--   Name x-axis "Max Temp" and make the histogram to be gold-colored.
+-   Add to this plot the title "Car Speed Against Stopping Distance" with font number 3
 
--   Make the histogram to have 9 breaks
+-   Give the axis Their proper names
+
+-   The boxplot should be in red
+
+-   Create the same plots with **violin plots**, Which one do you prefer more?
 
 ## Question 3
 
-Histograms are great, however Kernal density plots are usually a much more effective way to view the distribution of a variable.
+As part of our research we would like to create complex graphs according to certain indicators (factors). We will return to the data file of the whales.
 
--   Create a kernel density plot from the same data as before
+-   Read the data file again as "whale".
 
--   The plot should be with the same title as before, filled with light green color and a dark green border.
+-   Create a plot of the number of whales in relation to the depth, the plot should be categorized by the noise level.
 
--   which one is better - histogram of kernel density plot?
+-   Give suitable names to axes and give each category a different color.
+
+-   An example of this can be seen in the presentation on slides 72-73
+
+
+    You should get something like that:
+
+```{r, echo = FALSE}
+whale = read.csv("whaledata.csv")
+```
+
+```{r,echo = FALSE}
+par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
+plot(whale$number.whales, whale$depth,
+       type = "n",
+       xlab = "Nnumber of whales",
+       ylab = expression(paste("Depth (m) ")),
+       xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
+       las = 1, cex.axis = 0.8, tcl = -0.2)
+points(x = whale$number.whales[whale$water.noise == "low"],
+       y = whale$depth[whale$water.noise == "low"],
+       pch = 16, col = "green")
+points(x = whale$number.whales[whale$water.noise == "medium"],
+       y = whale$depth[whale$water.noise == "medium"],
+       pch = 16, col = "orange")
+points(x = whale$number.whales[whale$water.noise == "high"],
+       y = whale$depth[whale$water.noise == "high"],
+       pch = 16, col = "red")
+text(x = 28, y = 1600, label = "A", cex = 2)
+leg_cols <- c("green", "orange", "red")
+leg_sym <- c(16, 16, 16)
+leg_lab <- c("low", "medium", "high")
+
+legend(x = 25, y = 800, col = leg_cols, pch = leg_sym, 
+        legend = leg_lab, bty = "n", 
+        title = "Noise level")
+```

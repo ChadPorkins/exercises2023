@@ -1,44 +1,18 @@
 ---
-title: "Lesson 3 Exercises Answers"
+title: "Lecture 3 Homework Answers"
 format:
   html: 
     theme: literal
 ---
 
+
 ## Question 1
-
-```{r, echo=FALSE}
-whaledata = read.csv("whaledata.csv")
-```
-
-
-```{r}
-whaledata.1200 <- whaledata[whaledata$depth > 1200, ]
-
-whaledata.200 <- whaledata[whaledata$gradient > 200, ]
-
-whaledata.low <- whaledata[whaledata$water.noise == "low", ]
-
-whaledata.h.may <- whaledata[whaledata$water.noise == "high" & whaledata$month == "May", ]
-
-whaledata.subset <- whaledata[whaledata$month == "October" & whaledata$water.noise == "low" & whaledata$gradient > 132, ]
-
-whaledata.lat.long <- whaledata[whaledata$latitude > 60 & whaledata$latitude < 61 & whaledata$longitude > -6 & whaledata$longitude < -4, ]
-
-whaledata.nomed <- whaledata[whaledata$water.noise != "medium", ]
-
-whaledata.new <- whaledata[whaledata$depth > 1500 & whaledata$number.whales > mean(whaledata$number.whales, na.rm = TRUE), ]
-
-#the variable number.whales contains 1 NA value. By default the mean function will return an NA. we will use the na.rm argument to ignore NAs.
-
-```
-
-## Question 2
 
 Creating top 10:
 
 ```{r}
 
+whaledata = read.csv("whaledata.csv")
 TOP10 = whaledata[order(-whaledata$depth),]
 TOP10 = TOP10[1:10,]
 
@@ -51,7 +25,7 @@ Delete the gradient and noise columns:
 TOP10 = TOP10[,-c(3,8)]
 ```
 
-## Question 3
+## Question 2
 
 ```{r}
 #Create a new data frame named noise_location
@@ -76,7 +50,7 @@ write.csv(noise_location, file = "noise_location.csv")
 
 ```
 
-## Question 4
+## Question 3
 
 ```{r, eval=FALSE}
     c(1:10)*10 == seq(10, 100, 10)
@@ -88,7 +62,30 @@ In the first code on the left side, all values between 1 and 10 will be multipli
 
 In the second code on the left side the numerical value of 10 will be repeated 10 times, on the right side we will have a descending series between 100 and 10, therefore all the values will receive false except for the last value.
 
-## Question 5
+___
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, NA, 0, 3, 9, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, 52, NA, 3, 
+           -1, 1, 0, 5, 42, -0.2, 17, 3.1, -9, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, 10)
+
+length(v)
+# The lengh of the vector
+
+which.max(v)
+
+# Position of the the highest value
+
+which.min(v)
+
+# Position of the the lowest value
+
+```
+
+
+## Question 4
 ```{r,eval=FALSE}
 #Save your entire workspace, naming it the third_lesson, afterward upload the third_lesson file back into R.
 

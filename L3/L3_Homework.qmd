@@ -1,35 +1,14 @@
 ---
+title: "Lecture 3 Homework"
+format:
+  html: 
+    theme: literal
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
 ## Question 1
-
-**Continuation of question 3**
-
-Extract rows from the whale data frame based on the following criteria:
-
--   depths greater than 1200 m.
-
--   gradient steeper than 200 degrees.
-
--   water noise level of 'low'.
-
--    water.noise level of 'high' in the month of 'May'.
-
--   The month of 'October', water noise level of 'low' and gradient
-    greater than the median value of gradient (132).
-
--   all observations from between latitudes 60.0 and 61.0 and longitudes
-    -6.0 and -4.0.
-
--   all rows that do not have a water noise level of medium.
-
--   depths greater than 1500 m and with a greater number of whales
-    spotted than average.
-
-## Question 2
 
 As part of our research we want to check what are the ten deepest depths
 that whales have reached.
@@ -38,7 +17,7 @@ that whales have reached.
     deepest depths.
 -   From "TOP10" delete the gradient and noise columns
 
-## Question 3
+## Question 2
 
 As part of our research on whales, we want to create a map with the
 location of the whales and their noise level.
@@ -57,7 +36,7 @@ location of the whales and their noise level.
 -   save the noise_location data frame in csv format to your local
     folder.
 
-## Question 4
+## Question 3
 
 try to guess what you will get before running the following code:
 
@@ -68,7 +47,28 @@ try to guess what you will get before running the following code:
     
 ```
 
-## Question 5
+------------------------------------------------------------------------
+
+Create the following vector:
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, NA, 0, 3, 9, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, 52, NA, 3, 
+           -1, 1, 0, 5, 42, -0.2, 17, 3.1, -5, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, 10)
+
+```
+
+-   What is the length of the vector?
+
+-   How many many Na values are there in the vector?
+
+-   In which position in the vector is the the highest value?
+
+-   In which position in the vector is the the lowest value?
+
+## Question 4
 
 Save your entire workspace, naming it the third_lesson, afterward upload
 the third_lesson file back into R.

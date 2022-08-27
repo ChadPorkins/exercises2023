@@ -1,5 +1,5 @@
 ---
-title: "Lesson 2 Exercises"
+title: "Lecture 2 Exercises"
 format:
   html: 
     theme: literal
@@ -15,7 +15,7 @@ At the heart of almost everything you will do in R is the concept that everythin
 
 -   42 - 22
 
--   6\*6
+-   6*6
 
 -   sqrt(81)
 
@@ -123,4 +123,28 @@ You are given a table of each company's daily profits and losses throughout the 
 
 -   dim(df)
 
-------------------------------------------------------------------------
+## Question 4
+
+The following week, Daniel had server failures and because of this, the new table lacks information on certain days.
+
+| Day       | GIS    | Ecology |
+|-----------|--------|---------|
+| Sunday    | **NA** | 100     |
+| Monday    | 200    | 200     |
+| Tuesday   | **NA** | 300     |
+| Wednesday | -320   | -500    |
+| Thursday  | 250    | **NA**  |
+| Friday    | **NA** | 50      |
+| Saturday  | -100   | **NA**  |
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss, including the NA.
+
+-   Despite the missing information find the mean value, max value, and min value of GIS.
+
+-   Despite the missing information find the mean value, max value, and min value of Ecology.
+
+-   Create a new vector to calculate how much money Daniel made or lost this week.
+
+-   From the GIS vector find the third value
+
+-   From the Ecology vector find the values between the second value and the fifth value

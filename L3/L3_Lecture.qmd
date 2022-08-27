@@ -1,5 +1,5 @@
 ---
-title: "Lesson 3 Exercises"
+title: "Lecture 3 Exercises"
 format:
   html: 
     theme: literal
@@ -50,3 +50,27 @@ As part of your research on whales, you want to focus on specific information.
 -   Now, extract the first 50 rows and all columns from the original dataframe and assign them to a variable whale_month_may
 
 -   Finally, extract all rows except the first 10 rows and all columns except the last column. Remember, for some of these questions you can specify the columns you want either by position or by name. Practice both ways.
+
+## Question 4
+
+Extract rows from the whale data frame based on the following criteria:
+
+-   depths greater than 1200 m.
+
+-   gradient steeper than 200 degrees.
+
+-   water noise level of 'low'.
+
+-    water.noise level of 'high' in the month of 'May'.
+
+-   The month of 'October', water noise level of 'low' and gradient
+    greater than the median value of gradient (132).
+
+-   all observations from between latitudes 60.0 and 61.0 and longitudes
+    -6.0 and -4.0.
+
+-   all rows that do not have a water noise level of medium.
+
+-   depths greater than 1500 m and with a greater number of whales
+    spotted than average.
+

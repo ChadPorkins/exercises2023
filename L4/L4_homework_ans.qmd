@@ -1,0 +1,82 @@
+---
+title: "Lecture 4 Homework Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Answer 1
+
+```{r}
+#Load beersheva.csv 
+beersheva <- read.csv("beersheva.csv")
+
+#Plot a histogram of the column tempcmax 
+hist(beersheva$tempcmax)
+```
+
+```{r}
+#Add to the histogram the title "Max Temperature, x axis name "Max Temp" and the color Gold.Make the histogram to have 9 breaks.
+hist(beersheva$tempcmax, main = "Max Temperature in Beersheva",
+xlab = "Max Temp", col = "Gold", breaks = 9)
+```
+
+## Answer 2
+
+```{r}
+#Create kernel density plot from the same data as the histogram before,
+#with the same title, filled with lightgreen color and darkgreen border
+
+plot(density(beersheva$tempcmax), main = "Max Temperature in Beersheva")
+polygon(density(beersheva$tempcmax), col = "lightgreen", border = "darkgreen")
+
+```
+
+There is no right or wrong way when dealing with graphics. It all depend on what you want to display, In this case both ways of displaying beersheva max tempratures are good.
+
+
+## Answer 3
+
+```{r}
+dotchart(mtcars$hp)
+```
+
+We see that we have a suspicious dot with 300 plus horsepower that is much more to the right than most of the spots in the plot, so we will suspect that dot as an outlier.
+
+```{r}
+boxplot(mtcars$hp)
+```
+
+By using the boxplot we see that the point of the 300 plus horse power is beyond the box, therefore this point is undoubtedly an aoutlier!
+
+(for anyone wondering the dot is a racing car)
+
+## Bonus answer
+
+```{r}
+gears = table(mtcars$gear)
+percent = round(100*gears/sum(gears), 1)
+pielabels = paste(percent)
+pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', cex = 0.8)
+
+legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
+```
+
+___
+
+```{r}
+#Subset the data so you will have only the needed columns
+ subset_beersheva = beersheva[,5:10]
+
+#Use colMeans to create a "means vector" from all columns
+beersheva_means = colMeans(subset_beersheva)
+
+#create a barplot with the following arguments:
+#1) The title "Beersheva Means"
+#2) x axis name as "Categories"
+#3) Line width of 5
+#4) Each bar will be with different color of your choise
+barplot(beersheva_means,lwd = 5, main="Beersheva Means",xlab="Categories",
+col=c("darkseagreen3", "lightslategray", "red4", "plum1", "tan2", "navyblue"))
+```
+

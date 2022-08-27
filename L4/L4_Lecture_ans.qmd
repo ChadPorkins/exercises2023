@@ -1,0 +1,146 @@
+---
+title: "Lecture 4 Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Answer 1
+
+```{r}
+x <- seq(0,8*pi,length.out=100)
+y <- sin(x)
+plot(x,y)
+
+```
+
+The x-axis represents the values of the vector x that we created, the
+y-axis represents the values of the vector x after the mathematical
+function of sine.
+
+------------------------------------------------------------------------
+
+The type indicating the type of plotting. The following changes will
+occur accordingly: 
+
+“p” for points.
+
+“l” for lines.
+
+“b” for both points and lines.
+
+“c” for empty points joined by lines.
+
+“o” for overplotted points and lines.
+
+“s” and “S” for stair steps.
+
+“n” does not produce any points or lines.
+
+
+------------------------------------------------------------------------
+
+using the plot() function, add the pch argument between 1 and 25, In
+addition use the rainbow color argument with 5 unique colors.
+
+```{r}
+plot(x,y, pch = 1:25, col=rainbow(5))
+
+```
+
+___
+
+```{r, warning=FALSE, message=FALSE}
+# Step 1: Call the pdf command to start the plot
+
+pdf(file = "fancy1.pdf")
+
+# Step 2: Create the plot with R code
+
+fancy1 = plot(x,y, pch = 1:25, col=rainbow(5))
+
+# Step 3: Run dev.off() to create the file!
+
+dev.off()
+
+```
+
+## Answer 2
+
+```{r}
+
+boxplot(cars$speed)
+
+```
+The line represents the median of speed, which is 15. The box itself shows the upper and lower quartiles. The whiskers show the range (i.e. the largest and smallest values).
+
+___
+
+```{r}
+boxplot(speed ~ dist, data = cars,
+            xlab = "Stop Distance", ylab = "Speed",
+            col = "red")
+    title(main="Car Speed Against Stopping Distance", font.main = 3)
+```
+
+A summary boxplot with all the guidance.
+
+
+___
+
+```{r, message=FALSE, warning=FALSE}
+
+library(vioplot)
+vioplot(cars$speed)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+library(vioplot)
+vioplot(speed ~ dist, data = cars,
+            xlab = "Stop Distance", ylab = "Speed",
+            col = "red")
+    title(main="Car Speed Against Stopping Distance", font.main = 3)
+```
+
+## Answer 3
+
+```{r}
+
+whale = read.csv("whaledata.csv")
+
+```
+
+```{r}
+par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
+plot(whale$number.whales, whale$depth,
+       type = "n",
+       xlab = "Nnumber of whales",
+       ylab = expression(paste("Depth (m) ")),
+       xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
+       las = 1, cex.axis = 0.8, tcl = -0.2)
+points(x = whale$number.whales[whale$water.noise == "low"],
+       y = whale$depth[whale$water.noise == "low"],
+       pch = 16, col = "green")
+points(x = whale$number.whales[whale$water.noise == "medium"],
+       y = whale$depth[whale$water.noise == "medium"],
+       pch = 16, col = "orange")
+points(x = whale$number.whales[whale$water.noise == "high"],
+       y = whale$depth[whale$water.noise == "high"],
+       pch = 16, col = "red")
+text(x = 28, y = 1600, label = "A", cex = 2)
+leg_cols <- c("green", "orange", "red")
+leg_sym <- c(16, 16, 16)
+leg_lab <- c("low", "medium", "high")
+
+legend(x = 25, y = 800, col = leg_cols, pch = leg_sym, 
+        legend = leg_lab, bty = "n", 
+        title = "Noise level")
+
+
+
+```
+
+
+

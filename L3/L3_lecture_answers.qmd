@@ -1,5 +1,5 @@
 ---
-title: "Lesson 3 Exercises Answers"
+title: "Lecture 3 Answers"
 format:
   html: 
     theme: literal
@@ -86,5 +86,32 @@ whale.last = whaledata[-c(1:10), -c("gradient")]
 
 ```
 
+## Question 4
+
+```{r, echo=FALSE}
+whaledata = read.csv("whaledata.csv")
+```
+
+
+```{r}
+whaledata.1200 <- whaledata[whaledata$depth > 1200, ]
+
+whaledata.200 <- whaledata[whaledata$gradient > 200, ]
+
+whaledata.low <- whaledata[whaledata$water.noise == "low", ]
+
+whaledata.h.may <- whaledata[whaledata$water.noise == "high" & whaledata$month == "May", ]
+
+whaledata.subset <- whaledata[whaledata$month == "October" & whaledata$water.noise == "low" & whaledata$gradient > 132, ]
+
+whaledata.lat.long <- whaledata[whaledata$latitude > 60 & whaledata$latitude < 61 & whaledata$longitude > -6 & whaledata$longitude < -4, ]
+
+whaledata.nomed <- whaledata[whaledata$water.noise != "medium", ]
+
+whaledata.new <- whaledata[whaledata$depth > 1500 & whaledata$number.whales > mean(whaledata$number.whales, na.rm = TRUE), ]
+
+#the variable number.whales contains 1 NA value. By default the mean function will return an NA. we will use the na.rm argument to ignore NAs.
+
+```
 
 

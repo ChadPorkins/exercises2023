@@ -1,0 +1,88 @@
+---
+title: "Lesson 5 Homework Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Answer 1 
+
+```{r}
+#Download and read the mice.csv data set and take a first look at the data.
+mice = read.csv("mice.csv")
+head(mice)
+
+#How large is the data.frame? use only 1 function to get the answer.
+dim(mice)
+
+#how many rows/columns?
+ncol(mice)
+nrow(mice)
+
+#what are the column names and what is the data type of each column
+
+colnames(mice)
+str(mice)
+
+#How many mice are described in the data set?
+length(unique(mice$id))
+
+#How many female mice are there?
+female_mice = mice[mice$gender == "female",]
+length(unique(female_mice$id))
+
+#Make a plot of the weight of mouse number 1
+mice_1 = mice[mice$id == 1,]
+plot(mice_1$week,mice_1$weight)
+
+#Make a histogram of the weight of mouse number 5
+mice_5 = mice[mice$id == 5,]
+hist(mice_5$weight)
+
+```
+
+## Answer 2
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, 10, 0, 3, NA, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, NA, 6, 3, 
+           -1, 1, 0, NA, 42, -0.2, 17, 3.1, -5, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, NA)
+```
+
+```{r}
+
+fivenum(v)
+
+```
+
+minimum = -5
+
+lower-hinge = 1
+
+median = 9
+
+upper-hinge = 24
+
+maximum = 92
+
+## Bonus Answer
+
+```{r}
+#from the built-in data set VADeaths, create a bar plot with a legend of the age groups.
+
+barplot(VADeaths, legend= rownames(VADeaths))
+
+
+```
+
+```{r}
+#In addition, unstack the bars and plot them alongside one another, adding to each age group color and a proper title.
+
+barplot(VADeaths, beside = TRUE, 
+    col = c("lightblue", "mistyrose", "lightcyan","lavender", "cornsilk"),
+    legend = rownames(VADeaths), ylim = c(0, 100))
+    title(main = "Death Rates in Virginia", font.main = 4)
+```
+

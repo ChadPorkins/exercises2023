@@ -1,16 +1,29 @@
+---
+title: "Lesson 5 Homework"
+format:
+  html: 
+    theme: literal
+---
+
 ## Question 1
 
-**Continuation of question 2**
+For the next research exercise, we will use the data set about mice.
 
-Use the summary tool and see how can you answer the previous questions without any trouble.
+-   Download and read the mice.csv data set and take a first look at the data.
 
--   Use summary only on companies with higher market value than the market value mean (of all companies)
+-   How large is the data.frame? use only 1 function to get the answer.
 
--   Use rescale to create a new column named marketvalue.rescaled in the forbes2000 data. (use the package scales)
+-   how many rows/columns?
 
--   Use `cut()` to create the column marketvalue_cat, so you will have 3 categorical bins of "Low", "Medium" and "High" for the marketvalue
+-   what are the column names and what is the data type of each column?
 
--   Create and combine histograms for profits, assets and sales and see the differences
+-   How many mice are described in the data set?
+
+-   How many female mice are there?
+
+-   Make a plot of the weight of mouse number 1
+
+-   Make a histogram of the weight of mouse number 5
 
 ## Question 2
 

@@ -1,5 +1,5 @@
 ---
-title: "Lesson 2 Exercises Answers"
+title: "Lecture 2 Answers"
 format:
   html: 
     theme: literal
@@ -188,3 +188,43 @@ dim(df)
 # The function returns the dimension of the matrix, array, or data frame.
 ```
 
+## Question 4 Answer
+
+```{r}
+GIS = c(NA,200,NA,-320,250,NA,-100)
+
+Ecology = c(100,200,300,-500,NA,50,NA)
+
+```
+
+___
+
+```{r}
+mean(GIS, na.rm = T)
+max(GIS, na.rm = T)
+min(GIS, na.rm = T)
+
+```
+
+___
+
+```{r}
+mean(Ecology, na.rm = T)
+max(Ecology, na.rm = T)
+min(Ecology, na.rm = T)
+```
+
+___
+
+```{r}
+Profit = sum(Ecology,na.rm = T) + sum(GIS,na.rm = T)
+Profit
+```
+
+___
+
+```{r}
+GIS[3]
+
+Ecology[2:5]
+```

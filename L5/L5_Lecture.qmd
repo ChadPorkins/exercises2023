@@ -1,5 +1,5 @@
 ---
-title: "Lesson 5 Exercises"
+title: "Lecture 5 Exercises"
 format:
   html: 
     theme: literal
@@ -76,3 +76,15 @@ The data format is a data frame with 2000 observations on the following 8 variab
 -   How many NA's there are in profits?
 
 -   Is there any company that appears twice in the forbes list?
+
+## Question 3
+
+Use the summary tool and see how can you answer the previous questions without any trouble.
+
+-   Use summary only on companies with higher market value than the market value mean (of all companies)
+
+-   Use rescale to create a new column named marketvalue.rescaled in the forbes2000 data. (use the package scales)
+
+-   Use `cut()` to create the column marketvalue_cat, so you will have 3 categorical bins of "Low", "Medium" and "High" for the marketvalue
+
+-   Create and combine histograms for profits, assets and sales and see the differences
