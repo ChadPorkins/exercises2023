@@ -1,0 +1,57 @@
+---
+title: "Lecture 8 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+In our research this week we will focus on analyzing information about soccer players from England, Italy, and Germany. Read football_info.csv into R. The data consist of information on 15,000 football players.
+
+football_info.csv has the following variables: age, height, weight and foot (which is the strongest foot of the player), Country, and the player score from 0 to 100.
+
+## Question 1
+
+-   Read football_info.csv into R
+
+-   As you probably know by now, the first thing we do with a new dataframe is to examine it. Check the different values and variables in the table, look for NA and delete outliers if you notice them.
+
+___
+
+-   By using a histogram and QQ-plot which of the continuous variables in the data is normally distributed? (Hint! you can use the `qqnorm()` and the `qqline()` functions).
+
+## Question 2
+
+The number of standard deviations from the mean is called the "Standard Score" or "Z-Score". "Standardizing" is converting a value to a Standard Score.
+
+-   Create the column "Standard_Height" which is the "standard score" calculation of the Height.
+
+-   Create  histograms of both height and standard_height, Make both histograms green and with: breaks = 9.
+
+-   Create a scatter plot of the variables.
+
+## Question 3
+
+As part of our research we want to check if there are differences between the players from the different countries.
+
+-   By using the ANOVA test, check whether there is a significant difference in the height of the players from the different countries.
+
+-   By using the ANOVA test, check whether there is a significant difference in the weight of the players from the different countries.
+
+-   By using the ANOVA test, check whether there is a significant difference in the age of the players from the different countries.
+
+-   By using the ANOVA test, check whether there is a significant difference in the score of the players from the different countries.
+
+## Question 4
+
+one-sample t-test is used to compare the mean of one sample to a known standard (or theoretical/hypothetical) mean (μ).
+
+There are 14 Israeli football players in the info dataset with dual citizenship.
+
+Their weights are: 62, 82, 64, 59, 71, 68, 78, 61, 67, 76, 80, 68, 60, 71.
+
+We want to compare their weights to the average of all the players.
+
+-   Run an F-test for the variables, and compare the Israeli players average weight to the players average weight, with a one-sample t-test.
+
+
+

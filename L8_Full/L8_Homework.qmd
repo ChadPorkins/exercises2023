@@ -1,0 +1,62 @@
+---
+title: "Lecture 8 Homework"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+An Independent (or unpaired two-sample) t-test is used to compare the means of two unrelated groups of samples.
+
+In this case, we want to test whether the average age of left foot players is significantly different from the average age of right foot players.
+
+-   Test whether the average age of left players is significantly different from the average age of right foot players
+
+## Question 2
+
+Paired Student's t-test is used to compare the means of two related samples.
+
+That is when you have two values (pair of values) for the same samples.
+
+It is known that young football players tend to grow by 3-5 centimeters after age 16.
+
+-   With a paired t-test, check if there is a significant difference between the height of football players at age 16 and height in adulthood.
+
+```{r}
+dat = data.frame(player = c(1:15), 
+age16 = c(160, 154, 172, 172, 178, 168, 162, 170, 164, 162, 159, 180, 165, 160, 163),
+adulthood = c(162, 155, 172, 176, 179, 169, 162, 175, 168, 167, 160, 180, 166, 166, 164))
+```
+
+## Question 3
+
+Another excellent way to check if the information is normally distributed is by using the Shapiro test.
+
+-   Run a Shapiro test on the age of all football players, is the age distributed normally?
+
+-   Isolate only the first 30 Italian players, create a histogram of the player_score and perform a `shapiro.test`, is the player_score normally distributed?
+
+## Bonus question! That is for those who want to go further beyond!
+
+An effective way to remove outliers from data sets in R is to use "automatic commands" to clean the information.
+
+```{r}
+info2 = read.csv("football_info.csv")
+x = info2$Height
+x_clean =  x[!x %in% boxplot.stats(x)$out] 
+```
+
+-   Run the following code, and by looking at the box-plot of x what could be the downside of using "auto clean"?
+
+------------------------------------------------------------------------
+
+```{r, eval=FALSE}
+
+var.test(info$Standard_Height, info$Foot)
+
+```
+
+-   What can be the problem?
+
+-   Think of a solution to the problem :)

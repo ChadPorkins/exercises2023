@@ -1,0 +1,155 @@
+---
+title: "Lecture 8 Answers"
+format:
+  html: 
+    theme: literal
+---
+
+## Answer 1
+
+
+```{r}
+#Read football_info.csv into R
+
+info = read.csv("football_info.csv")
+
+#Check and clean the data if required
+summary(info)
+#With summary(info) we can see that there are no NAs, however, there are some wrong values in a few columns.
+#The maximum age is 244, which makes no sense, so we need to delete it.
+#We can also notice the impossible maximum value of height (281), the maximum value of weight(909), and the minimum value of weight(3).
+#So there are some errors in the data and we have to delete the wrong rows.
+info = info[order(info$Age),]
+info = info[-c(14999,15000),]
+info = info[order(info$Height),]
+info = info[-14998,]
+info = info[order(info$Weight),]
+info = info[-14997,]
+info = info[-1,]
+summary(info)
+#Now our data is fully cleaned :)
+
+
+```
+
+___
+
+```{r}
+#Which of the continuous variables in the data is normaly distributed?
+
+#Height
+
+hist(info$Height, xlab = "Age", col="burlywood4", main = "Football Players Height Distribution")
+qqnorm(info$Height)
+qqline(info$Height, col="burlywood4")
+
+```
+
+___
+
+```{r}
+#Which of the continuous variables in the data is normaly distributed?
+
+#Weight
+
+hist(info$Weight, xlab = "Age", col="Blue", main = "Football Players Weight Distribution")
+qqnorm(info$Weight)
+qqline(info$Weight, col="red")
+```
+
+___
+
+```{r}
+hist(info$Age, col = "azure3", xlab = "Age", main = "Football Players Age Distribution")
+abline(v = mean(info$Age), col = "blue4")  # With "v=mean(info$Height)" you can add the mean line to the plot.
+qqnorm(info$Age)
+qqline(info$Age, col="red")
+```
+
+You cannot be sure that the data is normally distributed with plots, however, you can rule out if it is NOT normally distributed. In this, it seems that all three variables have a good chance to be normally distributed.
+
+## Answer 2
+
+```{r}
+#Create the column "Standard_Height" which is the "standard score" calculation of Height. 
+info$Standard_Height <- scale(info$Height)
+#Another way is with the formula of Standardizing:
+info$Standard_Height <- (info$Height - mean(info$Height)) / sd(info$Height)
+#Create a histograms of both height and standard_height
+hist(info$Height, breaks = 9, col = "seagreen4",
+xlab = "Height", main = "Football Players Height Distribution")
+hist(info$Standard_Height, breaks = 9, col = "seagreen4",
+xlab = "Standardrized Height", main = "Football Players Height Distribution - Standardrized")
+#Create a scatter plot of the variables
+plot(info$Standard_Height, info$Height,
+         main = "Standardrized Height - Height Scatter Plot", xlab = "Standardrized Height", ylab = " Height",
+         col = "lightslategrey", pch = 16, cex = 1.5)
+
+```
+
+## Answer 3
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the height of the players from the different countries.
+aov.model = aov(info$Height ~ info$Country)
+summary(aov.model)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the weight of the players from the different countries.
+aov.model2 = aov(info$Weight ~ info$Country)
+summary(aov.model2)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the age of the players from the different countries.
+aov.model3= aov(info$Age ~ info$Country)
+summary(aov.model3)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the score of the players from the different countries.
+aov.model4 = aov(info$Player_score ~ info$Country)
+summary(aov.model4)
+#The P value is less than 0.05, so it is significant!
+#We can use Tukey HSD to check where there is a significant difference!
+TukeyHSD(aov.model4)
+#There is a significant difference between the Italian soccer players and the English players in terms of scores!
+
+```
+
+
+## Answer 4
+
+```{r}
+#run an F-test for this variables. 
+il = c(62, 82, 64, 59, 71, 68, 78, 61, 67, 76, 80, 68, 60, 71)
+
+var.test(il,info$Weight)
+
+```
+
+The p-value of the F-test is =  0.5425. It’s greater than the significance level alpha = 0.05. In conclusion, there is no significant difference between the variances of the two sets of data. Therefore, we can use the classic t-test which assumes equality of the two variances.
+    
+___
+
+
+```{r}
+#compare the Israeli players average weight to the players average weight, with a one-sample t-test.
+
+res = t.test(il, mu=mean(info$Weight))
+
+res
+
+
+```
+The mean of the Israeli players is 69.07143 and all players mean is 75.71551
+The p-value of the test is less than the significance level alpha = 0.05.
+We can then reject the null hypothesis and conclude that:
+The mean weight of the Israeli players is significantly different from 75.71551 with a p-value of 0.006129.
