@@ -1,0 +1,116 @@
+---
+title: "Lecture 9 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This week we will research data from the AirQualityUCI.csv
+
+The dataset contains 827 instances of hourly averaged responses from an
+array of 5 metal oxide chemical sensors embedded in an Air Quality
+Chemical Multisensor Device. The device was located on the field in a
+significantly polluted area, at road level, within an Italian city.
+
+Attribute Information:
+
+1.  Date (DD/MM/YYYY)
+
+2.  Time (HH.MM.SS)
+
+3.  Hourly averaged concentration CO in mg/m\^3
+
+4.  Hourly averaged overall Non Metanic HydroCarbons concentration in
+    microg/m\^3
+
+5.  Hourly averaged Benzene concentration in microg/m\^3
+
+6.  Hourly averaged NOx concentration in ppb
+
+7.  Hourly averaged NO2 concentration in microg/m\^3
+
+8.  Temperature in C°
+
+9.  Relative Humidity (%)
+
+10. Absolute Humidity
+
+## Question 1
+
+-   Read AirQualityUCI.csv into R
+
+-   As always the first we need to do is to check our data! use the
+    summary `function` to review all variables and look for NAs and
+    outliers.
+
+------------------------------------------------------------------------
+
+Your favorite professor hinted to you that some pollutants are
+correlated. Plotting two variables against each other is a great tool to
+check their relation. (Feel free to add different colors, sizes, titles, and trend lines, for the trend line you can use `abline(lm(x~y, data =))`)
+
+-   Use plot `(x~y, data =)` on the following columns and examine the results:
+
+1.  CO vs. Benzene
+
+2.  NMHC VS. RH
+
+3.  CO vs. NOx
+
+4.  Temp vs. Nox
+
+5.  Temp vs. RH
+
+## Question 2
+
+Plotting is a great tool, however, for a better and more accurate
+result, we will use a correlation analysis test.
+
+We saw earlier that CO-Benzene relation is high and CO-NOx is high as
+well.
+
+-   Check if the attribute above are normally distributed.
+
+-   Perform correlation tests on CO-Benzene and CO-NOx with the
+    right method and answer the question - which relation is stronger?
+
+## Question 3
+
+Carbon monoxide (CO) is a gas that is slightly less dense than air and
+consists of one carbon atom and one oxygen atom. Nitrogen dioxide (NO2)
+is one of several nitrogen oxides and is considered an air pollutant
+created mostly by internal combustion engines (for example car engines).
+Your mission is to explain NO2 only with CO, meaning that you should run
+a simple linear regression model with NO2 being the outcome variable. In
+other words, you want to use CO to predict NO2. Before doing so,
+remember that the outcome variable should be normally distributed,
+
+-   Check if the outcome variable (NO2) is normaly distributed.
+
+-   Check for linearity between the attributes.
+
+-   Check for multicollinearity (Independence of observations).
+
+-   Run simple linear regression model as you explain NO2 with CO.
+
+-   Check for Homoscedasticity (homogeneity of variance).
+
+
+## Question 4
+
+This time the goal of the model is to establish the relationship between
+"NO2" as a response variable with "CO", "Benzene", "NOx", "Temp" and
+"RH" as predictor variables.
+
+-   Check for linearity between the attributes.
+
+-   Check for multicollinearity (Independence of observations).
+
+-   Run Multiple Linear Regression to check the relationship between No2
+    and the other variables.
+
+-   Check for Homoscedasticity (homogeneity of variance).
+

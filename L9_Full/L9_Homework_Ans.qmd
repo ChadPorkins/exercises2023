@@ -1,0 +1,290 @@
+---
+title: "Lecture 9 Homework Answers"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Answer 1
+
+
+```{r}
+
+AirQualityUCI = read.csv("AirQualityUCI.csv")
+
+#Create one PDF file with 4 plots as explained above
+    pdf("NO2.pdf") #Calling for PDF file
+    par(mfcol = c(2,2)) #Changing the plot panel layout to 2 x 2
+    plot(NO2 ~ CO , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "CO", ylab = "NO2")  
+    title(main ="NO2 vs. CO")
+    abline(lm(NO2 ~ CO, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ Benzene , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "Benzene", ylab = "NO2")  
+    title(main ="NO2 vs. Benzene")
+    abline(lm(NO2 ~ Benzene, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ Temp , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "Temp", ylab = "NO2")  
+    title(main ="NO2 vs. Temp")
+    abline(lm(NO2 ~ Temp, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ RH , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "RH", ylab = "NO2")  
+    title(main ="NO2 vs. RH")
+    abline(lm(NO2 ~ RH, data= AirQualityUCI), col = "brown4", lwd = 2)
+    dev.off() #Changing the layout back to the default
+
+
+```
+
+## Answer 2
+
+
+```{r,eval=FALSE}
+prawns = read.csv("prawnGR.CSV", stringsAsFactors = TRUE)
+
+# take a look at the data
+str(prawns)
+
+# 'data.frame':   60 obs. of  2 variables:
+#  $ GRate: num  9.77 10.29 10.05 10.08 9.31 ...
+#  $ diet : Factor w/ 2 levels "Artificial","Natural":...
+
+summary(prawns)
+
+#      GRate                diet   
+#  Min.   : 7.395   Artificial:30  
+#  1st Qu.: 9.550   Natural   :30  
+#  Median : 9.943                  
+#  Mean   : 9.920                  
+#  3rd Qu.:10.344                  
+#  Max.   :11.632         
+
+#How many observations are there in each diet treatment?
+
+
+table(prawns$diet)
+
+# Artificial    Natural 
+#         30         30 
+
+
+# plot the growth rate versus the diet using an appropriate plot
+
+boxplot(GRate ~ diet, data = prawns, xlab = "Diet", ylab = "Growth Rate")
+```
+
+___
+
+```{r, eval=FALSE}
+# test normality assumption
+
+# Do not perform test on all data together, i.e.
+
+shapiro.test(prawns$GRate) # this is wrong!!
+
+# Need to test for departures from normality for each group 
+# separately. Remember your indexing [ ]
+
+shapiro.test(prawns$GRate[prawns$diet == "Artificial"])
+
+#         Shapiro-Wilk normality test
+# 
+# data:  prawns$GRate[prawns$diet == "Artificial"] 
+# W = 0.9486, p-value = 0.1553
+
+shapiro.test(prawns$GRate[prawns$diet == "Natural"])
+
+#         Shapiro-Wilk normality test
+# 
+# data:  prawns$GRate[prawns$diet == "Natural"] 
+# W = 0.9598, p-value = 0.307
+
+# Therefore no evidence to reject the Null hypothesis and data are normally distributed
+
+# However much better assessment of normality is to use a quantile - quantile plot
+# looking for points to lie along the line for normality
+
+qqnorm(prawns$GRate[prawns$diet == "Artificial"])
+qqline(prawns$GRate[prawns$diet == "Artificial"])
+
+qqnorm(prawns$GRate[prawns$diet == "Natural"])
+qqline(prawns$GRate[prawns$diet == "Natural"])
+
+# test for equal variance
+# if normal
+# Null hypothesis Ho: variances are equal
+
+var.test(prawns$GRate ~ prawns$diet)
+
+#         F test to compare two variances
+# data:  prawns$GRate by prawns$diet 
+# F = 1.9629, num df = 29, denom df = 29, p-value = 0.07445
+# alternative hypothesis: true ratio of variances is not equal to 1 
+# 95 percent confidence interval:
+#  0.9342621 4.1240043 
+# sample estimates:
+# ratio of variances 
+#           1.962881 
+
+# No evidence to reject null hypothesis (P=0.07) therefore no 
+# difference in variance
+```
+
+___
+
+```{r, eval=FALSE}
+# conduct t-test assuming equal variances
+# Null hypothesis Ho: no difference in growth rate 
+# between prawns fed on artificial diet or Natural diet
+
+t.test(GRate ~ diet, var.equal = TRUE, data = prawn)
+
+#         Two Sample t-test
+# 
+# data:  prawns$GRate by prawns$diet 
+# t = -1.3259, df = 58, p-value = 0.1901
+# alternative hypothesis: true difference in means is not equal to 0 
+# 95 percent confidence interval:
+#  -0.6319362  0.1283495 
+# sample estimates:
+# mean in group Artificial    mean in group Natural 
+#                 9.794133                10.045927 
+# 
+
+# No evidence to reject the Null hypothesis, therefore no 
+# difference in growth rate of prawns fed on either artificial 
+# or natural diet (t = -1.33, df = 58, p = 0.19).
+```
+
+## Answer 3
+
+```{r, eval=FALSE}
+# fit the model
+
+growth.lm <- lm(GRate ~ diet, data = prawns)
+```
+
+```{r, eval=FALSE}
+# produce the ANOVA table
+
+anova(growth.lm)
+
+# Analysis of Variance Table
+# 
+# Response: GRate
+#           Df Sum Sq Mean Sq F value Pr(>F)
+# diet       1  0.951 0.95100  1.7579 0.1901
+# Residuals 58 31.377 0.54098  
+
+# notice the p value is the same as for the t-test
+# also if you square the t statistic from the t-test
+# you get the F statistic from the linear model.
+# They're the same test
+```
+
+## Bonus Answer
+
+```{r, echo=FALSE}
+
+dat <- datasets::anscombe
+Anscombe <- data.frame(
+    set  = rep(1:4, each = 11),
+    x = unlist(dat[ ,c(1:4)]),
+    y = unlist(dat[ ,c(5:8)])
+    )
+rownames(Anscombe) <- NULL
+
+Anscombe1 = Anscombe[Anscombe$set == 1,]
+Anscombe2 = Anscombe[Anscombe$set == 2,]
+Anscombe3 = Anscombe[Anscombe$set == 3,]
+Anscombe4 = Anscombe[Anscombe$set == 4,]
+
+par(mfcol = c(2,2))
+plot(Anscombe1$x,Anscombe1$y)
+plot(Anscombe2$x,Anscombe2$y)
+plot(Anscombe3$x,Anscombe3$y)
+plot(Anscombe4$x,Anscombe4$y)
+
+
+```
+
+
+```{r}
+#Mean of x:
+
+mean(Anscombe1$x)
+mean(Anscombe2$x)
+mean(Anscombe3$x)
+mean(Anscombe4$x)
+
+```
+
+___
+
+```{r}
+#Mean of y:
+
+mean(Anscombe1$y)
+mean(Anscombe2$y)
+mean(Anscombe3$y)
+mean(Anscombe4$y)
+
+```
+
+___
+
+```{r}
+#Standard deviation of x.
+sd(Anscombe1$x)
+sd(Anscombe2$x)
+sd(Anscombe3$x)
+sd(Anscombe4$x)
+```
+
+___
+
+```{r}
+#Standard deviation of y.
+sd(Anscombe1$y)
+sd(Anscombe2$y)
+sd(Anscombe3$y)
+sd(Anscombe4$y)
+```
+
+___
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y)
+cor(Anscombe2$x,Anscombe2$y)
+cor(Anscombe3$x,Anscombe3$y)
+cor(Anscombe4$x,Anscombe4$y)
+
+```
+
+___
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y, method = "kendall")
+cor(Anscombe2$x,Anscombe2$y,  method = "kendall")
+cor(Anscombe3$x,Anscombe3$y,  method = "kendall")
+cor(Anscombe4$x,Anscombe4$y,  method = "kendall")
+
+```
+
+___
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y, method = "spearman")
+cor(Anscombe2$x,Anscombe2$y,  method = "spearman")
+cor(Anscombe3$x,Anscombe3$y,  method = "spearman")
+cor(Anscombe4$x,Anscombe4$y,  method = "spearman")
+
+```
+
+All the plots had the same mean and standard deviation, and even in the standard correlation test, all graphs had the same value. That is why it is important to remember to use the Kendall and Spearman method when the data is not normally distributed.

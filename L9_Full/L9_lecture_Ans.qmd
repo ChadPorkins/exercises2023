@@ -1,0 +1,203 @@
+---
+title: "Lecture 9 Answers"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Answer 1
+
+```{r}
+#Read AirQualityUCI.csv into R
+
+AirQualityUCI = read.csv("AirQualityUCI.csv")
+
+#check all variables with summary
+
+summary(AirQualityUCI)
+```
+
+It seems that in this case, there are no significant outliers and no NAs. Therefore we can move on and use the dataset as it is.
+
+___
+
+```{r}
+#Use plot `(x~y)` on the following columns and examine the results
+par(mfrow=c(3,2))
+
+plot(CO ~ Benzene, data = AirQualityUCI)
+plot(NMHC ~ RH, data = AirQualityUCI, pch = 19, col = "Darkblue")
+plot(CO ~ NOx, data = AirQualityUCI, pch = 16, col = "darkseagreen1")  
+abline(lm(CO ~ NOx, data= AirQualityUCI), col = "darkslategrey", lwd = 3)
+plot(Temp ~ NOx , data = AirQualityUCI, pch = 8, col = "black")  
+abline(lm(Temp ~ NOx, data= AirQualityUCI), col = "orangered1", lwd = 3)
+title(main ="Temp vs. NOx", font.main = 2)
+plot(Temp ~ RH , data = AirQualityUCI, pch = 16, col = "Grey")  
+abline(lm(Temp ~ RH, data= AirQualityUCI), col = "royalblue4", lwd = 4, lty = "dashed")
+title(main ="Temp vs. RH", font.main = 4)
+
+
+```
+
+In the first correlation, there is a very high positive correlation. CO and Benzene increase together.
+In the second correlation, It seems that there is no correlation at all.
+In the third correlation, there is a very high positive correlation. CO and NOx increase together.
+In the fourth correlation, the line describes the positive trend, however, it is a very low correlation between the selected variables.
+In the fifth correlation there is a moderately strong negative correlation, as long as Temp increases, RH decreases.
+
+## Answer 2
+
+Check if the attribute above are normally distributed.
+
+```{r}
+
+shapiro.test(AirQualityUCI$CO)
+shapiro.test(AirQualityUCI$Benzene)
+shapiro.test(AirQualityUCI$NOx)
+
+```
+
+We see that all the attributes have a P value lower than 0.05, which means that none of the attributes are normally distributed!
+
+___
+
+Also graphically we can see that the selected attributes are distributed in a way that does not exactly correspond to a normal distribution.
+
+```{r}
+par(mfrow=c(1,3))
+qqnorm(AirQualityUCI$CO)
+qqline(AirQualityUCI$CO,col = "red")
+qqnorm(AirQualityUCI$Benzene)
+qqline(AirQualityUCI$Benzene,col = "red")
+qqnorm(AirQualityUCI$NOx)
+qqline(AirQualityUCI$NOx,col = "red")
+```
+
+```{r}
+par(mfrow=c(1,3))
+hist(AirQualityUCI$CO)
+hist(AirQualityUCI$Benzene)
+hist(AirQualityUCI$NOx)
+
+```
+
+___
+
+Perform correlation tests on CO-Benzene and CO-NOx with the
+right method and answer the question - which relation is stronger?
+
+```{r}
+res1 = cor.test(AirQualityUCI$CO, AirQualityUCI$Benzene, method = "kendall")
+res1
+```
+
+```{r}
+res2 = cor.test(AirQualityUCI$CO, AirQualityUCI$NOx, method = "kendall")
+res2
+```
+
+Because all the attributes are distributed non-normally, we chose the Kendall method. The first test shows that the correlation coefficient between CO and Benzene is 0.8785523 and the p-value is lower than 2.2e-16, thus highly significant.  The second test shows that the correlation coefficient between CO and NOx is 0.8396721 and the p-value is lower than 2.2e-16, thus highly significant. We can now conclude that both tests are very highly correlated, however, CO vs. Benzene is slightly higher correlated.
+
+## Answer 3
+
+```{r}
+#Check if the outcome variable (NO2) is normaly distributed
+shapiro.test(AirQualityUCI$NO2)
+
+#The p-value (0.4872) is clearly higher than 0.05, so we can conclude it is normally distributed and thus we can run a simple linear regression.
+```
+
+___
+
+```{r}
+#Check for linearity between the attributes.
+
+plot(NO2 ~ CO , data = AirQualityUCI, pch = 16, col = "Grey")  
+abline(lm(NO2 ~ CO, data= AirQualityUCI), col = "royalblue4", lwd = 4, lty = "dashed")
+title(main ="NO2 vs. CO", font.main = 4)
+
+
+```
+
+We can see a medium-strong linear relationship between the attributes.
+
+___
+
+Check for multicollinearity (Independence of observations).
+
+Because we only have one independent variable and one dependent variable, we don’t need to test for any hidden relationships among variables.
+
+___
+
+```{r}
+#Run simple linear regression model as you explain NO2 with CO.
+fit = lm(NO2 ~ CO, data=AirQualityUCI)
+summary(fit)
+
+```
+
+R-Squared is a metric for evaluating the goodness of fit of your model.
+In this case, we can say that ~74% of the cause for NO2 is due to CO (pretty high).
+
+___
+
+Check for homoscedasticity
+
+```{r}
+par(mfrow=c(2,2)) 
+plot(fit) 
+
+library(car)
+ncvTest(fit)
+```
+
+In the Residuals vs Fitted plot, we can see some heteroscedasticity, a sort of asymmetrical "megaphone" shape appearing. In addition to that by using ncvTest, we can see a really low P value, the low value means a lack of homoscedasticity.
+
+Homoscedasticity, or homogeneity of variances, is an assumption of equal or similar variances in different groups being compared. This is an important assumption of parametric statistical tests because they are sensitive to any dissimilarities. Uneven variances in samples result in biased and skewed test results. 
+
+
+## Answer 4
+
+Check for linearity between the attributes & Check for multicollinearity (Independence of observations)
+
+```{r, warning=FALSE}
+library(corrgram)
+
+cordat= (AirQualityUCI[,c(7,3,5,6,8,9)])
+corrgram(cordat)
+```
+
+By using the corrgram function, we can see that between NO2 and the other gases there is a weak to strong correlation, this shows the linearity of the relationship. However, we have multicollinearity between the different gases in the linear model. In other words, there is a strong correlation between the gases and not only with NO2. In such a case you can use the model for prediction but not for measuring the influence of the different gasses on NO2.
+
+___
+
+```{r}
+#Run Multiple Linear Regression to check the relationship between No2 and the other variables.
+
+model <- lm(NO2 ~ CO + Benzene + NOx + Temp + RH , data = AirQualityUCI)
+summary(model)
+
+```
+
+The Multiple  Linear Regression model has an R-squared of 0.79 which says that ~79% of the cause of a NO2 is due to the different variables. Except for RH, all predictors have a very low p-value (good significance).
+
+___
+
+```{r}
+
+par(mfrow=c(2,2)) 
+plot(model) 
+library(car)
+ncvTest(model)
+
+```
+
+
+In the Residuals vs Fitted plot, we can see some heteroscedasticity, a sort of asymmetrical "megaphone" shape appearing. In addition to that by using ncvTest, we can see a really low P value, the low value means a lack of homoscedasticity.
+
+Homoscedasticity, or homogeneity of variances, is an assumption of equal or similar variances in different groups being compared. This is an important assumption of parametric statistical tests because they are sensitive to any dissimilarities. Uneven variances in samples result in biased and skewed test results. 
+
+

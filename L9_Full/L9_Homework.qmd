@@ -1,0 +1,129 @@
+---
+title: "Lecture 9 Homework"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Question 1
+
+After modeling NO2 with different variables, it is time to visualize
+some connections between them. Create only one PDF file with the
+following 4 plots:
+
+1.  NO2 vs. CO
+
+2.  NO2 vs. Benzene
+
+3.  NO2 vs. Temp
+
+4.  NO2 vs. RH
+
+All plots should be with the same plotting symbol "15", in color
+"bisque3", 0.5 text size inside the plot, and proper title and axes
+labels. Add abline to each plot. all ablines should be colored "brown4"
+with a line width of 2.
+
+-   Create one PDF file with 4 plots as explained above
+
+## Question 2
+
+Download and read the datafile prawnGR.CSV into R.
+
+The data was collected from an experiment to investigate the difference
+in the growth rate of the giant tiger prawn fed either an artificial or
+natural diet.
+
+-   Have a quick look at the structure of this dataset.
+
+-   plot the growth rate versus the diet using an appropriate plot.
+
+-   How many observations are there in each diet treatment?
+
+------------------------------------------------------------------------
+
+You want to compare the difference in growth rate between the two diets
+using a two sample t-test. Before you conduct the test, you need to
+assess the normality and equal variance assumptions.
+
+-   test normality assumption of the variables.
+
+-   test for equal variance of the variables.
+
+------------------------------------------------------------------------
+
+Conduct a two sample t-test using the `t.test()` function . Use the
+argument `var.equal = TRUE` to perform the t-test assuming equal
+variances.
+
+-   What is the null hypothesis you want to test?
+
+-   Do you reject or fail to reject the null hypothesis?
+
+-   What is the value of the t statistic, degrees of freedom and p
+    value?
+
+## Question 3
+
+An alternative (but equivalent) way to compare the mean growth rate
+between diets is to use a linear model.
+
+-   Use the `lm()` function to fit a linear model with GRate as the
+    response variable and diet as an explanatory variable.
+
+-   Produce an ANOVA table for the fitted model using the `anova()`
+    function.
+
+-   Compare the ANOVA p value to the p value obtained using a t-test.
+    What do you notice?
+
+## Bonus question! That is for those who want to go further beyond!
+
+In 1973, Francis Anscombe famously created four datasets with remarkably
+similar numerical properties, but obviously different graphic
+relationships. The Anscombe dataset contains the x and y coordinates for
+these four datasets, along with a grouping variable, set, that
+distinguishes the quartet.
+
+It may be helpful to remind yourself of the graphic relationship by
+viewing the four scatterplots:
+
+```{r}
+
+dat <- datasets::anscombe
+Anscombe <- data.frame(
+    set  = rep(1:4, each = 11),
+    x = unlist(dat[ ,c(1:4)]),
+    y = unlist(dat[ ,c(5:8)])
+    )
+rownames(Anscombe) <- NULL
+
+Anscombe1 = Anscombe[Anscombe$set == 1,]
+Anscombe2 = Anscombe[Anscombe$set == 2,]
+Anscombe3 = Anscombe[Anscombe$set == 3,]
+Anscombe4 = Anscombe[Anscombe$set == 4,]
+
+par(mfcol = c(2,2))
+plot(Anscombe1$x,Anscombe1$y)
+plot(Anscombe2$x,Anscombe2$y)
+plot(Anscombe3$x,Anscombe3$y)
+plot(Anscombe4$x,Anscombe4$y)
+
+
+```
+
+For each of the four sets of data points in the Anscombe dataset,
+compute the following in the order specified.
+
+-   Mean of x.
+
+-   Standard deviation of x.
+
+-   Mean of y.
+
+-   Standard deviation of y.
+
+-   Correlation coefficient between x and y.
