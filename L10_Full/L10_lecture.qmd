@@ -1,0 +1,151 @@
+---
+title: "Lecture 10 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Question 1
+
+In R, dates are represented by Date objects, while times are represented
+by POSIXct objects. Under the hood, however, these dates and times are
+simple numerical values. Date objects store the number of days since the
+1st of January in 1970. POSIXct objects on the other hand, store the
+number of seconds since the 1st of January in 1970.
+
+The 1st of January in 1970 is the common origin for representing times
+and dates in a wide range of programming languages.
+
+-   Using R get the current date, and store the result into a variable -
+    today_date.
+
+-   Use the `unclass()` on the today_date vector, what do you get?
+
+-   Using R get the current time, and store the result into a variable -
+    time_now.
+
+-   Use the `unclass()` on the time_now vector, what do you get?
+
+------------------------------------------------------------------------
+
+To create a date object from a simple character string in R, you can use
+the `as.Date()` function. The character string has to obey a format that
+can be defined using a set of symbols (the examples correspond to 15
+January, 1999):
+
+1.  %Y: 4-digit year (1999)
+
+2.  %y: 2-digit year (99)
+
+3.  %m: 2-digit month (01)
+
+4.  %d: 2-digit day of the month (15)
+
+5.  %A: weekday (Friday)
+
+6.  %a: abbreviated weekday (Fri)
+
+7.  %B: month (January)
+
+8.  %b: abbreviated month (Jan)
+
+-   Read the dates.csv file
+
+-   Four character columns representing dates are in the dates data
+    file. **Convert the first three columns to dates** using the proper
+    function, and assign them to first_col, second_col, and third_col
+    respectively.
+
+-   Using `format()`. From the first date, select the day of the month.
+    From the second date, select the weekday. From the third date, you
+    should select the abbreviated month and the 4-digit year, separated
+    by a space.
+
+## Question 2
+
+Similar to working with dates, you can use `as.POSIXct()` to convert
+from a character string to a POSIXct object. Again, you have a wide
+variety of symbols:
+
+1.  %H: hours as a decimal number (00-23)
+
+2.  %I: hours as a decimal number (01-12)
+
+3.  %M: minutes as a decimal number
+
+4.  %S: seconds as a decimal number
+
+5.  %T: shorthand notation for the typical format %H:%M:%S
+
+6.  %p: AM/PM indicator
+
+Pro tip! you can use `?strptime` if you want the full list of conversion
+symbols!
+
+------------------------------------------------------------------------
+
+-   Convert the fourth column to a date using the proper function.
+
+-   Using `format()`, From the fourth column create a string containing
+    only hours as a decimal number (00-23).
+
+-   From the fourth column extract the hours in the AM/PM format.
+
+-   From the fourth column, how many days passed between the first and
+    second dates?
+
+## Question 3
+
+  In the next part, we will use `Lubridate`.
+
+  Lubridate makes it easier to do the things R does with date-times ,
+    and possible to do the things R does not.
+
+-   Convert each column with the appropriate lubridate function.
+
+-   Check if date/time occurred in am(TRUE) or pm(FALSE).
+
+-   Is it a leap year from the fourth column?
+
+-   Based on the year unit in the fourth column, round the dates.
+
+-   From the fourth column extract the year value using the `lubridate`
+    syntax, and plot the stock price values. The plot needs to be red
+    and have connected lines.
+
+you should get something like that:
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+#Convert each column with the appropriate lubridate function.
+
+library(lubridate)
+
+dates = read.csv("dates.csv")
+
+col1_dates = mdy(dates[,1])
+
+col2_dates = dmy(dates[,2])
+
+col3_dates = ymd(dates[,3])
+
+# The date_time column is pretty messy so it can't
+# Be parsed with a pre-made lubridate funtion.
+# In this case use lubridate's parse_date_time() with the full date format
+col4_dates = parse_date_time(dates[,4],
+                             orders = "%a %b %d %H:%M:%S %Y")
+```
+
+
+
+
+```{r, echo=FALSE,message=FALSE, warning=FALSE}
+#From fourth column extract the year value and plot the stock price values. The plot needs to be red and have connected lines.
+
+years = year(col4_dates)
+
+plot(years,dates$stock_price, col = "red", type = "l")

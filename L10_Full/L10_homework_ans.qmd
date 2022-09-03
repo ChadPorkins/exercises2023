@@ -1,0 +1,143 @@
+---
+title: "Lecture 10 Homework Answers"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, echo=FALSE, message=FALSE}
+
+require(sf)
+
+rainfall = read.csv("rainfall.csv")
+
+rainfall = st_as_sf(rainfall, coords = c("x_utm", "y_utm"), crs = 32636)
+
+
+```
+
+
+## Answer 1
+
+Plot the stations that had more than 150 mm of rain in January.
+
+```{r}
+Jan_rain = rainfall[rainfall$jan > 150,]
+plot(st_geometry(Jan_rain))
+
+```
+
+
+Plot the stations that had less than 5 mm of rain in April.
+
+```{r}
+April_rain = rainfall[rainfall$apr < 5,]
+plot(st_geometry(April_rain))
+
+```
+
+Find the station that had the lowest mm of rain in December, and print the station name.
+
+```{r}
+Dec_rain = rainfall[which.min(rainfall$dec),]
+print(Dec_rain$name)
+
+```
+
+Find the station that had the highest mm of rain in February, and print the station name.
+
+
+```{r}
+Feb_rain = rainfall[which.max(rainfall$feb),]
+print(Feb_rain$name)
+
+```
+
+
+## Answer 2
+
+Check the rain averages in the winter months - December, January,
+and February, is one of the winter months significantly different in
+the amount of rainfall?
+
+
+```{r}
+
+Dec = rainfall$dec
+Jan = rainfall$jan
+Feb = rainfall$feb
+
+# organize the data and the grouping variable as a data frame
+winter_rain = data.frame(
+  rain = c(Dec, Jan, Feb),
+  group = rep(c("December", "January", "February"), each=169))
+
+## fit linear model and perform anova
+aov.model = aov(winter_rain$rain ~ winter_rain$group)
+summary(aov.model)
+
+TukeyHSD(aov.model)
+
+
+#January-December & January-February are significantly different int the amount of rainfall.
+
+  
+```
+
+___
+
+Check the rainfall averages in the spring months - March, April, and
+May, is one of the summer months significantly different in the
+amount of rain?
+
+```{r}
+
+March = rainfall$mar
+April = rainfall$apr
+May = rainfall$may
+
+# organize the data and the grouping variable as a data frame
+spring_rain = data.frame(
+  rain = c(March, April, May),
+  group = rep(c("March", "April", "May"), each=169))
+
+## fit linear model and perform anova
+aov.model2 = aov(spring_rain$rain ~ spring_rain$group)
+summary(aov.model2)
+
+TukeyHSD(aov.model2)
+
+
+# All the months are significantly different in the amount of rainfall.
+
+  
+```
+
+
+## Bonus Answer
+```{r}
+value = c(1,0.8,1.2,0.5,1.8,1.5,1.1,0.8,1.3,0.3,1,0.8,1.5,1.1,1.9,1.2)
+time = rep(2000:2006, each = 2)
+time = rep(2000:2006, each = 2)
+time = paste0(time, c("-01-30", "-08-30"))
+time = as.Date(time)
+
+month = as.numeric(as.character(time, "%m"))
+
+year = as.numeric(as.character(time, "%Y"))
+
+Jan = value[month == 1]
+
+Aug = value[month == 8]
+
+plot(Jan, Aug, xlab = "January", ylab = "August", type = "b")
+text(Jan[1], Aug[1], labels = year[which.min(year)], pos = 3, col = "red")
+text(Jan[length(Jan)], Aug[length(Aug)],labels = year[which.max(year)], pos = 3, col = "red")
+
+
+
+```
+

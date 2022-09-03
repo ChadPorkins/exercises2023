@@ -1,0 +1,140 @@
+---
+title: "Lecture 10 Answers"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Answer 1
+
+```{r}
+today_date = Sys.Date()
+
+unclass(today_date)
+
+#The result shows many days passed since 1 January 1970.
+
+
+time_now = Sys.time()
+
+unclass(time_now)
+
+#The result shows many seconds passed since 1 January 1970.
+
+```
+
+------------------------------------------------------------------------
+
+Four character columns representing dates are in the dates data file.
+**Convert the first three columns to dates** using the proper function,
+and assign them to first_col, second_col, third_col respectively.
+
+```{r}
+#Read the dates.csv file
+dates = read.csv("dates.csv")
+
+```
+
+Four character columns representing dates are in the dates data file.
+Convert the first three columns to dates using the proper function, and
+assign them to first_col, second_col, third_col respectively.
+
+```{r}
+first_col = as.Date(dates$month_day_year,  # Character vector to convert
+             format= "%m/%d/%y")            # Format of the dates to convert
+
+
+second_col = as.Date(dates$day_month_year,  # Character vector to convert
+             format= "%d-%b-%y")            # Format of the dates to convert
+
+third_col = as.Date(dates$year_month_day,  # Character vector to convert
+             format= "%Y-%m-%d")            # Format of the dates to convert
+```
+
+
+Using `format()`. From the first date, select the day of the month.
+From the second date, select the weekday. From the third date, you
+should select the abbreviated month and the 4-digit year, separated
+by a space.
+
+```{r}
+
+format(first_col, "%d")
+format(second_col, "%A")
+format(third_col, "%b %Y") 
+
+```
+
+## Answer 2
+
+
+```{r}
+
+# Convert the fourth column to a date using the proper function
+fourth_col <- as.POSIXct(dates$date_time,                 # Date/time to  convert                                                                       
+format = "%a %b %d %H:%M:%S %Y")  # Date/time format
+
+```
+
+```{r}
+#Using `format()`, From the fourth column create a string containing only hours as a decimal number (00-23).
+
+format(fourth_col,"%H")
+
+#From the fourth column extract the hours in the AM/PM format
+
+format(fourth_col,"%p")
+
+#From the fourth column, how many days passed between the first and second dates?
+
+fourth_col[2] - fourth_col[1]
+
+```
+
+## Answer 3
+
+```{r}
+
+#Convert each column with the appropriate lubridate function.
+
+library(lubridate)
+
+
+
+col1_dates = mdy(dates[,1])
+
+col2_dates = dmy(dates[,2])
+
+col3_dates = ymd(dates[,3])
+
+# The date_time column is pretty messy so it can't
+# Be parsed with a pre-made lubridate funtion.
+# In this case use lubridate's parse_date_time() with the full date format
+col4_dates = parse_date_time(dates[,4],
+                             orders = "%a %b %d %H:%M:%S %Y")
+```
+
+```{r}
+am(col4_dates)    # Check if date/time occurred in am(TRUE) or pm(FALSE)
+
+leap_year(col4_dates)   # Is it a leap year?
+
+round_date(col4_dates, 
+          unit = c("year"))  # Based on the year unit in the fourth column round the dates.
+
+
+```
+
+
+
+```{r}
+#From fourth column extract the year value and plot the stock price values. The plot needs to be red and have connected lines.
+
+years = year(col4_dates)
+
+plot(years,dates$stock_price, col = "red", type = "l")
+```
+
