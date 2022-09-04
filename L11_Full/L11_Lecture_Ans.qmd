@@ -1,0 +1,89 @@
+---
+title: "Lecture 11 Homework Answers"
+format:
+  html: 
+    theme: GISteral
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Answer 1
+
+```{r}
+GIS = 30
+Ecology = 19
+
+
+if (GIS >= 30 & Ecology >= 30) {
+  Views <- 2 * (GIS + Ecology)
+} else if (GIS < 20& Ecology < 20) {
+  Views <- 0.5 * (GIS + Ecology)
+} else {
+  Views <- GIS + Ecology
+}
+
+
+Views
+```
+
+## Answer 2
+
+```{r}
+# Initialize i as 1 
+q = 1
+
+# Code the while loop
+while (q <= 16) {
+  print(q * 4)
+  if (q %% 8 == 0) {
+    break
+  }
+  q = q + 1
+}
+```
+
+## Answer 3
+
+```{r}
+
+x = c("O","NA","X")
+y = c("NA","X","O")
+z = c("X","O","O")
+
+m = matrix(c(x, y, z), ncol = 3)
+
+for (x in 1:nrow(m)) {
+  for (y in 1:ncol(m)) {
+    print(paste("On row", x, "and column", y, "the board contains", m[x,y]))
+  }
+}
+```
+
+
+## Answer 4
+
+```{r, eval=FALSE}
+# area of a circle
+# the equation to calculate the area of a circle is pi * radius^2
+
+circle.area = function(d=1){ 
+    pi * (d/2)^2
+}
+
+# to use your new function
+
+circle.area(10)
+# [1] 78.53982
+
+# to test on a vector of diameters
+# first create a vector with diameters ranging from 0 to 50 in steps of 10
+
+cir.diam = seq(from = 0, to = 50, by = 10)
+
+# test your function
+
+circle.area(cir.diam)
+# [1]    0.00000   78.53982  314.15927  706.85835 1256.63706 1963.49541
+```
+

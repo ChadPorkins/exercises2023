@@ -1,0 +1,113 @@
+---
+title: "Lecture 11 Homework"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Question 1
+
+R disposes of the `apply()` function family, which consists of iterative
+functions that aim at minimizing your need to explicitly create loops.
+
+`lapply()` applies a function to every element of a list.
+
+The output returned is also list (explaining the "l" in lapply) and has
+the same number of elements as the object passed to it.
+
+Run the code following code:
+
+```{r}
+SimulatedData = list(SimpleSequence = 1:4, Norm10 = rnorm(10),
+    Norm20 = rnorm(20, 1), Norm100 = rnorm(100, 5))
+
+SimulatedData
+```
+
+-   Lapply mean to each element of the list
+
+-   Lapply min to each element of the list
+
+-   Lapply max to each element of the list
+
+-   Lapply shapiro.test to each element of the list
+
+The syntax is: `lapply(list, function)`
+
+------------------------------------------------------------------------
+
+`sapply()` is a 'wrapper' function for `lapply()`, but returns a
+simplified output as a vector, instead of a list.
+
+-   Sapply mean to each element of the list
+
+-   Sapply min to each element of the list
+
+-   Sapply max to each element of the list
+
+-   Sapply shapiro.test to each element of the list
+
+The syntax is: `mapply(list, function)`
+
+
+## Question 2
+
+Write a function to convert farenheit to centegrade (oC = (oF - 32) x
+5/9). Get your function to print out your result in the following
+format: "Farenheit : value of oF is equivalent to value oC centigrade."
+
+You should get something like that:
+
+[1] "Fahrenheit:  50 oF is equivalent to"
+[1] "Centigrade:  10 oC"
+
+## Bonus question! That is for those who want to go further beyond!
+
+`mapply(`) works as a multivariate version of `sapply()`.
+
+It will apply a given function to the first element of each argument
+first, followed by the second element, and so on.
+
+```{r}
+
+lilySeeds = c(80, 65, 89, 23, 21)
+poppySeeds = c(20, 35, 11, 77, 79)
+
+```
+
+Mapply the sum of the two vectors.
+
+Mapply the min of the two vectors.
+
+Mapply the max of the two vectors.
+
+------------------------------------------------------------------------
+
+`tapply()` is used to apply a function over subsets of a vector.
+
+It is primarily used when the dataset contains dataset contains
+different groups (i.e. levels/factors) and we want to apply a function
+to each of these groups.
+
+get the mean hp by cylinder groups form the mtcars data-set.
+
+------------------------------------------------------------------------
+
+The following question will be about the [Ricker
+model](https://en.wikipedia.org/wiki/Ricker_model).
+
+(cont) Where *N~t~* is the population size at time *t*, *r* is the
+population growth rate and *K* is the carrying capacity. Write a
+function to simulate this model so you can conveniently determine the
+effect of changing *r* and the initial population size N0. *K* is often
+set to 100 by default, but you want the option of being able to change
+this with your function. So, you will need a function with the following
+arguments, nzero which sets the initial population size, *r* which will
+determine the population growth rate, time which sets how long the
+simulation will run for and *K* which we will initially set to 100 by
+default.
+
+

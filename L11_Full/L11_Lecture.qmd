@@ -1,0 +1,138 @@
+---
+title: "Lecture 11 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Question 1
+
+In this exercise, you will combine everything that you've learned so
+far: Do you remember Daniel from the first class with the GIS and
+ecology companies? Every company has a website that he manages (a very
+hardworking guy). Let's help him write code that will give him a summary
+of views on each web page.
+
+Here are pre-defined two vectors: GIS and Ecology, They are the number
+of views on each site on the last day.
+
+```{r}
+GIS = 30
+Ecology = 19
+```
+
+-   If both GIS and Ecology are 30 or higher, set Views equal to double
+    the sum of GIS and Ecology.
+
+-   If both GIS and Ecology are strictly below 20, set Views equal to
+    half the sum of GIS and Ecology.
+
+-   In all other cases, set Views equal to GIS and Ecology.
+
+-   Finally, print the resulting Views variable.
+
+A small reminder of what the syntax looks like:
+
+if (condition1) {
+
+expr1
+
+} else if (condition2) {
+
+expr2
+
+} else if (condition3) {
+
+expr3
+
+} else {
+
+expr4
+
+}
+
+## Question 2
+
+A for loop is used to iterate over a vector in R programming.
+
+```{r}
+q = 1
+```
+
+-   Create a new loop that multiplies the value of q by 4 each time, as
+    long as q is less than 16, after each multiplication the next q
+    should increase by 1.
+
+-   The loop is stopped with a brake argument if the multiplication by 4
+    of q is divisible by 8, but still, print out the result before the
+    breaking.
+
+A small reminder of what the syntax looks like:
+
+while (condition) {
+
+  expr
+  
+}
+
+## Question 3
+
+Who doesn't like to play tic tac toe? Here is a matrix of a tic tac toe game between students during an important lecture.
+
+```{r}
+x = c("O","NA","X")
+y = c("NA","X","O")
+z = c("X","O","O")
+
+m = matrix(c(x, y, z), ncol = 3)
+```
+
+By using a pair of for loops print the values in the tic tac toe matrix.
+Inside the inner loop, make use of `print(`) and `paste()` to print out information in the following format: "On row x and column y the board contains z", where x is the value on that position.
+
+
+A small reminder of what the syntax looks like:
+
+for (var1 in seq1) {
+
+  for (var2 in seq2) {
+  
+    expr
+    
+  }
+  
+}
+
+You should get something like that:
+
+[1] "On row 1 and column 1 the board contains O"
+
+[1] "On row 1 and column 2 the board contains NA"
+
+[1] "On row 1 and column 3 the board contains X"
+
+[1] "On row 2 and column 1 the board contains NA"
+
+[1] "On row 2 and column 2 the board contains X"
+
+[1] "On row 2 and column 3 the board contains O"
+
+[1] "On row 3 and column 1 the board contains X"
+
+[1] "On row 3 and column 2 the board contains O"
+
+[1] "On row 3 and column 3 the board contains O"
+
+
+## Question 4
+
+Create a function to calculate the area of a circle. Test the function by finding the area of a circle with a diameter of 3.4 cm. Can you use it on a vector of data? In addition, make the default diameter of the function to be 1 cm.
+
+
+
+
+
+

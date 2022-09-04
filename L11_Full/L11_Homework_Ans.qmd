@@ -1,0 +1,134 @@
+---
+title: "Lecture 11 Homework Answers"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+## Asnwer 1
+
+```{r}
+SimulatedData = list(SimpleSequence = 1:4, Norm10 = rnorm(10),
+    Norm20 = rnorm(20, 1), Norm100 = rnorm(100, 5))
+
+```
+
+
+```{r}
+#Lapply mean to each element of the list
+
+lapply(SimulatedData,mean)
+
+#Lapply min to each element of the list
+
+lapply(SimulatedData,min)
+
+
+#Lapply max to each element of the list
+
+lapply(SimulatedData,max)
+
+#Lapply shapiro.test to each element of the list
+
+lapply(SimulatedData,shapiro.test)
+
+```
+
+___
+
+
+```{r}
+#Sapply mean to each element of the list
+
+sapply(SimulatedData,mean)
+
+#Sapply min to each element of the list
+
+sapply(SimulatedData,min)
+
+
+#Sapply max to each element of the list
+
+sapply(SimulatedData,max)
+
+#Sapply shapiro.test to each element of the list
+
+sapply(SimulatedData,shapiro.test)
+
+```
+
+## Answer 2
+
+Write a function to convert farenheit to centegrade (oC = (oF - 32) x
+5/9). Get your function to print out your result in the following
+format: "Farenheit : value of oF is equivalent to value oC centigrade."
+
+
+```{r}
+far.cent <- function(a) {
+    val <- (a - 32) * 5/9
+    print(paste("Fahrenheit: ", round(a, digits = 3), "oF", "is equivalent to", sep = " "))  
+    print(paste("Centigrade: ", round(val, digits = 3), "oC", sep = " "))  
+}
+
+```
+
+
+#Bonus answer
+
+```{r}
+
+lilySeeds = c(80, 65, 89, 23, 21)
+poppySeeds = c(20, 35, 11, 77, 79)
+
+#Mapply the sum of the two vectors.
+
+mapply(sum, lilySeeds, poppySeeds)
+
+#Mapply the min of the two vectors.
+
+mapply(min, lilySeeds, poppySeeds)
+
+#Mapply the max of the two vectors.
+
+mapply(max, lilySeeds, poppySeeds)
+
+```
+
+___
+
+```{r}
+#get the mean hp by cylinder groups form the mtcars data-set.
+
+tapply(mtcars$hp, mtcars$cyl, FUN = mean)
+
+```
+
+___
+
+```{r}
+# function to simulate Ricker model
+
+Ricker.model <- function(nzero, r, time, K = 1) {
+    # sets initial parameters
+    N <- numeric(time + 1)  # creates a real vector of length time+1 to store values of Nt+1
+    N[1] <- nzero  # sets initial population size in first element of N
+    for (i in 1:time) {
+        # loops over time
+        N[i + 1] <- N[i] * exp(r * (1 - N[i]/K))
+    }
+    Time <- 0:time  # creates vector for x axis
+    plot(Time, N, type = "o", xlim = c(0, time), xlab = "Time", ylab = "Population size (N)", main = paste("r =", r,
+        sep = " "))  # plots     output
+}
+
+# To run play around with the different parameters, especially r
+Ricker.model(nzero = 0.1, r = 1, time = 100)
+```
+
+
+
