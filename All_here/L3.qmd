@@ -1,0 +1,370 @@
+---
+title: "Lecture 3 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+### 1. One of our most important tools in the course is to read and analyze data files, follow the instructions below.
+
+1.  Open a new folder on your personal computer named l3, into the new folder save the whale data file.
+
+2.  Use the `read.csv` function in Rstudio to read the whale data file.
+
+------------------------------------------------------------------------
+
+If we need to read a big file, sometimes it will be better to use functions from different libraries. In this case, we want to use the package readr to read the same file as before. Install the package if needed, load it to R.
+
+3.  Using the `getwd()` function get your working directory location, and afterward copy the whale data file to your **working directory**.
+
+4.  Use the `read_csv` function in Rstudio to read the whale data file from **your working directory**.
+
+
+## Asnwer 1
+
+Use the `read.csv` function in Rstudio to read the whale data file.
+
+```{r}
+whaledata = read.csv("C:\\Users\\97253\\Documents\\l3\\whaledata.csv")
+```
+
+or you can try this option:
+
+```{r}
+whaledata = read.csv("C:/Users/97253/Documents/l3/whaledata.csv")
+
+```
+
+___
+
+Use the read_csv function in Rstudio to read the whale data file from your working directory.
+
+first we will find our working directory.
+
+```{r,eval=FALSE}
+getwd()
+```
+
+Now when the whale data is in our working directory, reading new files is much easier.
+
+```{r, warning=FALSE, message = FALSE}
+library(readr)
+whaledata = read_csv("whaledata.csv")
+```
+
+
+## Question 2
+
+### 2. After uploading a csv file to R, the best thing to do is to examine it. Try the following functions and write down what the outcome means.
+
+1.  head(whaledata)
+
+2.  head(whaledata, n=20)
+
+3.  tail(whaledata)
+
+4.  colnames(whaledata)
+
+5.  str(whaledata)
+
+6.  summary(whaledata)
+
+7.  length(whaledata\$gradient)
+
+
+## Asnwer 2
+
+```{r, eval=FALSE}
+head(whaledata)
+# The function Prints the first six rows of the data
+head(whaledata, n=20)
+# The function Prints the first twenty rows of the data
+tail(whaledata)
+# The function Prints the last six rows of the data
+colnames(whaledata)
+# The function Prints the names of the columns of the data in its original order
+str(whaledata)
+#The function displays the internal structure of an R object compactly.
+summary(whaledata)
+#The function computes summary statistics of data and model objects.
+length(whaledata$gradient)
+#The function shows how many values are in the vector.
+
+```
+
+
+
+## Question 3
+
+### 3. As part of your research on whales, you want to focus on specific information.
+
+1.  Extract all the elements of the first 20 rows and the first 4 columns of the whaledata and assign them to a new variable called whale_new.
+
+2.  Next, extract all observations (remember - rows) from the whale dataframe and the columns month, water.noise, and number.whales and assign them to a variable called whale_spec. (Do this in 2 ways, the first way by the specific number of columns and the second way by the names of the columns.)
+
+3.  Now, extract the first 50 rows and all columns from the original dataframe and assign them to a variable whale_month_may
+
+4.  Finally, extract all rows except the first 10 rows and all columns except the last column. Remember, for some of these questions you can specify the columns you want either by position or by name. Practice both ways.
+
+
+## Asnwer 3
+
+```{r, eval=FALSE}
+whale_new = whaledata[1:10, 1:4]
+# first 10 rows and first 4 columns
+
+whale_spec = whaledata[, c(1, 3, 4)] 
+#First way
+
+whale_spec = whaledata[, c("month", "water.noise", "number.whales")]    
+#second way
+
+whale_month_may = whaledata[1:50, ]  
+# first 50 rows and all columns
+
+whale.last = whaledata[-c(1:10), -8]  
+# excluding first 10 rows and last column using negative indexing
+
+whale.last = whaledata[-c(1:10), -c(ncol(whale))] 
+# more general way if you have lots of columns
+
+whale.last = whaledata[-c(1:10), -c("gradient")]   
+# NOTE: this doesn't work for named columns
+
+
+```
+
+
+## Question 4
+
+### 4. Extract rows from the whale data frame based on the following criteria:
+
+1.  depths greater than 1200 m.
+
+2.  gradient steeper than 200 degrees.
+
+3.  water noise level of 'low'.
+
+4.  water.noise level of 'high' in the month of 'May'.
+
+5.  The month of 'October', water noise level of 'low' and gradient greater than the median value of gradient (132).
+
+6.  all observations from between latitudes 60.0 and 61.0 and longitudes -6.0 and -4.0.
+
+7.  all rows that do not have a water noise level of medium.
+
+8.  depths greater than 1500 m and with a greater number of whales spotted than average.
+
+
+## Asnwer 4
+
+```{r, echo=FALSE}
+whaledata = read.csv("whaledata.csv")
+```
+
+
+```{r}
+whaledata.1200 <- whaledata[whaledata$depth > 1200, ]
+
+whaledata.200 <- whaledata[whaledata$gradient > 200, ]
+
+whaledata.low <- whaledata[whaledata$water.noise == "low", ]
+
+whaledata.h.may <- whaledata[whaledata$water.noise == "high" & whaledata$month == "May", ]
+
+whaledata.subset <- whaledata[whaledata$month == "October" & whaledata$water.noise == "low" & whaledata$gradient > 132, ]
+
+whaledata.lat.long <- whaledata[whaledata$latitude > 60 & whaledata$latitude < 61 & whaledata$longitude > -6 & whaledata$longitude < -4, ]
+
+whaledata.nomed <- whaledata[whaledata$water.noise != "medium", ]
+
+whaledata.new <- whaledata[whaledata$depth > 1500 & whaledata$number.whales > mean(whaledata$number.whales, na.rm = TRUE), ]
+
+#the variable number.whales contains 1 NA value. By default the mean function will return an NA. we will use the na.rm argument to ignore NAs.
+
+```
+
+## Lecture 3 Homework
+
+## Question 1
+
+### 1. As part of our research we want to check what are the ten deepest depths that whales have reached.
+
+1.  Create a new data frame named "TOP10" that contains only the 10
+    deepest depths.
+2.  From "TOP10" delete the gradient and noise columns
+
+
+## Answer 1
+
+Creating top 10:
+
+```{r}
+
+whaledata = read.csv("whaledata.csv")
+TOP10 = whaledata[order(-whaledata$depth),]
+TOP10 = TOP10[1:10,]
+
+
+```
+
+Delete the gradient and noise columns:
+
+```{r}
+TOP10 = TOP10[,-c(3,8)]
+```
+
+## Question 2
+
+### 2. As part of our research on whales, we want to create a map with the location of the whales and their noise level.
+
+1.  Create a new data frame named noise_location that contains latitude,
+    longitude, and water.noise columns from whale data.
+
+2.  Rename water.noise to noise_level
+
+3.  Order the data frame by noise_level
+
+4.  Add a column of the average latitude value
+
+5.  Add a column of the average longitude value
+
+6.  save the noise_location data frame in csv format to your local
+    folder.
+    
+## Answer 2
+
+```{r}
+#Create a new data frame named noise_location
+noise_location = whaledata[,c(3,5:6)]
+
+#Rename water.noise to noise_level
+colnames(noise_location)[1] =  "noise_level"
+
+#Order the data frame by noise_level
+noise_location$noise_level = factor(noise_location$noise_level,levels = c("low", "medium", "high"))
+noise_location = noise_location[order(noise_location$noise_level),]
+
+#Add a column of the average latitude value
+noise_location$avg_lat = mean(noise_location$latitude)
+
+#Add a column of the average longitude value
+noise_location$avg_long = mean(noise_location$longitude)
+
+write.csv(noise_location, file = "noise_location.csv")
+#save the noise_location data frame in csv format to your local folder.
+
+
+```
+    
+## Question 3
+
+### 3.1 try to guess what you will get before running the following code:
+
+```{r, eval = FALSE}
+    c(1:10)*10 == seq(10, 100, 10)
+    
+    rep(10,10) == seq(100,10,-10)
+    
+```
+
+------------------------------------------------------------------------
+
+### 3.2 Create the following vector:
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, NA, 0, 3, 9, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, 52, NA, 3, 
+           -1, 1, 0, 5, 42, -0.2, 17, 3.1, -5, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, 10)
+
+```
+
+1.  What is the length of the vector?
+
+2.  How many many Na values are there in the vector?
+
+3.  In which position in the vector is the the highest value?
+
+4.  In which position in the vector is the the lowest value?
+
+
+## Answer 3.1
+
+```{r, eval=FALSE}
+    c(1:10)*10 == seq(10, 100, 10)
+    
+    rep(10,10) == seq(100,10,-10)
+```
+
+In the first code on the left side, all values between 1 and 10 will be multiplied by 10. On the other hand on the right side,  an arithmetic progression series will be created that increases by 10 each time, therefore according to the comparison parameter in the code, all the values will be true.
+
+In the second code on the left side the numerical value of 10 will be repeated 10 times, on the right side we will have a descending series between 100 and 10, therefore all the values will receive false except for the last value.
+
+## Answer 3.2
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, NA, 0, 3, 9, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, 52, NA, 3, 
+           -1, 1, 0, 5, 42, -0.2, 17, 3.1, -9, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, 10)
+
+length(v)
+# The lengh of the vector
+
+which.max(v)
+
+# Position of the the highest value
+
+which.min(v)
+
+# Position of the the lowest value
+
+```
+   
+## Question 4
+
+### 4. Save your entire workspace, naming it the third_lesson, afterward upload the third_lesson file back into R.
+
+## Answer 4
+```{r,eval=FALSE}
+#Save your entire workspace, naming it the third_lesson, afterward upload the third_lesson file back into R.
+
+save.image("third_lesson.rdata")
+
+load("third_lesson.rdata")
+
+```
+
+## Bonus question! That is for those who want to go further beyond!
+
+Create a histogram of the depth, the histogram should be blue and with
+an appropriate title, add breaks as the length of the depth vector.
+
+It should look like this:
+
+Does the histogram have a normal distribution?
+
+```{r, echo = FALSE}
+whaledata = read.csv("whaledata.csv")
+```
+
+```{r, echo = FALSE}
+
+hist(whaledata$depth, breaks = length(whaledata$depth) ,col="blue", main="Histogram of the depth vector") 
+
+```
+
+## Bonus question answer
+
+```{r}
+
+hist(whaledata$depth, breaks = length(whaledata$depth) ,col="blue", main="Histogram of the depth vector") 
+
+```
+
+Although the histogram has a shape with a potential for a normal distribution, the information is not normally distributed, in the upcoming lessons you will learn why.

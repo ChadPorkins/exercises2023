@@ -1,0 +1,764 @@
+---
+title: "Lecture 9 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This week we will research data from the AirQualityUCI.csv
+
+The dataset contains 827 instances of hourly averaged responses from an
+array of 5 metal oxide chemical sensors embedded in an Air Quality
+Chemical Multisensor Device. The device was located on the field in a
+significantly polluted area, at road level, within an Italian city.
+
+Attribute Information:
+
+1.  Date (DD/MM/YYYY)
+
+2.  Time (HH.MM.SS)
+
+3.  Hourly averaged concentration CO in mg/m\^3
+
+4.  Hourly averaged overall Non Metanic HydroCarbons concentration in
+    microg/m\^3
+
+5.  Hourly averaged Benzene concentration in microg/m\^3
+
+6.  Hourly averaged NOx concentration in ppb
+
+7.  Hourly averaged NO2 concentration in microg/m\^3
+
+8.  Temperature in C°
+
+9.  Relative Humidity (%)
+
+10. Absolute Humidity
+
+## Question 1
+
+### 1.1 Follow the instructions below.
+
+1.  Read AirQualityUCI.csv into R.
+
+2.  As always the first we need to do is to check our data! use the
+    summary `function` to review all variables and look for NAs and
+    outliers.
+
+------------------------------------------------------------------------
+
+Your favorite professor hinted to you that some pollutants are
+correlated. Plotting two variables against each other is a great tool to
+check their relation. (Feel free to add different colors, sizes, titles,
+and trend lines, for the trend line you can use
+`abline(lm(x~y, data =))`)
+
+### 1.2 Use plot `(x~y, data =)` on the following columns and examine the results:
+
+1.  CO vs. Benzene
+
+2.  NMHC VS. RH
+
+3.  CO vs. NOx
+
+4.  Temp vs. Nox
+
+5.  Temp vs. RH
+
+## Answer 1.1
+
+```{r}
+#Read AirQualityUCI.csv into R
+
+AirQualityUCI = read.csv("AirQualityUCI.csv")
+
+#check all variables with summary
+
+summary(AirQualityUCI)
+```
+
+It seems that in this case, there are no significant outliers and no
+NAs. Therefore we can move on and use the dataset as it is.
+
+## Answer 1.2
+
+```{r}
+#Use plot `(x~y)` on the following columns and examine the results
+par(mfrow=c(3,2))
+
+plot(CO ~ Benzene, data = AirQualityUCI)
+plot(NMHC ~ RH, data = AirQualityUCI, pch = 19, col = "Darkblue")
+plot(CO ~ NOx, data = AirQualityUCI, pch = 16, col = "darkseagreen1")  
+abline(lm(CO ~ NOx, data= AirQualityUCI), col = "darkslategrey", lwd = 3)
+plot(Temp ~ NOx , data = AirQualityUCI, pch = 8, col = "black")  
+abline(lm(Temp ~ NOx, data= AirQualityUCI), col = "orangered1", lwd = 3)
+title(main ="Temp vs. NOx", font.main = 2)
+plot(Temp ~ RH , data = AirQualityUCI, pch = 16, col = "Grey")  
+abline(lm(Temp ~ RH, data= AirQualityUCI), col = "royalblue4", lwd = 4, lty = "dashed")
+title(main ="Temp vs. RH", font.main = 4)
+
+
+```
+
+In the first correlation, there is a very high positive correlation. CO
+and Benzene increase together. In the second correlation, It seems that
+there is no correlation at all. In the third correlation, there is a
+very high positive correlation. CO and NOx increase together. In the
+fourth correlation, the line describes the positive trend, however, it
+is a very low correlation between the selected variables. In the fifth
+correlation there is a moderately strong negative correlation, as long
+as Temp increases, RH decreases.
+
+## Question 2
+
+Plotting is a great tool, however, for a better and more accurate
+result, we will use a correlation analysis test.
+
+We saw earlier that CO-Benzene relation is high and CO-NOx is high as
+well.
+
+### 2. Follow the instructions below.
+
+1.  Check if the attribute above are normally distributed.
+
+2.  Perform correlation tests on CO-Benzene and CO-NOx with the right
+    method and answer the question - which relation is stronger?
+
+## Answer 2
+
+Check if the attribute above are normally distributed.
+
+```{r}
+
+shapiro.test(AirQualityUCI$CO)
+shapiro.test(AirQualityUCI$Benzene)
+shapiro.test(AirQualityUCI$NOx)
+
+```
+
+We see that all the attributes have a P value lower than 0.05, which
+means that none of the attributes are normally distributed!
+
+------------------------------------------------------------------------
+
+Also graphically we can see that the selected attributes are distributed
+in a way that does not exactly correspond to a normal distribution.
+
+```{r}
+par(mfrow=c(1,3))
+qqnorm(AirQualityUCI$CO)
+qqline(AirQualityUCI$CO,col = "red")
+qqnorm(AirQualityUCI$Benzene)
+qqline(AirQualityUCI$Benzene,col = "red")
+qqnorm(AirQualityUCI$NOx)
+qqline(AirQualityUCI$NOx,col = "red")
+```
+
+```{r}
+par(mfrow=c(1,3))
+hist(AirQualityUCI$CO)
+hist(AirQualityUCI$Benzene)
+hist(AirQualityUCI$NOx)
+
+```
+
+------------------------------------------------------------------------
+
+Perform correlation tests on CO-Benzene and CO-NOx with the right method
+and answer the question - which relation is stronger?
+
+```{r}
+res1 = cor.test(AirQualityUCI$CO, AirQualityUCI$Benzene, method = "kendall")
+res1
+```
+
+```{r}
+res2 = cor.test(AirQualityUCI$CO, AirQualityUCI$NOx, method = "kendall")
+res2
+```
+
+Because all the attributes are distributed non-normally, we chose the
+Kendall method. The first test shows that the correlation coefficient
+between CO and Benzene is 0.8785523 and the p-value is lower than
+2.2e-16, thus highly significant. The second test shows that the
+correlation coefficient between CO and NOx is 0.8396721 and the p-value
+is lower than 2.2e-16, thus highly significant. We can now conclude that
+both tests are very highly correlated, however, CO vs. Benzene is
+slightly higher correlated.
+
+## Question 3
+
+Carbon monoxide (CO) is a gas that is slightly less dense than air and
+consists of one carbon atom and one oxygen atom. Nitrogen dioxide (NO2)
+is one of several nitrogen oxides and is considered an air pollutant
+created mostly by internal combustion engines (for example car engines).
+Your mission is to explain NO2 only with CO, meaning that you should run
+a simple linear regression model with NO2 being the outcome variable. In
+other words, you want to use CO to predict NO2. Before doing so,
+remember that the outcome variable should be normally distributed,
+
+### 3. Follow the instructions below.
+
+1.  Check if the outcome variable (NO2) is normaly distributed.
+
+2.  Check for linearity between the attributes.
+
+3.  Check for multicollinearity (Independence of observations).
+
+4.  Run simple linear regression model as you explain NO2 with CO.
+
+5.  Check for Homoscedasticity (homogeneity of variance).
+
+## Answer 3
+
+```{r}
+#Check if the outcome variable (NO2) is normaly distributed
+shapiro.test(AirQualityUCI$NO2)
+
+#The p-value (0.4872) is clearly higher than 0.05, so we can conclude it is normally distributed and thus we can run a simple linear regression.
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Check for linearity between the attributes.
+
+plot(NO2 ~ CO , data = AirQualityUCI, pch = 16, col = "Grey")  
+abline(lm(NO2 ~ CO, data= AirQualityUCI), col = "royalblue4", lwd = 4, lty = "dashed")
+title(main ="NO2 vs. CO", font.main = 4)
+
+
+```
+
+We can see a medium-strong linear relationship between the attributes.
+
+------------------------------------------------------------------------
+
+Check for multicollinearity (Independence of observations).
+
+Because we only have one independent variable and one dependent
+variable, we don't need to test for any hidden relationships among
+variables.
+
+------------------------------------------------------------------------
+
+```{r}
+#Run simple linear regression model as you explain NO2 with CO.
+fit = lm(NO2 ~ CO, data=AirQualityUCI)
+summary(fit)
+
+```
+
+R-Squared is a metric for evaluating the goodness of fit of your model.
+In this case, we can say that \~74% of the cause for NO2 is due to CO
+(pretty high).
+
+------------------------------------------------------------------------
+
+Check for homoscedasticity.
+
+```{r}
+par(mfrow=c(2,2)) 
+plot(fit) 
+
+library(car)
+ncvTest(fit)
+```
+
+In the Residuals vs Fitted plot, we can see some heteroscedasticity, a
+sort of asymmetrical "megaphone" shape appearing. In addition to that by
+using ncvTest, we can see a really low P value, the low value means a
+lack of homoscedasticity.
+
+Homoscedasticity, or homogeneity of variances, is an assumption of equal
+or similar variances in different groups being compared. This is an
+important assumption of parametric statistical tests because they are
+sensitive to any dissimilarities. Uneven variances in samples result in
+biased and skewed test results.
+
+## Question 4
+
+This time the goal of the model is to establish the relationship between
+"NO2" as a response variable with "CO", "Benzene", "NOx", "Temp" and
+"RH" as predictor variables.
+
+### 4. follow the instructions below.
+
+1.  Check for linearity between the attributes.
+
+2.  Check for multicollinearity (Independence of observations).
+
+3.  Run Multiple Linear Regression to check the relationship between No2
+    and the other variables.
+
+4.  Check for Homoscedasticity (homogeneity of variance).
+
+## Answer 4
+
+Check for linearity between the attributes & Check for multicollinearity
+(Independence of observations)
+
+```{r, warning=FALSE}
+library(corrgram)
+
+cordat= (AirQualityUCI[,c(7,3,5,6,8,9)])
+corrgram(cordat)
+```
+
+By using the corrgram function, we can see that between NO2 and the
+other gases there is a weak to strong correlation, this shows the
+linearity of the relationship. However, we have multicollinearity
+between the different gases in the linear model. In other words, there
+is a strong correlation between the gases and not only with NO2. In such
+a case you can use the model for prediction but not for measuring the
+influence of the different gasses on NO2.
+
+------------------------------------------------------------------------
+
+```{r}
+#Run Multiple Linear Regression to check the relationship between No2 and the other variables.
+
+model <- lm(NO2 ~ CO + Benzene + NOx + Temp + RH , data = AirQualityUCI)
+summary(model)
+
+```
+
+The Multiple Linear Regression model has an R-squared of 0.79 which says
+that \~79% of the cause of a NO2 is due to the different variables.
+Except for RH, all predictors have a very low p-value (good
+significance).
+
+------------------------------------------------------------------------
+
+```{r}
+
+par(mfrow=c(2,2)) 
+plot(model) 
+library(car)
+ncvTest(model)
+
+```
+
+In the Residuals vs Fitted plot, we can see some heteroscedasticity, a
+sort of asymmetrical "megaphone" shape appearing. In addition to that by
+using ncvTest, we can see a really low P value, the low value means a
+lack of homoscedasticity.
+
+Homoscedasticity, or homogeneity of variances, is an assumption of equal
+or similar variances in different groups being compared. This is an
+important assumption of parametric statistical tests because they are
+sensitive to any dissimilarities. Uneven variances in samples result in
+biased and skewed test results.
+
+## Lecture 9 Homework
+
+## Question 1
+
+### 1. Follow the instructions below.
+
+After modeling NO2 with different variables, it is time to visualize
+some connections between them.
+
+1.  NO2 vs. CO
+
+2.  NO2 vs. Benzene
+
+3.  NO2 vs. Temp
+
+4.  NO2 vs. RH
+
+5.  Create one PDF file with 4 plots as explained above
+
+All plots should be with the same plotting symbol "15", in color
+"bisque3", 0.5 text size inside the plot, and proper title and axes
+labels. Add abline to each plot. all ablines should be colored "brown4"
+with a line width of 2.
+
+## Answer 1
+
+```{r}
+
+AirQualityUCI = read.csv("AirQualityUCI.csv")
+
+#Create one PDF file with 4 plots as explained above
+    pdf("NO2.pdf") #Calling for PDF file
+    par(mfcol = c(2,2)) #Changing the plot panel layout to 2 x 2
+    plot(NO2 ~ CO , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "CO", ylab = "NO2")  
+    title(main ="NO2 vs. CO")
+    abline(lm(NO2 ~ CO, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ Benzene , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "Benzene", ylab = "NO2")  
+    title(main ="NO2 vs. Benzene")
+    abline(lm(NO2 ~ Benzene, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ Temp , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "Temp", ylab = "NO2")  
+    title(main ="NO2 vs. Temp")
+    abline(lm(NO2 ~ Temp, data= AirQualityUCI), col = "brown4", lwd = 2)
+    plot(NO2 ~ RH , data = AirQualityUCI,pch = 15, col = "bisque3", cex = 0.5,
+         xlab = "RH", ylab = "NO2")  
+    title(main ="NO2 vs. RH")
+    abline(lm(NO2 ~ RH, data= AirQualityUCI), col = "brown4", lwd = 2)
+    dev.off() #Changing the layout back to the default
+
+
+```
+
+## Question 2
+
+### 2.1 Follow the instructions below.
+
+Read the datafile prawnGR.CSV into R.
+
+The data was collected from an experiment to investigate the difference
+in the growth rate of the giant tiger prawn fed either an artificial or
+natural diet.
+
+1.  Download and read the datafile prawnGR.CSV into R.
+
+2.  Have a quick look at the structure of this dataset.
+
+3.  plot the growth rate versus the diet using an appropriate plot.
+
+4.  How many observations are there in each diet treatment?
+
+### 2.2
+
+You want to compare the difference in growth rate between the two diets
+using a two sample t-test. Before you conduct the test, you need to
+assess the normality and equal variance assumptions.
+
+1.  test normality assumption of the variables.
+
+2.  test for equal variance of the variables.
+
+### 2.3
+
+Conduct a two sample t-test using the `t.test()` function . Use the
+argument `var.equal = TRUE` to perform the t-test assuming equal
+variances.
+
+1.  What is the null hypothesis you want to test?
+
+2.  Do you reject or fail to reject the null hypothesis?
+
+3.  What is the value of the t statistic, degrees of freedom and p
+    value?
+
+## Answer 2.1
+
+```{r,eval=FALSE}
+prawns = read.csv("prawnGR.CSV", stringsAsFactors = TRUE)
+
+# take a look at the data
+str(prawns)
+
+# 'data.frame':   60 obs. of  2 variables:
+#  $ GRate: num  9.77 10.29 10.05 10.08 9.31 ...
+#  $ diet : Factor w/ 2 levels "Artificial","Natural":...
+
+summary(prawns)
+
+#      GRate                diet   
+#  Min.   : 7.395   Artificial:30  
+#  1st Qu.: 9.550   Natural   :30  
+#  Median : 9.943                  
+#  Mean   : 9.920                  
+#  3rd Qu.:10.344                  
+#  Max.   :11.632         
+
+#How many observations are there in each diet treatment?
+
+
+table(prawns$diet)
+
+# Artificial    Natural 
+#         30         30 
+
+
+# plot the growth rate versus the diet using an appropriate plot
+
+boxplot(GRate ~ diet, data = prawns, xlab = "Diet", ylab = "Growth Rate")
+```
+
+## Answer 2.2
+
+```{r, eval=FALSE}
+# test normality assumption
+
+# Do not perform test on all data together, i.e.
+
+shapiro.test(prawns$GRate) # this is wrong!!
+
+# Need to test for departures from normality for each group 
+# separately. Remember your indexing [ ]
+
+shapiro.test(prawns$GRate[prawns$diet == "Artificial"])
+
+#         Shapiro-Wilk normality test
+# 
+# data:  prawns$GRate[prawns$diet == "Artificial"] 
+# W = 0.9486, p-value = 0.1553
+
+shapiro.test(prawns$GRate[prawns$diet == "Natural"])
+
+#         Shapiro-Wilk normality test
+# 
+# data:  prawns$GRate[prawns$diet == "Natural"] 
+# W = 0.9598, p-value = 0.307
+
+# Therefore no evidence to reject the Null hypothesis and data are normally distributed
+
+# However much better assessment of normality is to use a quantile - quantile plot
+# looking for points to lie along the line for normality
+
+qqnorm(prawns$GRate[prawns$diet == "Artificial"])
+qqline(prawns$GRate[prawns$diet == "Artificial"])
+
+qqnorm(prawns$GRate[prawns$diet == "Natural"])
+qqline(prawns$GRate[prawns$diet == "Natural"])
+
+# test for equal variance
+# if normal
+# Null hypothesis Ho: variances are equal
+
+var.test(prawns$GRate ~ prawns$diet)
+
+#         F test to compare two variances
+# data:  prawns$GRate by prawns$diet 
+# F = 1.9629, num df = 29, denom df = 29, p-value = 0.07445
+# alternative hypothesis: true ratio of variances is not equal to 1 
+# 95 percent confidence interval:
+#  0.9342621 4.1240043 
+# sample estimates:
+# ratio of variances 
+#           1.962881 
+
+# No evidence to reject null hypothesis (P=0.07) therefore no 
+# difference in variance
+```
+
+## Answer 2.3
+
+```{r, eval=FALSE}
+# conduct t-test assuming equal variances
+# Null hypothesis Ho: no difference in growth rate 
+# between prawns fed on artificial diet or Natural diet
+
+t.test(GRate ~ diet, var.equal = TRUE, data = prawn)
+
+#         Two Sample t-test
+# 
+# data:  prawns$GRate by prawns$diet 
+# t = -1.3259, df = 58, p-value = 0.1901
+# alternative hypothesis: true difference in means is not equal to 0 
+# 95 percent confidence interval:
+#  -0.6319362  0.1283495 
+# sample estimates:
+# mean in group Artificial    mean in group Natural 
+#                 9.794133                10.045927 
+# 
+
+# No evidence to reject the Null hypothesis, therefore no 
+# difference in growth rate of prawns fed on either artificial 
+# or natural diet (t = -1.33, df = 58, p = 0.19).
+```
+
+## Question 3
+
+### 3. Follow the instructions below.
+
+An alternative (but equivalent) way to compare the mean growth rate
+between diets is to use a linear model.
+
+1.  Use the `lm()` function to fit a linear model with GRate as the
+    response variable and diet as an explanatory variable.
+
+2.  Produce an ANOVA table for the fitted model using the `anova()`
+    function.
+
+3.  Compare the ANOVA p value to the p value obtained using a t-test.
+    What do you notice?
+
+## Answer 3
+
+```{r, eval=FALSE}
+# fit the model
+
+growth.lm <- lm(GRate ~ diet, data = prawns)
+```
+
+```{r, eval=FALSE}
+# produce the ANOVA table
+
+anova(growth.lm)
+
+# Analysis of Variance Table
+# 
+# Response: GRate
+#           Df Sum Sq Mean Sq F value Pr(>F)
+# diet       1  0.951 0.95100  1.7579 0.1901
+# Residuals 58 31.377 0.54098  
+
+# notice the p value is the same as for the t-test
+# also if you square the t statistic from the t-test
+# you get the F statistic from the linear model.
+# They're the same test
+```
+
+## Bonus question! That is for those who want to go further beyond!
+
+In 1973, Francis Anscombe famously created four datasets with remarkably
+similar numerical properties, but obviously different graphic
+relationships. The Anscombe dataset contains the x and y coordinates for
+these four datasets, along with a grouping variable, set, that
+distinguishes the quartet.
+
+It may be helpful to remind yourself of the graphic relationship by
+viewing the four scatterplots:
+
+```{r}
+
+dat <- datasets::anscombe
+Anscombe <- data.frame(
+    set  = rep(1:4, each = 11),
+    x = unlist(dat[ ,c(1:4)]),
+    y = unlist(dat[ ,c(5:8)])
+    )
+rownames(Anscombe) <- NULL
+
+Anscombe1 = Anscombe[Anscombe$set == 1,]
+Anscombe2 = Anscombe[Anscombe$set == 2,]
+Anscombe3 = Anscombe[Anscombe$set == 3,]
+Anscombe4 = Anscombe[Anscombe$set == 4,]
+
+par(mfcol = c(2,2))
+plot(Anscombe1$x,Anscombe1$y)
+plot(Anscombe2$x,Anscombe2$y)
+plot(Anscombe3$x,Anscombe3$y)
+plot(Anscombe4$x,Anscombe4$y)
+
+
+```
+
+For each of the four sets of data points in the Anscombe dataset,
+compute the following in the order specified.
+
+1.  Mean of x.
+
+2.  Standard deviation of x.
+
+3.  Mean of y.
+
+4.  Standard deviation of y.
+
+5.  Correlation coefficient between x and y.
+
+## Bonus Answer
+
+```{r, echo=FALSE}
+
+dat <- datasets::anscombe
+Anscombe <- data.frame(
+    set  = rep(1:4, each = 11),
+    x = unlist(dat[ ,c(1:4)]),
+    y = unlist(dat[ ,c(5:8)])
+    )
+rownames(Anscombe) <- NULL
+
+Anscombe1 = Anscombe[Anscombe$set == 1,]
+Anscombe2 = Anscombe[Anscombe$set == 2,]
+Anscombe3 = Anscombe[Anscombe$set == 3,]
+Anscombe4 = Anscombe[Anscombe$set == 4,]
+
+par(mfcol = c(2,2))
+plot(Anscombe1$x,Anscombe1$y)
+plot(Anscombe2$x,Anscombe2$y)
+plot(Anscombe3$x,Anscombe3$y)
+plot(Anscombe4$x,Anscombe4$y)
+
+
+```
+
+```{r}
+#Mean of x:
+
+mean(Anscombe1$x)
+mean(Anscombe2$x)
+mean(Anscombe3$x)
+mean(Anscombe4$x)
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Mean of y:
+
+mean(Anscombe1$y)
+mean(Anscombe2$y)
+mean(Anscombe3$y)
+mean(Anscombe4$y)
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Standard deviation of x.
+sd(Anscombe1$x)
+sd(Anscombe2$x)
+sd(Anscombe3$x)
+sd(Anscombe4$x)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Standard deviation of y.
+sd(Anscombe1$y)
+sd(Anscombe2$y)
+sd(Anscombe3$y)
+sd(Anscombe4$y)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y)
+cor(Anscombe2$x,Anscombe2$y)
+cor(Anscombe3$x,Anscombe3$y)
+cor(Anscombe4$x,Anscombe4$y)
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y, method = "kendall")
+cor(Anscombe2$x,Anscombe2$y,  method = "kendall")
+cor(Anscombe3$x,Anscombe3$y,  method = "kendall")
+cor(Anscombe4$x,Anscombe4$y,  method = "kendall")
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Correlation coefficient between x and y
+cor(Anscombe1$x,Anscombe1$y, method = "spearman")
+cor(Anscombe2$x,Anscombe2$y,  method = "spearman")
+cor(Anscombe3$x,Anscombe3$y,  method = "spearman")
+cor(Anscombe4$x,Anscombe4$y,  method = "spearman")
+
+```
+
+All the plots had the same mean and standard deviation, and even in the
+standard correlation test, all graphs had the same value. That is why it
+is important to remember to use the Kendall and Spearman method when the
+data is not normally distributed.

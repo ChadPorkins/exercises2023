@@ -1,0 +1,559 @@
+---
+title: "Lecture 2 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+At the heart of almost everything you will do in R is the concept that everything in R is an object. These objects can be almost anything, from a single number or character string (like a word) to highly complex structures like the output of a plot, a summary of your statistical analysis or a set of R commands that perform a specific task. Understanding how you create objects and assign values to objects is key to understanding R.
+
+### 1.1 By using R calculate the following exercises.
+
+1.  32 + 98
+
+2.  42 - 22
+
+3.  6\*6
+
+4.  sqrt(81)
+
+5.  5\^2 (7 + 5) / 2
+
+6.  22 %% 4
+
+7.  1:10
+
+8.  100:90
+
+### 1.2. Assign values to the different vectors.
+
+1.  Assign the value 35 to the vector Object_1
+
+2.  Assign the text value "*Ben Gurion University* " to the vector Object_2
+
+3.  Divide the vector Object_1 by the vector Object_2, What do you get?
+
+4.  Reassign the vector Object_2 to the value 5
+
+5.  Divide again the vector Object_1 by the vector Object_2, What do you get?
+
+6.  Create a **new** vector Object_3 by subtracting the vector Object_1 and the vector Object_2
+
+7.  Assign the text value "*Good* " to the vector Object_x
+
+8.  Assign the text value "*Morning"* to the vector Object_y
+
+9.  Add the vector Object_x to the vector Object_y, What do you get?
+
+
+
+## Answer 1.1 
+
+```{r}
+32 + 98
+
+42 - 22
+
+6*6
+
+sqrt(81)
+
+5^2
+
+(7 + 5) / 2
+
+#We get the remainder of the division operation
+
+22 %% 4
+
+1:10
+
+100:90
+```
+
+## Answer 1.2 
+
+```{r, eval=FALSE}
+
+Object_1 = 35
+
+Object_2 = "Ben Gurion University"
+
+Object_1 / Object_2
+
+#We get an error because a numeric value cannot be divided by a text value
+```
+
+```{r, eval=FALSE}
+Object_2 = 5
+
+Object_1 / Object_2
+
+Now we get proper numerical output result.
+
+Object_3 = Object_1 - Object_2
+
+Object_x = "Good"
+
+Object_y = "Morning"
+
+Object_x + Object_y
+
+# We get an error because we cannot use a math operation on vectors with text values
+```
+
+## Question 2
+
+Understanding the different types of data and how R deals with these data is important. The temptation is to glaze over and skip these technical details, but beware, this can come back and cause problems if you don't pay attention. We've already seen an example of this when we tried (and failed) to add two character objects together using the + operator.
+
+R has six basic types of data; numeric, integer, logical, complex and character. The keen eyed among you will notice we've only listed five data types here, the final data type is raw which we won't cover.
+
+### 2.1 Assign values to the different vectors, then check the class of each vector.
+
+1.  Assign the value 28 to the vector x
+
+2.  Assign the text value "BGU" to the vector y
+
+3.  Assign the logical value TRUE to the vector z
+
+4.  Assign the logical value FALSE to the vector q
+
+5.  Check the classes of the vectors x,y,z,q by using the `class()` function, What do you get?
+
+------------------------------------------------------------------------
+
+A matrix is a two-dimensional collection of values of **the same type**. The number of values in all columns of a matrix is equal, and the same can be said about the rows. It is important to know how to work with matrices because it is a commonly used data structure, with many uses in data processing and analysis, including spatial data. For example, many R functions accept a matrix as an argument, or return a matrix as a returned object.
+
+### 2.2 create the following matrices.
+
+1.  Create a matrix with 3 rows and 3 columns, containing the numbers 1 up to 9, Print out the result.
+
+2.  Create a matrix with 2 rows and 3 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+3.  Create a matrix with 4 rows and 4 columns, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+4.  Create a matrix with **only** 3 rows and with **no** columns specification, containing the numbers 1 up to 9, Print out the result. What change has occurred in the matrix?
+
+5.  By using the ***?** function* find how to fill the matrix by rows first and not by columns.
+
+## Answer 2.1
+
+```{r}
+
+x = 28
+
+y = "BGU"
+
+z = T
+
+q = F
+```
+
+```{r}
+class(x)
+
+class(y)
+
+class(z)
+
+class(q)
+```
+
+x is a numeric vector.
+
+y is character vector.
+
+z & q are logical vectors.
+
+## Answer 2.2
+
+
+```{r}
+matrix(ncol = 3, nrow = 3, 1:9)
+```
+
+___
+
+
+```{r}
+matrix(ncol = 3, nrow = 2, 1:9)
+
+#We do not have enough rows to complete all the numerical values of the matrix
+
+```
+
+___
+
+```{r}
+matrix(ncol = 4, nrow = 4, 1:9)
+
+#The matrix is larger than the numbers entered in the code, therefore the matrix will complete the missing places by repeating the numbers between 1 and 9.
+```
+
+___
+
+```{r}
+matrix( nrow = 3, 1:9)
+
+#The matrix automatically completed the amount of columns to contain the numbers between 1 and 9.
+```
+
+___
+
+
+```{r}
+matrix(ncol = 3, nrow = 3, 1:9, byrow = TRUE)
+
+```
+
+## Question 3
+
+Using the tools we have practiced so far let's solve a real life problem!
+
+Daniel graduated from the Department of Geography, currently, he is a manager of 2 companies. The first company is a GIS consulting company, the second company is an ecological consulting company.
+
+You are given a table of each company's daily profits and losses throughout the days of the week.
+
+| Day       | GIS  | Ecology |
+|-----------|------|---------|
+| Sunday    | 500  | -50     |
+| Monday    | 300  | -150    |
+| Tuesday   | -100 | 300     |
+| Wednesday | -250 | 600     |
+| Thursday  | 450  | -100    |
+| Friday    | -50  | 150     |
+| Saturday  | 800  | -200    |
+
+### 3.1 Help Daniel to manage the data in his companies in the following steps.
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss. In addition, create a vector of the days of the week.
+
+2.  Find the mean value, max value, and min value of GIS.
+
+3.  Find the mean value, max value, and min value of Ecology.
+
+4.  Create a new vector to calculate how much money Daniel made or lost this week.
+
+5.  Create a data frame named **df** from the table above and **only** the vector from the previous section, and print out the result.
+
+### 3.2 Explore and explain what each of the functions does.
+
+1.  View(df)
+
+2.  str(df)
+
+3.  nrow(df)
+
+4.  ncol(df)
+
+5.  dim(df)
+
+## Answer 3.1
+
+```{r}
+GIS = c(500,300,-100,-250,450,-50,800)
+Ecology = c(-50,-150,300,600,-100,150,-200)
+Day = c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+```
+
+```{r}
+mean(GIS)
+max(GIS)
+min(GIS)
+```
+
+___
+
+```{r}
+mean(Ecology)
+max(Ecology)
+min(Ecology)
+```
+
+```{r}
+# New vector
+Profit = sum(Ecology) + sum(GIS)
+Profit
+
+
+```
+
+___
+
+```{r}
+# New data frame 
+df = data.frame(Day,GIS,Ecology,Profit)
+df
+```
+
+
+## Answer 3.2
+
+```{r, eval=FALSE}
+View(df)
+
+# The function will invoke a spreadsheet-style data viewer on a matrix-like R object.
+
+str(df)
+ 
+#The function displays the internal structure of an R object compactly.
+
+nrow(df)
+
+# nrow() function in R is used to return the number of rows of the the matrix, array, or data frame.
+
+ncol(df)
+
+# ncol() function in R is used to return the number of rows of the matrix, array, or data frame.
+
+dim(df)
+
+# The function returns the dimension of the matrix, array, or data frame.
+```
+
+## Question 4
+
+The following week, Daniel had server failures and because of this, the new table lacks information on certain days.
+
+| Day       | GIS    | Ecology |
+|-----------|--------|---------|
+| Sunday    | **NA** | 100     |
+| Monday    | 200    | 200     |
+| Tuesday   | **NA** | 300     |
+| Wednesday | -320   | -500    |
+| Thursday  | 250    | **NA**  |
+| Friday    | **NA** | 50      |
+| Saturday  | -100   | **NA**  |
+
+### 4. Help Daniel to manage the data in his companies in the following steps.
+
+1.  Assign to GIS and Ecology vectors the values of the daily profit or loss, including the NA.
+
+2.  Despite the missing information find the mean value, max value, and min value of GIS.
+
+3.  Despite the missing information find the mean value, max value, and min value of Ecology.
+
+4.  Create a new vector to calculate how much money Daniel made or lost this week.
+
+5.  From the GIS vector find the third value.
+
+6.  From the Ecology vector find the values between the second value and the fifth value.
+
+
+## Question 4 Answer
+
+```{r}
+GIS = c(NA,200,NA,-320,250,NA,-100)
+
+Ecology = c(100,200,300,-500,NA,50,NA)
+
+```
+
+___
+
+```{r}
+mean(GIS, na.rm = T)
+max(GIS, na.rm = T)
+min(GIS, na.rm = T)
+
+```
+
+___
+
+```{r}
+mean(Ecology, na.rm = T)
+max(Ecology, na.rm = T)
+min(Ecology, na.rm = T)
+```
+
+___
+
+```{r}
+Profit = sum(Ecology,na.rm = T) + sum(GIS,na.rm = T)
+Profit
+```
+
+___
+
+```{r}
+GIS[3]
+
+Ecology[2:5]
+```
+
+
+## Lecture 2 Homework
+
+## Question 1
+
+```{r}
+#| echo: true
+#| eval: false
+random_vector = sample(1:10, size = 6)
+
+random_vector
+
+#This code creates a vector with random values between 1 and 10, feel free to run the code as many times as you want to get new numbers.
+```
+
+### 1. Run the following code, from random_vector and use a logical index to find the following values:
+
+1.  values less than 8
+
+2.  values less than or equal to 7
+
+3.  values equal to 5
+
+4.  values not equal to 6
+
+5.  extract values in m which are less than 6 AND greater than 2
+
+6.  extract values in m which are less than 9 AND greater than 5
+
+7.  replace the 5th and 6th values with 1
+
+8.  replace values that are less than or equal to 4 with 5
+
+9.  use `sort()` and `order()` functions on random_vector , what is the difference between the two functions?
+
+
+## Answer 1
+
+```{r}
+random_vector = sample(1:10, size = 6)
+
+random_vector
+```
+
+```{r}
+random_vector[random_vector>8]
+random_vector[random_vector<=7]
+random_vector[random_vector == 5]
+random_vector[random_vector!=6]
+random_vector[random_vector<6 & random_vector >2]
+random_vector[random_vector<9 & random_vector >5]
+random_vector[random_vector<=4] = 5
+random_vector
+```
+
+___
+
+```{r}
+
+sort(random_vector)
+
+order(random_vector)
+```
+
+`sort()` sorts the vector in an ascending order, however `order()` returns the indices of the vector in a sorted order.
+
+
+## Question 2
+
+### 2. As part of Sarah's research on US Presidents, she created two separate data frames, help her connect the two data frames using only **one function**.
+
+```{r}
+usa_presidents = data.frame(year=c(1789,1829,1861,1980,2000),
+order = c(1,7,16,40,43))
+names = data.frame(president_name =
+c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George_W._Bush"))
+
+```
+
+
+## Answer 2
+
+```{r}
+usa_presidents = data.frame(year=c(1789,1829,1861,1980,2000),
+order = c(1,7,16,40,43))
+names = data.frame(president_name =
+c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George_W._Bush"))
+```
+
+```{r}
+cbind(usa_presidents,names)
+```
+
+
+## Question 3
+
+### 3. As part of a population survey you received two data frames, combine the two data frames into one data frame using **only one function**.
+
+```{r}
+Student_Name<-c("John","Barak","Sara","Yuval","Muhammad")
+Student_class<-c("High school","College","High school","High school","College")
+df1<-data.frame(Student_class,Student_Name)
+
+
+Student_Name<-c("Tal","Amir","Noya")
+Student_class<-c("High school","College","University")
+df2<-data.frame(Student_Name,Student_class)
+
+```
+
+
+## Answer 3
+
+```{r}
+Student_Name<-c("John","Barak","Sara","Yuval","Muhammad")
+Student_class<-c("High school","College","High school","High school","College")
+df1<-data.frame(Student_class,Student_Name)
+
+
+Student_Name<-c("Tal","Amir","Noya")
+Student_class<-c("High school","College","University")
+df2<-data.frame(Student_Name,Student_class)
+```
+
+```{r}
+rbind(df1,df2)
+```
+
+
+
+## Bonus question! That is for those who want to go further beyond!
+
+Try to think by yourself first what the result of the following code will be, then run the code to check if you were right.
+
+```{r, eval = FALSE}
+c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
+```
+
+```{r, eval = FALSE}
+counts = c(2, 0, 3, 1, 3, 2, 9, 0, 2, 1, 11, 2)
+
+counts[c(1:3, 7:9)] = c(NA, 99)
+```
+
+```{r, eval = FALSE}
+paste("I", "want", "to", "combine", "text", "values")
+
+
+```
+
+## Bonus Question Answer
+
+```{r}
+c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
+```
+When one of the vectors is of length 3 and the other is of length 6, the shorter vector (of length 3) is replicated 2 times.
+
+```{r}
+counts = c(2, 0, 3, 1, 3, 2, 9, 0, 2, 1, 11, 2)
+
+counts[c(1:3, 7:9)] = c(NA, 99)
+```
+
+Here, c(NA,99) is replicated three times, also to match the subset of length 6.
+
+```{r}
+paste("I", "want", "to", "combine", "text", "values")
+```
+
+The proper way to combine text values in R. 
+
+
+
+

@@ -1,0 +1,446 @@
+---
+title: "Lecture 8 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+In our research this week we will focus on analyzing information about
+soccer players from England, Italy, and Germany. Read football_info.csv
+into R. The data consist of information on 15,000 football players.
+
+football_info.csv has the following variables: age, height, weight and
+foot (which is the strongest foot of the player), Country, and the
+player score from 0 to 100.
+
+## Question 1
+
+### 1. follow the instructions below.
+
+1.  Read football_info.csv into R.
+
+2.  As you probably know by now, the first thing we do with a new
+    dataframe is to examine it. Check the different values and variables
+    in the table, look for NA and delete outliers if you notice them.
+
+3.  By using a histogram and QQ-plot which of the continuous variables
+    in the data is normally distributed? (Hint! you can use the
+    `qqnorm()` and the `qqline()` functions).
+
+## Answer 1
+
+```{r}
+#Read football_info.csv into R
+
+info = read.csv("football_info.csv")
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Check and clean the data if required
+summary(info)
+#With summary(info) we can see that there are no NAs, however, there are some wrong values in a few columns.
+#The maximum age is 244, which makes no sense, so we need to delete it.
+#We can also notice the impossible maximum value of height (281), the maximum value of weight(909), and the minimum value of weight(3).
+#So there are some errors in the data and we have to delete the wrong rows.
+info = info[order(info$Age),]
+info = info[-c(14999,15000),]
+info = info[order(info$Height),]
+info = info[-14998,]
+info = info[order(info$Weight),]
+info = info[-14997,]
+info = info[-1,]
+summary(info)
+#Now our data is fully cleaned :)
+
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Which of the continuous variables in the data is normaly distributed?
+
+#Height
+
+hist(info$Height, xlab = "Age", col="burlywood4", main = "Football Players Height Distribution")
+qqnorm(info$Height)
+qqline(info$Height, col="burlywood4")
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#Which of the continuous variables in the data is normaly distributed?
+
+#Weight
+
+hist(info$Weight, xlab = "Age", col="Blue", main = "Football Players Weight Distribution")
+qqnorm(info$Weight)
+qqline(info$Weight, col="red")
+```
+
+------------------------------------------------------------------------
+
+```{r}
+hist(info$Age, col = "azure3", xlab = "Age", main = "Football Players Age Distribution")
+abline(v = mean(info$Age), col = "blue4")  # With "v=mean(info$Height)" you can add the mean line to the plot.
+qqnorm(info$Age)
+qqline(info$Age, col="red")
+```
+
+You cannot be sure that the data is normally distributed with plots,
+however, you can rule out if it is NOT normally distributed. In this, it
+seems that all three variables have a good chance to be normally
+distributed.
+
+## Question 2
+
+### 2. follow the instructions below.
+
+The number of standard deviations from the mean is called the "Standard
+Score" or "Z-Score". "Standardizing" is converting a value to a Standard
+Score.
+
+1.  Create the column "Standard_Height" which is the "standard score"
+    calculation of the Height.
+
+2.  Create histograms of both height and standard_height, Make both
+    histograms green and with: breaks = 9.
+
+3.  Create a scatter plot of the variables.
+
+## Answer 2
+
+```{r}
+#Create the column "Standard_Height" which is the "standard score" calculation of Height. 
+info$Standard_Height <- scale(info$Height)
+#Another way is with the formula of Standardizing:
+info$Standard_Height <- (info$Height - mean(info$Height)) / sd(info$Height)
+#Create a histograms of both height and standard_height
+hist(info$Height, breaks = 9, col = "seagreen4",
+xlab = "Height", main = "Football Players Height Distribution")
+hist(info$Standard_Height, breaks = 9, col = "seagreen4",
+xlab = "Standardrized Height", main = "Football Players Height Distribution - Standardrized")
+#Create a scatter plot of the variables
+plot(info$Standard_Height, info$Height,
+         main = "Standardrized Height - Height Scatter Plot", xlab = "Standardrized Height", ylab = " Height",
+         col = "lightslategrey", pch = 16, cex = 1.5)
+
+```
+
+## Question 3
+
+### 3. As part of our research we want to check if there are differences between the players from the different countries.
+
+1.  By using the ANOVA test, check whether there is a significant
+    difference in the height of the players from the different
+    countries.
+
+2.  By using the ANOVA test, check whether there is a significant
+    difference in the weight of the players from the different
+    countries.
+
+3.  By using the ANOVA test, check whether there is a significant
+    difference in the age of the players from the different countries.
+
+4.  By using the ANOVA test, check whether there is a significant
+    difference in the score of the players from the different countries.
+
+## Answer 3
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the height of the players from the different countries.
+aov.model = aov(info$Height ~ info$Country)
+summary(aov.model)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the weight of the players from the different countries.
+aov.model2 = aov(info$Weight ~ info$Country)
+summary(aov.model2)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the age of the players from the different countries.
+aov.model3= aov(info$Age ~ info$Country)
+summary(aov.model3)
+#The P value is above 0.05 and is therefore not significant
+
+```
+
+```{r}
+#By using the ANOVA test, check whether there is a significant difference in the score of the players from the different countries.
+aov.model4 = aov(info$Player_score ~ info$Country)
+summary(aov.model4)
+#The P value is less than 0.05, so it is significant!
+#We can use Tukey HSD to check where there is a significant difference!
+TukeyHSD(aov.model4)
+#There is a significant difference between the Italian soccer players and the English players in terms of scores!
+
+```
+
+## Question 4
+
+### 4. follow the instructions below.
+
+One-sample t-test is used to compare the mean of one sample to a known
+standard (or theoretical/hypothetical) mean (μ).
+
+There are 14 Israeli football players in the info dataset with dual
+citizenship.
+
+Their weights are: 62, 82, 64, 59, 71, 68, 78, 61, 67, 76, 80, 68, 60,
+71.
+
+We want to compare their weights to the average of all the players.
+
+1.  Run an F-test for the variables, and compare the Israeli players
+    average weight to the players average weight, with a one-sample
+    t-test.
+
+## Answer 4
+
+```{r}
+#run an F-test for this variables. 
+il = c(62, 82, 64, 59, 71, 68, 78, 61, 67, 76, 80, 68, 60, 71)
+
+var.test(il,info$Weight)
+
+```
+
+The p-value of the F-test is = 0.5425. It's greater than the
+significance level alpha = 0.05. In conclusion, there is no significant
+difference between the variances of the two sets of data. Therefore, we
+can use the classic t-test which assumes equality of the two variances.
+
+------------------------------------------------------------------------
+
+```{r}
+#compare the Israeli players average weight to the players average weight, with a one-sample t-test.
+
+res = t.test(il, mu=mean(info$Weight))
+
+res
+
+
+```
+
+The mean of the Israeli players is 69.07143 and all players mean is
+75.71551 The p-value of the test is less than the significance level
+alpha = 0.05. We can then reject the null hypothesis and conclude that:
+The mean weight of the Israeli players is significantly different from
+75.71551 with a p-value of 0.006129.
+
+## Lecture 8 Homework
+
+## Question 1
+
+### 1. follow the instructions below.
+
+An Independent (or unpaired two-sample) t-test is used to compare the
+means of two unrelated groups of samples.
+
+In this case, we want to test whether the average age of left foot
+players is significantly different from the average age of right foot
+players.
+
+1.  Test whether the average age of left players is significantly
+    different from the average age of right foot players
+
+## Answer 1
+
+```{r, echo=FALSE}
+#Read football_info.csv into R
+
+info = read.csv("football_info.csv")
+
+#Check and clean the data if required
+
+#With summary(info) we can see that there are no NAs, however, there are some wrong values in a few columns.
+#The maximum age is 244, which makes no sense, so we need to delete it.
+#We can also notice the impossible maximum value of height (281), the maximum value of weight(909), and the minimum value of weight(3).
+#So there are some errors in the data and we have to delete the wrong rows.
+info = info[order(info$Age),]
+info = info[-c(14999,15000),]
+info = info[order(info$Height),]
+info = info[-14998,]
+info = info[order(info$Weight),]
+info = info[-14997,]
+info = info[-1,]
+
+#Now our data is fully cleaned :)
+
+
+```
+
+Test whether the average age of left players is significantly different
+from the average age of right foot players.
+
+```{r}
+res = t.test(Age ~ Foot, data = info)
+res
+```
+
+The mean age of the left foot players is 24.42190 and the mean age of
+right foot players is 26.86195. The p-value of the test is much less
+than the significance level alpha = 0.05. We can then reject the null
+hypothesis and conclude that: The mean age of the left foot players is
+significantly different from right foot players with a p-value of
+2.2e-16.
+
+## Question 2
+
+### 2. follow the instructions below.
+
+Paired Student's t-test is used to compare the means of two related
+samples.
+
+That is when you have two values (pair of values) for the same samples.
+
+It is known that young football players tend to grow by 3-5 centimeters
+after age 16.
+
+1.  With a paired t-test, check if there is a significant difference
+    between the height of football players at age 16 and height in
+    adulthood.
+
+```{r}
+dat = data.frame(player = c(1:15), 
+age16 = c(160, 154, 172, 172, 178, 168, 162, 170, 164, 162, 159, 180, 165, 160, 163),
+adulthood = c(162, 155, 172, 176, 179, 169, 162, 175, 168, 167, 160, 180, 166, 166, 164))
+```
+
+## Answer 2
+
+With a paired t-test, check if there is a significant difference between
+the height of football players at age 16 and height in adulthood.
+
+```{r}
+dat = data.frame(player = c(1:15), 
+age16 = c(160, 154, 172, 172, 178, 168, 162, 170, 164, 162, 159, 180, 165, 160, 163),
+adulthood = c(162, 155, 172, 176, 179, 169, 162, 175, 168, 167, 160, 180, 166, 166, 164))
+
+res2 = t.test(dat$age16, dat$adulthood, paired=TRUE)
+
+res2
+```
+
+The p-value of the t-test is 0.001316, which is less than the
+significance level alpha = 0.05. We can then reject the null hypothesis
+and conclude that: The average height of the players at 16 years old is
+significantly different from the average height in adulthood with a
+p-value = 0.001316.
+
+## Question 3
+
+### 3. Another excellent way to check if the information is normally distributed is by using the Shapiro test.
+
+1.  Run a Shapiro test on the age of all football players, is the age
+    distributed normally?
+
+2.  Isolate only the first 30 Italian players, create a histogram of the
+    player_score and perform a `shapiro.test`, is the player_score
+    normally distributed?
+
+## Answer 3
+
+```{r, eval=FALSE}
+shapiro.test(info$Age)
+#Error in shapiro.test(info$Age) : sample size must be between 3 and 5000
+```
+
+As we can see from the error, the function has a limit of up to 5000
+values, and we have much more than that. We cannot change this limit on
+the function.
+
+------------------------------------------------------------------------
+
+```{r}
+Italy = info[info$Country == "Italy",]
+Italy2 = Italy[1:30,]
+hist(Italy2$Player_score)
+shapiro.test(Italy2$Player_score)
+```
+
+Although the histogram does not appear to be normally distributed, the
+Shapiro test shows us that your data is normally distributed!
+
+## Bonus question! That is for those who want to go further beyond!
+
+An effective way to remove outliers from data sets in R is to use
+"automatic commands" to clean the information.
+
+```{r}
+info2 = read.csv("football_info.csv")
+x = info2$Height
+x_clean =  x[!x %in% boxplot.stats(x)$out] 
+```
+
+1.  Run the following code, and by looking at the box-plot of x what
+    could be the downside of using "auto clean"?
+
+------------------------------------------------------------------------
+
+```{r, eval=FALSE}
+
+var.test(info$Standard_Height, info$Foot)
+
+```
+
+1.  What can be the problem?
+
+2.  Think of a solution to the problem :)
+
+## Bonus Answer
+
+```{r}
+info2 = read.csv("football_info.csv")
+x = info2$Height
+x_clean =  x[!x %in% boxplot.stats(x)$out] 
+par(mfrow=c(1,2))
+boxplot(x)
+boxplot(x_clean)
+
+```
+
+Despite the great convenience of the automatic cleaning, we have lost
+many players whose height is in the area of 160 and above 199, because
+of this, it is important that we go through the data first independently
+and use automatic tools wisely.
+
+------------------------------------------------------------------------
+
+The Foot column is a charcter. In `var.test(x,y)`; x,y - must to be
+numeric vectors To fix this problem you can create a binary column (0/1)
+based on a condition in the Foot column.
+
+```{r}
+info$Foot[info$Foot == "Left"] = 0  
+info$Foot[info$Foot == "Right"] = 1
+info$Foot = as.numeric(info$Foot)
+#The original column contained text so we needed to convert the column to numeric values
+```
+
+Or you can try this:
+
+```{r}
+info$Foot_binary = ifelse(info$Foot == "Right", 1, 0)
+```
+
+Now lets try the `var.test(x,y)` again!
+
+```{r, eval=FALSE}
+var.test(info$Standard_Height, info$Foot)
+
+```

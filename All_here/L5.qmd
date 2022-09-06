@@ -1,0 +1,356 @@
+---
+title: "Lecture 5 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+
+## Question 1
+
+### 1.1 Paste the following code in R:
+
+```{r}
+x <- c(7,5,2,11,2,3,6,0,1,4,8,9,5,12,11,5,1,0,2,2,7,3,10,19,18,
+          9,20,14,15,1,16,9,13,0,0,2,11,3,4,1,7,9,10,5,3,4,13,15,
+          19,14,2,4,1,12,15,12,11,10,7,4,11,8,1,11,2,3,0,12,17,21)
+y <- c(1:3)
+```
+
+1.  How many elements are in x?
+
+2.  Try to think what will be the result of: y \> 2 & y-1 == 2
+
+3.  How many elements in x are equal or bigger than 10?
+
+4.  How many elements in x are bigger than 8 and smaller than 14?
+
+------------------------------------------------------------------------
+
+```{r}
+type <- c("Smart", "3D", "Smart", "Smart", "4K", "4K", "3D", "Smart", "4K", "3D")
+    size <- c(45, 50, 45, 40, 50, 50, 40, 38, 50, 50)
+    price <- c(3000, 4200, 3500, 3000, 5200, 5100, 3800, 2400, 5100, 4200)
+```
+
+### 1.2 Create a data frame from the vectors above.
+
+1.  Use `Duplicated()` and `Unique()` to see how many repeated observations are in the data.
+
+2.  Create a cleaned data frame without the repeated observations.
+
+
+## Answer 1.1
+
+```{r}
+x <- c(7,5,2,11,2,3,6,0,1,4,8,9,5,12,11,5,1,0,2,2,7,3,10,19,18,
+          9,20,14,15,1,16,9,13,0,0,2,11,3,4,1,7,9,10,5,3,4,13,15,
+          19,14,2,4,1,12,15,12,11,10,7,4,11,8,1,11,2,3,0,12,17,21)
+y <- c(1:3)
+```
+
+```{r}
+#How many elements are in x?
+length(x)
+
+#Try to think what will be the result of:  y > 2 & y-1 == 2 
+y > 2 & y-1 == 2
+
+#How many elements in x are equal or bigger than 10?
+length(x[x >= 10])
+
+#How many elements in x are bigger than 8 and smaller than 14?
+length(x[x > 8 & x < 14])
+
+```
+
+## Answer 1.2
+
+
+```{r}
+
+type <- c("Smart", "3D", "Smart", "Smart", "4K", "4K", "3D", "Smart", "4K", "3D")
+size <- c(45, 50, 45, 40, 50, 50, 40, 38, 50, 50)
+price <- c(3000, 4200, 3500, 3000, 5200, 5100, 3800, 2400, 5100, 4200)
+
+#Create a data frame from the vectors above
+d = data.frame(type, size, price)
+
+#How many repeated observations are in the data frame?
+#You can notice that there are 2 TRUE, which means two duplicated observations.
+duplicated(d)
+
+# A better solution
+length(duplicated(d)[duplicated(d) == TRUE])
+
+#Create a cleaned data frame without the repeated observations
+cleaned.d = unique(d)
+
+#Another solution :)
+cleaned.d = d[!duplicated(d), ]
+
+```
+
+## Question 2
+
+The Forbes2000 list is a ranking of the world's biggest companies in 2004, measured by sales, profits, assets and market value.
+
+The data format is a data frame with 2000 observations on the following 8 variables:
+
+1.  rank - the ranking of the company.
+
+2.  name - the name of the company.
+
+3.  country - a factor giving the country the company is situated in.
+
+4.  category - a factor describing the products the company produces.
+
+5.  sales - the number of sales of the company in billion USD.
+
+6.  profits - the profit of the company in billion USD.
+
+7.  assets - the assets of the company in billion USD.
+
+8.  marketvalue - the market value of the company in billion USD.
+
+------------------------------------------------------------------------
+
+### 2. Download and read the forbes2000 file in R.
+
+1.  What is the maximum value of assets?
+
+2.  What is the minimum value of sales?
+
+3.  What is the mean of profits?
+
+4.  How many NA's there are in profits?
+
+5.  Is there any company that appears twice in the forbes list?
+
+
+## Answer 2
+
+```{r}
+
+#Download and read the forbes2000 file in R
+forbes = read.csv("Forbes2000.csv")
+
+#What is the maximum value of assets?
+max(forbes$assets)
+
+#What is the minimum of sales?
+min(forbes$sales)
+
+#What is the mean of profits?
+mean(forbes$profits, na.rm = TRUE)
+
+#How many NA's there are in profits?
+nrow(forbes[is.na(forbes$profits),])
+
+#More simple answer :)
+sum(is.na(forbes$profits))
+
+#Is there any company that appears twice in the forbes list?
+
+sum(duplicated(forbes$name))
+
+#There are no duplicated names
+
+
+```
+
+## Question 3
+
+### 3. Use the summary tool and see how can you answer the previous questions without any trouble.
+
+1.  Use summary only on companies with higher market value than the market value mean.
+    (of all companies)
+
+2.  Use rescale to create a new column named marketvalue.rescaled in the forbes2000 data.
+    (use the package scales)
+
+3.  Use `cut()` to create the column marketvalue_cat, so you will have 3 categorical bins of "Low", "Medium" and "High" for the marketvalue.
+
+4.  Create and combine histograms for profits, assets and sales and see the differences.
+
+## Answer 3
+
+```{r, eval=FALSE}
+
+#Use summary only on companies with higher market value than the market value mean (of all companies)
+
+summary(subset(forbes, marketvalue > mean(marketvalue)))
+
+#another way without subset
+
+summary(forbes[forbes$marketvalue > mean(forbes$marketvalue),])
+
+#Use rescale to create a new column named marketvalue.rescaled in the forbes2000 data. (use the package scales)
+
+library(scales)
+forbes$marketvalue.rescaled <- rescale(forbes$marketvalue)
+
+#Use cut() to create the column marketvalue_cat, so you will have 3 categorical bins of “Low”, “Medium” and “High” for the marketvalue
+
+forbes$marketvalue_cat <- cut(forbes$marketvalue, breaks = 3, labels = c("Low", "Medium", "High"))
+
+```
+
+```{r}
+# Create and combine histograms for profits, assets and sales and see the differences
+
+par(mfrow=c(1,3))
+hist(forbes$profits)
+hist(forbes$assets)
+hist(forbes$sales)
+
+```
+
+## Lesson 5 Homework
+
+## Question 1
+
+### 1. For the next research exercise, we will use the data set about mice.
+
+1.  Download and read the mice.csv data set and take a first look at the data.
+
+2.  How large is the data.frame? use only 1 function to get the answer.
+
+3.  how many rows/columns?
+
+4.  what are the column names and what is the data type of each column?
+
+5.  How many mice are described in the data set?
+
+6.  How many female mice are there?
+
+7.  Make a plot of the weight of mouse number 1.
+
+8.  Make a histogram of the weight of mouse number 5.
+
+## Answer 1 
+
+```{r}
+#Download and read the mice.csv data set and take a first look at the data.
+mice = read.csv("mice.csv")
+head(mice)
+
+#How large is the data.frame? use only 1 function to get the answer.
+dim(mice)
+
+#how many rows/columns?
+ncol(mice)
+nrow(mice)
+
+#what are the column names and what is the data type of each column
+
+colnames(mice)
+str(mice)
+
+#How many mice are described in the data set?
+length(unique(mice$id))
+
+#How many female mice are there?
+female_mice = mice[mice$gender == "female",]
+length(unique(female_mice$id))
+
+#Make a plot of the weight of mouse number 1
+mice_1 = mice[mice$id == 1,]
+plot(mice_1$week,mice_1$weight)
+
+#Make a histogram of the weight of mouse number 5
+mice_5 = mice[mice$id == 5,]
+hist(mice_5$weight)
+
+```
+
+
+## Question 2
+
+### 2. Copy and run the following vector:
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, 10, 0, 3, NA, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, NA, 6, 3, 
+           -1, 1, 0, NA, 42, -0.2, 17, 3.1, -5, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, NA)
+```
+
+1.  Print five-number summary using one function, and afterward analyze the result.
+
+
+## Answer 2
+
+```{r}
+v <- c(42, 92, 39, 19, 12, 16, 2, 0, 8.5, 50, 4,
+           13, 0, -4, 9, 10, 0, 3, NA, 32, 28, 7, 11,
+           -3, 8, 74, 70, 12, 20, -1, 6.7, NA, 6, 3, 
+           -1, 1, 0, NA, 42, -0.2, 17, 3.1, -5, 11, 1,
+           51, 46, 2, 51, 13, NA, 0, 30, -5, 9, NA)
+```
+
+```{r}
+
+fivenum(v)
+
+```
+
+minimum = -5
+
+lower-hinge = 1
+
+median = 9
+
+upper-hinge = 24
+
+maximum = 92
+
+
+## Bonus question! That is for those who want to go further beyond!
+
+1.  From the built-in data set VADeaths, create a bar plot with a legend of the age groups.
+
+you should get:
+
+```{r, echo = FALSE}
+barplot(VADeaths, legend= rownames(VADeaths))
+
+```
+
+2.  In addition, unstack the bars and plot them alongside one another, adding to each age group color and a proper title.
+
+you should get:
+
+```{r, echo = FALSE}
+barplot(VADeaths, beside = TRUE, 
+    col = c("lightblue", "mistyrose", "lightcyan","lavender", "cornsilk"),
+    legend = rownames(VADeaths), ylim = c(0, 100))
+    title(main = "Death Rates in Virginia", font.main = 4)
+```
+
+
+## Bonus Answer
+
+```{r}
+#from the built-in data set VADeaths, create a bar plot with a legend of the age groups.
+
+barplot(VADeaths, legend= rownames(VADeaths))
+
+
+```
+
+```{r}
+#In addition, unstack the bars and plot them alongside one another, adding to each age group color and a proper title.
+
+barplot(VADeaths, beside = TRUE, 
+    col = c("lightblue", "mistyrose", "lightcyan","lavender", "cornsilk"),
+    legend = rownames(VADeaths), ylim = c(0, 100))
+    title(main = "Death Rates in Virginia", font.main = 4)
+```
+
+
+

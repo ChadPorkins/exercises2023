@@ -1,0 +1,493 @@
+## Question 1
+
+In R, dates are represented by Date objects, while times are represented
+by POSIXct objects. Under the hood, however, these dates and times are
+simple numerical values. Date objects store the number of days since the
+1st of January in 1970. POSIXct objects on the other hand, store the
+number of seconds since the 1st of January in 1970.
+
+The 1st of January in 1970 is the common origin for representing times
+and dates in a wide range of programming languages.
+
+### 1.1 Follow the instructions below.
+
+1.  Using R get the current date, and store the result into a variable -
+    today_date.
+
+2.  Use the `unclass()` on the today_date vector, what do you get?
+
+3.  Using R get the current time, and store the result into a variable -
+    time_now.
+
+4.  Use the `unclass()` on the time_now vector, what do you get?
+
+    ------------------------------------------------------------------------
+
+To create a date object from a simple character string in R, you can use
+the `as.Date()` function. The character string has to obey a format that
+can be defined using a set of symbols (the examples correspond to 15
+January, 1999):
+
+1.  %Y: 4-digit year. (1999)
+
+2.  %y: 2-digit year. (99)
+
+3.  %m: 2-digit month. (01)
+
+4.  %d: 2-digit day of the month. (15)
+
+5.  %A: weekday. (Friday)
+
+6.  %a: abbreviated weekday. (Fri)
+
+7.  %B: month. (January)
+
+8.  %b: abbreviated month. (Jan)
+
+### 1.2 follow the instructions below.
+
+1.  Read the dates.csv file
+
+2.  Four character columns representing dates are in the dates data
+    file. **Convert the first three columns to dates** using the proper
+    function, and assign them to first_col, second_col, and third_col
+    respectively.
+
+3.  Using `format()`. From the first date, select the day of the month.
+    From the second date, select the weekday. From the third date, you
+    should select the abbreviated month and the 4-digit year, separated
+    by a space.
+
+## Answer 1.1
+
+```{r}
+today_date = Sys.Date()
+
+unclass(today_date)
+
+#The result shows many days passed since 1 January 1970.
+
+
+time_now = Sys.time()
+
+unclass(time_now)
+
+#The result shows many seconds passed since 1 January 1970.
+
+```
+
+## Answer 1.2
+
+Four character columns representing dates are in the dates data file.
+**Convert the first three columns to dates** using the proper function,
+and assign them to first_col, second_col, third_col respectively.
+
+```{r}
+#Read the dates.csv file
+dates = read.csv("dates.csv")
+
+```
+
+Four character columns representing dates are in the dates data file.
+Convert the first three columns to dates using the proper function, and
+assign them to first_col, second_col, third_col respectively.
+
+```{r}
+first_col = as.Date(dates$month_day_year,  # Character vector to convert
+             format= "%m/%d/%y")            # Format of the dates to convert
+
+
+second_col = as.Date(dates$day_month_year,  # Character vector to convert
+             format= "%d-%b-%y")            # Format of the dates to convert
+
+third_col = as.Date(dates$year_month_day,  # Character vector to convert
+             format= "%Y-%m-%d")            # Format of the dates to convert
+```
+
+
+Using `format()`. From the first date, select the day of the month.
+From the second date, select the weekday. From the third date, you
+should select the abbreviated month and the 4-digit year, separated
+by a space.
+
+```{r}
+
+format(first_col, "%d")
+format(second_col, "%A")
+format(third_col, "%b %Y") 
+
+```
+
+
+## Question 2
+
+Similar to working with dates, you can use `as.POSIXct()` to convert
+from a character string to a POSIXct object. Again, you have a wide
+variety of symbols:
+
+1.  %H: hours as a decimal number (00-23)
+
+2.  %I: hours as a decimal number (01-12)
+
+3.  %M: minutes as a decimal number
+
+4.  %S: seconds as a decimal number
+
+5.  %T: shorthand notation for the typical format %H:%M:%S
+
+6.  %p: AM/PM indicator
+
+Pro tip! you can use `?strptime` if you want the full list of conversion
+symbols!
+
+------------------------------------------------------------------------
+
+### 2. Follow the instructions below.
+
+1.  Convert the fourth column to a date using the proper function.
+
+2.  Using `format()`, From the fourth column create a string containing
+    only hours as a decimal number (00-23).
+
+3.  From the fourth column extract the hours in the AM/PM format.
+
+4.  From the fourth column, how many days passed between the first and
+    second dates?
+
+## Answer 2
+
+
+```{r}
+
+# Convert the fourth column to a date using the proper function
+fourth_col <- as.POSIXct(dates$date_time,                 # Date/time to  convert                                                                       
+format = "%a %b %d %H:%M:%S %Y")  # Date/time format
+
+```
+
+```{r}
+#Using `format()`, From the fourth column create a string containing only hours as a decimal number (00-23).
+
+format(fourth_col,"%H")
+
+#From the fourth column extract the hours in the AM/PM format
+
+format(fourth_col,"%p")
+
+#From the fourth column, how many days passed between the first and second dates?
+
+fourth_col[2] - fourth_col[1]
+
+```
+
+## Question 3
+
+In the next part, we will use `Lubridate`.
+
+Lubridate makes it easier to do the things R does with date-times , and
+possible to do the things R does not.
+
+### 3. Follow the instructions below.
+
+1.  Convert each column with the appropriate lubridate function.
+
+2.  Check if date/time occurred in am(TRUE) or pm(FALSE).
+
+3.  Is it a leap year from the fourth column?
+
+4.  Based on the year unit in the fourth column, round the dates.
+
+5.  From the fourth column extract the year value using the `lubridate`
+    syntax, and plot the stock price values. The plot needs to be red
+    and have connected lines.
+
+you should get something like that:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+#Convert each column with the appropriate lubridate function.
+
+library(lubridate)
+
+dates = read.csv("dates.csv")
+
+col1_dates = mdy(dates[,1])
+
+col2_dates = dmy(dates[,2])
+
+col3_dates = ymd(dates[,3])
+
+# The date_time column is pretty messy so it can't
+# Be parsed with a pre-made lubridate funtion.
+# In this case use lubridate's parse_date_time() with the full date format
+col4_dates = parse_date_time(dates[,4],
+                             orders = "%a %b %d %H:%M:%S %Y")
+```
+
+```{r,message=FALSE,warning=FALSE, echo=FALSE}
+#From fourth column extract the year value and plot the stock price values. The plot needs to be red and have connected lines.
+
+years = year(col4_dates)
+
+plot(years,dates$stock_price, col = "red", type = "l")
+```
+
+## Answer 3
+
+```{r}
+
+#Convert each column with the appropriate lubridate function.
+
+library(lubridate)
+
+
+
+col1_dates = mdy(dates[,1])
+
+col2_dates = dmy(dates[,2])
+
+col3_dates = ymd(dates[,3])
+
+# The date_time column is pretty messy so it can't
+# Be parsed with a pre-made lubridate funtion.
+# In this case use lubridate's parse_date_time() with the full date format
+col4_dates = parse_date_time(dates[,4],
+                             orders = "%a %b %d %H:%M:%S %Y")
+```
+
+```{r}
+am(col4_dates)    # Check if date/time occurred in am(TRUE) or pm(FALSE)
+
+leap_year(col4_dates)   # Is it a leap year?
+
+round_date(col4_dates, 
+          unit = c("year"))  # Based on the year unit in the fourth column round the dates.
+
+
+```
+
+
+
+```{r}
+#From fourth column extract the year value and plot the stock price values. The plot needs to be red and have connected lines.
+
+years = year(col4_dates)
+
+plot(years,dates$stock_price, col = "red", type = "l")
+```
+
+## Lecture 10 Homework
+
+## Question 1:
+
+An SF layer is a special type of data.frame, where one of the columns is
+a geometry column. Therefore, many of the functions we learned when
+working with data frames also work on sf layers.
+
+Run the following code:
+
+```{r, message=FALSE,warning=FALSE}
+
+require(sf)
+
+rainfall = read.csv("rainfall.csv")
+
+rainfall = st_as_sf(rainfall, coords = c("x_utm", "y_utm"), crs = 32636)
+
+plot(st_geometry(rainfall))
+
+```
+
+### 1. Follow the instructions below.
+
+1.  Plot the stations that had more than 150 mm of rain in January.
+
+2.  Plot the stations that had less than 5 mm of rain in April.
+
+3.  Find the station that had the lowest mm of rain in December, and
+    print the station name.
+
+4.  Find the station that had the highest mm of rain in February, and
+    print the station name.
+
+## Answer 1
+
+Plot the stations that had more than 150 mm of rain in January.
+
+```{r}
+Jan_rain = rainfall[rainfall$jan > 150,]
+plot(st_geometry(Jan_rain))
+
+```
+
+
+Plot the stations that had less than 5 mm of rain in April.
+
+```{r}
+April_rain = rainfall[rainfall$apr < 5,]
+plot(st_geometry(April_rain))
+
+```
+
+Find the station that had the lowest mm of rain in December, and print the station name.
+
+```{r}
+Dec_rain = rainfall[which.min(rainfall$dec),]
+print(Dec_rain$name)
+
+```
+
+Find the station that had the highest mm of rain in February, and print the station name.
+
+
+```{r}
+Feb_rain = rainfall[which.max(rainfall$feb),]
+print(Feb_rain$name)
+
+```
+
+## Question 2:
+
+### 2. follow the instructions below.
+
+1.  Check the rain averages in the winter months - December, January,
+    and February, is one of the winter months significantly different in
+    the amount of rainfall?
+
+2.  Check the rainfall averages in the spring months - March, April, and
+    May, is one of the summer months significantly different in the
+    amount of rain?
+    
+    
+## Answer 2
+
+Check the rain averages in the winter months - December, January,
+and February, is one of the winter months significantly different in
+the amount of rainfall?
+
+
+```{r}
+
+Dec = rainfall$dec
+Jan = rainfall$jan
+Feb = rainfall$feb
+
+# organize the data and the grouping variable as a data frame
+winter_rain = data.frame(
+  rain = c(Dec, Jan, Feb),
+  group = rep(c("December", "January", "February"), each=169))
+
+## fit linear model and perform anova
+aov.model = aov(winter_rain$rain ~ winter_rain$group)
+summary(aov.model)
+
+TukeyHSD(aov.model)
+
+
+#January-December & January-February are significantly different int the amount of rainfall.
+
+  
+```
+
+___
+
+Check the rainfall averages in the spring months - March, April, and
+May, is one of the summer months significantly different in the
+amount of rain?
+
+```{r}
+
+March = rainfall$mar
+April = rainfall$apr
+May = rainfall$may
+
+# organize the data and the grouping variable as a data frame
+spring_rain = data.frame(
+  rain = c(March, April, May),
+  group = rep(c("March", "April", "May"), each=169))
+
+## fit linear model and perform anova
+aov.model2 = aov(spring_rain$rain ~ spring_rain$group)
+summary(aov.model2)
+
+TukeyHSD(aov.model2)
+
+
+# All the months are significantly different in the amount of rainfall.
+
+  
+```
+
+
+## Bonus question! That is for those who want to go further beyond!
+
+
+### Create the value and time vectors representing the water level of the BGU river in January and August during 2000-2006.
+
+```{r}
+value = c(1,0.8,1.2,0.5,1.8,1.5,1.1,0.8,1.3,0.3,1,0.8,1.5,1.1,1.9,1.2)
+time = rep(2000:2006, each = 2)
+time = rep(2000:2006, each = 2)
+time = paste0(time, c("-01-30", "-08-30"))
+time = as.Date(time)
+```
+
+1.  Plot the water level in January (month "01") as a function of the
+    water level in August (month "08"), between 2000 and 2006, where
+    each point represents one year. The points need to be connected in
+    chronological order.
+
+2.  Add text labels marking the water levels in 2000 and 2006.
+
+You should get something like that:
+
+```{r,echo=FALSE}
+value = c(1,0.8,1.2,0.5,1.8,1.5,1.1,0.8,1.3,0.3,1,0.8,1.5,1.1,1.9,1.2)
+time = rep(2000:2006, each = 2)
+time = rep(2000:2006, each = 2)
+time = paste0(time, c("-01-30", "-08-30"))
+time = as.Date(time)
+
+month = as.numeric(as.character(time, "%m"))
+
+year = as.numeric(as.character(time, "%Y"))
+
+Jan = value[month == 1]
+
+Aug = value[month == 8]
+
+plot(Jan, Aug, xlab = "January", ylab = "August", type = "b")
+text(Jan[1], Aug[1], labels = year[which.min(year)], pos = 3, col = "red")
+text(Jan[length(Jan)], Aug[length(Aug)],labels = year[which.max(year)], pos = 3, col = "red")
+
+
+
+```
+
+## Bonus Answer
+```{r}
+value = c(1,0.8,1.2,0.5,1.8,1.5,1.1,0.8,1.3,0.3,1,0.8,1.5,1.1,1.9,1.2)
+time = rep(2000:2006, each = 2)
+time = rep(2000:2006, each = 2)
+time = paste0(time, c("-01-30", "-08-30"))
+time = as.Date(time)
+
+month = as.numeric(as.character(time, "%m"))
+
+year = as.numeric(as.character(time, "%Y"))
+
+Jan = value[month == 1]
+
+Aug = value[month == 8]
+
+plot(Jan, Aug, xlab = "January", ylab = "August", type = "b")
+text(Jan[1], Aug[1], labels = year[which.min(year)], pos = 3, col = "red")
+text(Jan[length(Jan)], Aug[length(Aug)],labels = year[which.max(year)], pos = 3, col = "red")
+
+
+
+```
+
+    
+    
+    

@@ -1,0 +1,417 @@
+---
+title: "Lecture 4 Exercises"
+format:
+  html: 
+    theme: literal
+---
+
+## Question 1
+
+`plot()` is the main graphing function in R. it automatically produces simple plots for vectors, functions or data frames.
+
+As part of our research on functions and mathematics at university, we want to visualize functions.
+
+##### 1.1 Plot the following vectors in R. try to think what the x and y axis represents.
+
+```{r}
+x <- seq(0,8*pi,length.out=100)
+y <- sin(x)
+```
+
+you should get something like this:
+
+```{r, echo = FALSE}
+plot(x,y)
+
+```
+
+------------------------------------------------------------------------
+
+Another useful argument is changing the type of the plot!
+
+##### 1.2 Using the `plot()` function, add the **type** argument for the following criteria,and **write down** what changed in the plot.
+
+1.  type = "p"
+
+2.  type = "l"
+
+3.  type = "b"
+
+4.  type = "c"
+
+5.  type = "o"
+
+6.  type = "s"
+
+7.  type = "n"
+
+------------------------------------------------------------------------
+
+##### 1.3 There are many ways to change the plot we created in R and to change it to our needs!
+
+1.  using the `plot()` function, add the **pch** argument between 1 and 25, In addition use the **rainbow color** argument with 5 unique colors.
+
+2.  Save the plot to a pdf file, name it "fancy1"
+
+you should get something like this:
+
+```{r, echo = FALSE}
+fancy1 = plot(x,y, pch = 1:25, col=rainbow(5))
+
+fancy1
+
+```
+
+
+## Answer 1.1
+
+```{r}
+x <- seq(0,8*pi,length.out=100)
+y <- sin(x)
+plot(x,y)
+
+```
+
+The x-axis represents the values of the vector x that we created, the
+y-axis represents the values of the vector x after the mathematical
+function of sine.
+
+## Answer 1.2
+
+The type indicating the type of plotting. The following changes will
+occur accordingly: 
+
+“p” for points.
+
+“l” for lines.
+
+“b” for both points and lines.
+
+“c” for empty points joined by lines.
+
+“o” for overplotted points and lines.
+
+“s” and “S” for stair steps.
+
+“n” does not produce any points or lines.
+
+
+## Answer 1.3
+
+using the plot() function, add the pch argument between 1 and 25, In
+addition use the rainbow color argument with 5 unique colors.
+
+```{r}
+plot(x,y, pch = 1:25, col=rainbow(5))
+
+```
+
+___
+
+```{r, warning=FALSE, message=FALSE}
+# Step 1: Call the pdf command to start the plot
+
+pdf(file = "fancy1.pdf")
+
+# Step 2: Create the plot with R code
+
+fancy1 = plot(x,y, pch = 1:25, col=rainbow(5))
+
+# Step 3: Run dev.off() to create the file!
+
+dev.off()
+
+```
+
+## Question 2
+
+### 2. Now we want to create a summary boxplot, using both speed and distance columns from the built-in data set **cars**.
+
+1.  Use boxplot to plot the varriable speed, what can you learn from this boxplot?
+
+2.  Use boxplot to compare the column speed and dist from the built-in data set cars. (To plot these we use the boxplot command with a slightly different syntax `boxplot(y ~ x)`.)
+
+3.  Add to this plot the title "Car Speed Against Stopping Distance" with font number 3.
+
+4.  Give the axis Their proper names.
+
+5.  The boxplot should be in red.
+
+6.  Create the same plots with **violin plots**, Which one do you prefer more?
+
+
+## Answer 2
+
+```{r}
+
+boxplot(cars$speed)
+
+```
+The line represents the median of speed, which is 15. The box itself shows the upper and lower quartiles. The whiskers show the range (i.e. the largest and smallest values).
+
+___
+
+```{r}
+boxplot(speed ~ dist, data = cars,
+            xlab = "Stop Distance", ylab = "Speed",
+            col = "red")
+    title(main="Car Speed Against Stopping Distance", font.main = 3)
+```
+
+A summary boxplot with all the guidance.
+
+
+___
+
+```{r, message=FALSE, warning=FALSE}
+
+library(vioplot)
+vioplot(cars$speed)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+library(vioplot)
+vioplot(speed ~ dist, data = cars,
+            xlab = "Stop Distance", ylab = "Speed",
+            col = "red")
+    title(main="Car Speed Against Stopping Distance", font.main = 3)
+```
+
+## Question 3
+
+### 3. As part of our research we would like to create complex graphs according to certain indicators (factors). We will return to the data file of the whales.
+
+1.  Read the data file again as "whale".
+
+2.  Create a plot of the number of whales in relation to the depth, the plot should be categorized by the noise level.
+
+3.  Give suitable names to the axes and give each category a different color.
+
+An example of this can be seen in the presentation on slides 72-73.
+
+You should get something like that:
+
+```{r, echo = FALSE}
+whale = read.csv("whaledata.csv")
+```
+
+```{r,echo = FALSE}
+par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
+plot(whale$number.whales, whale$depth,
+       type = "n",
+       xlab = "Nnumber of whales",
+       ylab = expression(paste("Depth (m) ")),
+       xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
+       las = 1, cex.axis = 0.8, tcl = -0.2)
+points(x = whale$number.whales[whale$water.noise == "low"],
+       y = whale$depth[whale$water.noise == "low"],
+       pch = 16, col = "green")
+points(x = whale$number.whales[whale$water.noise == "medium"],
+       y = whale$depth[whale$water.noise == "medium"],
+       pch = 16, col = "orange")
+points(x = whale$number.whales[whale$water.noise == "high"],
+       y = whale$depth[whale$water.noise == "high"],
+       pch = 16, col = "red")
+text(x = 28, y = 1600, label = "A", cex = 2)
+leg_cols <- c("green", "orange", "red")
+leg_sym <- c(16, 16, 16)
+leg_lab <- c("low", "medium", "high")
+
+legend(x = 25, y = 800, col = leg_cols, pch = leg_sym, 
+        legend = leg_lab, bty = "n", 
+        title = "Noise level")
+```
+
+## Answer 3
+
+```{r}
+
+whale = read.csv("whaledata.csv")
+
+```
+
+```{r}
+par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
+plot(whale$number.whales, whale$depth,
+       type = "n",
+       xlab = "Nnumber of whales",
+       ylab = expression(paste("Depth (m) ")),
+       xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
+       las = 1, cex.axis = 0.8, tcl = -0.2)
+points(x = whale$number.whales[whale$water.noise == "low"],
+       y = whale$depth[whale$water.noise == "low"],
+       pch = 16, col = "green")
+points(x = whale$number.whales[whale$water.noise == "medium"],
+       y = whale$depth[whale$water.noise == "medium"],
+       pch = 16, col = "orange")
+points(x = whale$number.whales[whale$water.noise == "high"],
+       y = whale$depth[whale$water.noise == "high"],
+       pch = 16, col = "red")
+text(x = 28, y = 1600, label = "A", cex = 2)
+leg_cols <- c("green", "orange", "red")
+leg_sym <- c(16, 16, 16)
+leg_lab <- c("low", "medium", "high")
+
+legend(x = 25, y = 800, col = leg_cols, pch = leg_sym, 
+        legend = leg_lab, bty = "n", 
+        title = "Noise level")
+
+
+
+```
+
+## Lecture 4 Homework
+
+
+## Question 1
+
+
+### 1. We have already learned about histograms, however in this homework we will learn to control their output.
+
+1.  Load beersheva.csv from moodle and plot a histogram of the column tempcmax.
+
+2.  Add the title "Max Temperature in Beersheva".
+
+3.  Name x-axis "Max Temp" and make the histogram to be gold-colored.
+
+4.  Make the histogram to have 9 breaks.
+
+## Answer 1
+
+```{r}
+#Load beersheva.csv 
+beersheva <- read.csv("beersheva.csv")
+
+#Plot a histogram of the column tempcmax 
+hist(beersheva$tempcmax)
+```
+
+```{r}
+#Add to the histogram the title "Max Temperature, x axis name "Max Temp" and the color Gold.Make the histogram to have 9 breaks.
+hist(beersheva$tempcmax, main = "Max Temperature in Beersheva",
+xlab = "Max Temp", col = "Gold", breaks = 9)
+```
+
+## Question 2
+
+### 2. Histograms are great, however Kernal density plots are usually a much more effective way to view the distribution of a variable.
+
+1.  Create a kernel density plot from the same data as before
+
+2.  The plot should be with the same title as before, filled with light green color and a dark green border.
+
+3.  which one is better - histogram of kernel density plot?
+
+
+## Answer 2
+
+```{r}
+#Create kernel density plot from the same data as the histogram before,
+#with the same title, filled with lightgreen color and darkgreen border
+
+plot(density(beersheva$tempcmax), main = "Max Temperature in Beersheva")
+polygon(density(beersheva$tempcmax), col = "lightgreen", border = "darkgreen")
+
+```
+
+There is no right or wrong way when dealing with graphics. It all depend on what you want to display, In this case both ways of displaying beersheva max tempratures are good.
+
+## Question 3
+
+### 3. let's check for outliers in the built-in mtcars dataset.
+
+1.  using the `dotchart` function do you think there are outliers in the horsepower column?
+
+(Hint! you can use `boxplot` function to check your answer )
+
+## Answer 3
+
+```{r}
+dotchart(mtcars$hp)
+```
+
+We see that we have a suspicious dot with 300 plus horsepower that is much more to the right than most of the spots in the plot, so we will suspect that dot as an outlier.
+
+```{r}
+boxplot(mtcars$hp)
+```
+
+By using the boxplot we see that the point of the 300 plus horse power is beyond the box, therefore this point is undoubtedly an aoutlier!
+
+(for anyone wondering the dot is a sports car)
+
+## Bonus question! That is for those who want to go further beyond!
+
+### Another good way to present this information is through a pie chart.
+
+1.  Create a pie chart showing the proportion of cars from the mtcars data set that have different gear values. Hint! use the `pie()` function.
+
+    ```{r, echo = FALSE}
+    gears = table(mtcars$gear)
+
+    percent = round(100*gears/sum(gears), 1)
+    pielabels = paste(percent)
+    pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', cex = 0.8)
+    legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
+    ```
+
+------------------------------------------------------------------------
+
+### A barplot is one of the most common types of plot.
+
+It shows the relationship between a numerical variable and a categorical variable.
+
+For example, you can display the height of several individuals using a bar chart.
+
+In our case we want to display the calculated columns (tempcmax, tempcmin, tempcmean, rhmean, wsmean, wdmean).
+
+1.  Using `?barplot` read how to create a bar plot with vertical or horizontal bars.
+
+2.  Subset the data so you will have only the needed columns.
+
+3.  Use colMeans on the created data and create a barplot.
+
+4.  Add The title "Beersheva Means"
+
+5.  x axis name as "Categories"
+
+6.  Line width of 5
+
+7.  Each bar will be with different color of your choice - to see all colors in R go to:
+
+    <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>
+
+
+## Bonus answer
+
+```{r}
+gears = table(mtcars$gear)
+percent = round(100*gears/sum(gears), 1)
+pielabels = paste(percent)
+pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', cex = 0.8)
+
+legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
+```
+
+___
+
+```{r}
+#Subset the data so you will have only the needed columns
+ subset_beersheva = beersheva[,5:10]
+
+#Use colMeans to create a "means vector" from all columns
+beersheva_means = colMeans(subset_beersheva)
+
+#create a barplot with the following arguments:
+#1) The title "Beersheva Means"
+#2) x axis name as "Categories"
+#3) Line width of 5
+#4) Each bar will be with different color of your choise
+barplot(beersheva_means,lwd = 5, main="Beersheva Means",xlab="Categories",
+col=c("darkseagreen3", "lightslategray", "red4", "plum1", "tan2", "navyblue"))
+```
+
+
+
