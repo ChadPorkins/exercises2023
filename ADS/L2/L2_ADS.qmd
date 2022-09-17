@@ -1,0 +1,627 @@
+---
+title: "Lecture 2 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Before we start!
+
+Paste the lesson files into your home directory. Run the following code
+in cygwin:
+
+```{r,eval=FALSE}
+cd ~/ADS_L2
+
+```
+
+## Question 1
+
+The CLI has survived and thrived for almost fifty years because it lets
+people do complex things with just a few keystrokes. It helps users
+combine existing programs in new ways, automate repetitive tasks, and
+run programs on clusters and clouds that may be halfway around the
+world. This lesson will introduce its key elements and show you how to
+use them efficiently.
+
+As part of your internship in the world of data, you were privileged to
+manage a company's database.You want and need to manage the data in the
+best possible way.
+
+### 1.1 The basis of any successful code is first of all to know which files we are working with and navigate through directories.
+
+1.  Run pwd command (Print working directory), where are you right now?
+
+2.  Run `pwd` commnand (Print working directory), where are you right
+    now?
+
+3.  Run the `ls -la` command what do you get?
+
+4.  change directory to the Report folder, what files are there?
+
+5.  where does cd . take you?
+
+6.  where does cd .. take you?
+
+7.  where does cd \~ take you?
+
+8.  Return back to the Report folder, where does cd \~/../. take you?
+
+## 1.1 Answer
+
+Run pwd commnand (Print working directory), where are you right now?
+
+You should be in \~/ADS_L2 inside the lesson directory that you copied
+to your home directory.
+
+------------------------------------------------------------------------
+
+Run the ls -la command what do you get?
+
+ls is a Linux shell command that lists directory contents of files and
+directories. In addition the the -l and -a argummnets will show you the
+followong:
+
+-l: Will show a "long listing", which includes extra details such as
+permissions, ownership, file sizes, and timestamps
+
+-a: WIll list all of a directory's files, including hidden ones (that
+start with .)
+
+------------------------------------------------------------------------
+
+where does cd . take you?
+
+This command will keep you in your current directory.
+
+where does cd .. take you?
+
+This command will take you one directory back.
+
+where does cd \~ take you?
+
+This command will take you to the home directory back.
+
+Return back to the Report folder, where does cd \~/../. take you?
+
+`cd ~/ADS_L2`
+
+This command will return you one directory before the home directory.
+
+### 1.2 Now we will focus on creating new data and deleting unnecessary data.
+
+1.  Create a new folder named backup, Make a copy of Q1.csv in the
+    backup folder, and name the new file Q1.bck.
+
+2.  Copy Q2.csv and Q3.csv from the seasonal directory into the backup
+    directory without changing your current working directory.
+
+3.  Using a single command, move Q1.csv and Q4.csv from Report to the
+    backup folder.
+
+4.  Rename Q4.csv to Autumn.csv
+
+5.  Remove Autumn.csv.
+
+6.  Without changing directories, delete the file info.txt in the
+    More_info directory.
+
+7.  Now that the More_info directory is empty, use a single command to
+    delete it.
+
+8.  create a new directory called yearly below your home directory. Now
+    that yearly exists, create another directory called 2017 inside it
+    without leaving your home directory.
+
+## Answer 1.2
+
+```{r,eval=FALSE}
+
+create a new folder named backup, Make a copy of Q1.csv in the backup folder, name the new file Q1.bck.
+
+cd ~/ADS_L2
+
+mkdir Backup
+
+cp  ~/ADS_L2/Report/Q1.csv ~/ADS_L2/Backup/Q1.bck
+
+```
+
+```{r,eval=FALSE}
+
+Copy Q2.csv and Q3.csv from the seasonal directory into the backup directory without changing your current working directory.
+
+cp  ~/ADS_L2/Report/Q1.csv ~/ADS_L2/Report/Q2.csv Backup
+
+```
+
+```{r,eval=FALSE}
+Using a single command, move Q1.csv and Q4.csv from Report the backup folder.
+
+mv  ~/ADS_L2/Report/Q1.csv ~/ADS_L2/Report/Q4.csv Backup
+
+
+
+```
+
+```{r,eval=FALSE}
+
+Rename Q4.csv to Autumn.csv
+
+cd ~/ADS_L2/Backup
+
+mv Q4.csv Autumn.csv
+
+```
+
+```{r,eval=FALSE}
+
+Remove Autumn.csv.
+
+rm Autumn.csv
+
+```
+
+```{r,eval=FALSE}
+
+Without changing directories, delete the file info.txt in the More_info directory.
+
+rm info.txt ~/ADS_L2/More_info/info.txt
+
+```
+
+```{r,eval=FALSE}
+
+Now that the More_info directory is empty, use a single command to delete it.
+
+rmdir ~/ADS_L2/More_info
+
+```
+
+```{r, eval=FALSE}
+create a new directory called yearly below your home directory.
+Now that yearly exists, create another directory called 2017 inside it
+without leaving your home directory.
+
+Option A :
+  
+cd ~/ADS_L2
+  
+mkdir yearly
+
+mkdir ~/ADS_L2/yearly/2017
+  
+Option B :
+  
+mkdir -p yearly/2017
+
+```
+
+### 1.3 Now we will focus on displaying data
+
+1.  view the content of Q3.csv from the Backup directory.
+
+2.  Display only the first 3 lines of Q3.csv.
+
+3.  Read the manual page for the tail command to find out what putting
+    a + sign in front of the number used with the -n flag does.
+    (Remember to press the spacebar to page down and/or type q to quit.)
+
+4.  Use tail with the flag -n +7 to display, what do you get?
+
+## Answer 1.3
+
+```{r,eval=FALSE}
+
+view the content of Q3.csv from the Backup directory. 
+
+cd ~/ADS_L2/Backup
+
+cat Q3.csv
+
+```
+
+```{r,eval=FALSE}
+
+Display the first 3 lines of Q3.csv.
+
+head -n 3 Q3.csv
+```
+
+```{r,eval=FALSE}
+
+Use tail with the argument of -n +7, what do you get?
+  
+  
+tail -n +7 Q3.csv
+
+ -n +7 will display all lines but only the first six lines of Q3.csv
+
+```
+
+## Question 2
+
+Head and tail let you select rows from a text file. If you want to
+select columns, you can use the command cut. It has several options (use
+man cut to explore them), but the most common is something like:
+
+cut -f 3-6,9 -d , values.csv which means "select columns 3 through 6 and
+columns 9, using comma as the separator". cut uses -f (meaning "fields")
+to specify columns and -d (meaning "delimiter") to specify the
+separator. You need to specify the latter because some files may use
+spaces, tabs, or colons to separate columns.
+
+##### Question 2.1 What command will select the first column (containing dates) from the file Q3.csv?
+
+## Answer 2.1
+
+```{r, eval=FALSE}
+What command will select the first column (containing dates) from the file Q3.csv?
+
+cd ~/ADS_L2/Backup
+  
+cut -d , -f 1 Q3.csv
+
+```
+
+------------------------------------------------------------------------
+
+How can I select lines containing specific values? head and tail select
+rows, cut selects columns, and grep selects lines according to what they
+contain. In its simplest form, **grep** takes a piece of text followed
+by one or more filenames and prints all of the lines in those files that
+contain that text.
+
+Here are some common arguments:
+
+-   c: print a count of matching lines rather than the lines themselves.
+
+-   h: do not print the names of files when searching multiple files.
+
+-   i: ignore case (e.g., treat "Regression" and "regression" as
+    matches).
+
+-   l: print the names of files that contain matches, not the matches.
+
+-   n: print line numbers for matching lines.
+
+-   v: invert the match, i.e., only show lines that don't match.
+
+### Question 2.2 Follow the instructions below:
+
+1.  Print the contents of all of the lines containing the word Italy in
+    Forbes2000.csv
+
+2.  Invert the match to find all of the lines that don't contain the
+    value 2013 in Q3.csv.
+
+3.  Count how many lines contain the he word Italy in Forbes2000.csv.
+
+4.  Combine tail with redirection to save the last 3 lines of Q3.csv in
+    a file called last_3.csv.
+
+5.  With one command, copy all the text files to the backup directory.
+
+## Answer 2.2
+
+```{r,eval=FALSE}
+
+
+Print the contents of all of the lines containing the value Italy in Forbes2000.csv
+
+
+cd ~/ADS_L2/More_info2/
+
+grep Italy Forbes2000.csv
+```
+
+```{r,eval=FALSE}
+
+cd ~/ADS_L2/Backup/
+
+grep -v -n 2013 Q3.csv
+```
+
+```{r,eval=FALSE}
+
+Count how many lines contain the he word Italy in Forbes2000.csv
+
+cd ~/ADS_L2/More_info2/
+
+grep -c Italy Forbes2000.csv
+
+```
+
+```{r,eval=FALSE}
+
+Combine tail with redirection to save the last 3 lines of Q3.csv in a file called last_3.csv.
+
+cd ~/ADS_L2/Backup/
+
+tail -n 5 Q3.csv > last_3.csv  
+
+```
+
+```{r,eval=FALSE}
+With one command, copy all the text files from More_info2 to the backup directory.
+
+cp ~/ADS_L2/More_info2/*.txt ~/ADS_L2/Backup
+
+```
+
+## Question 3
+
+Unix has a variety of text editors. For this course, we will use a
+simple one called Nano. You can move around with the arrow keys, delete
+characters using backspace, and do other operations with control-key
+combinations:
+
+Ctrl + K: delete a line.
+
+Ctrl + U: un-delete a line.
+
+Ctrl + O: save the file ('O' stands for 'output'). You will also need to
+press Enter to confirm the filename!
+
+Ctrl + X: exit the editor.
+
+### 3. Follow the instructions below:
+
+1.  Install nano.
+
+-   Download nano for
+    [Windows](https://www.nano-editor.org/dist/win32-support/nano-git-0d9a7347243.exe).
+
+-   Rename the file to nano.exe
+
+-   Move it to C:\Program Files\Git\usr\bin
+
+-   Open git for Windows and issue the following command: git config
+    --global core.editor "winpty nano"
+
+-   And that's it! Next git opens a text editor, it will be nano run
+    inside of MINGW64.
+
+2.  Add your name and your birthday in the words.txt file.
+
+## Answer 3
+
+```{r,eval=FALSE}
+
+cd ~/ADS_L2/More_info2
+
+nano woeds.txt
+```
+
+## Lecture 2 Homework
+
+## Question 1
+
+Inspect the following code:
+
+```{r, eval=FALSE}
+cd ~
+touch my_file.txt  
+```
+
+### 1.Follow the instructions below:
+
+1.  What did the touch command do?
+
+2.  When you look at your home directory using the GUI file explorer,
+    does the file show up?
+
+3.  Use ls -l to inspect the files. How large is my_file.txt?
+
+4.  When might you want to create a file this way?
+
+## Answer 1
+
+##### What did the touch command do?
+
+The touch command generates a new file called 'my_file.txt' in your home
+directory.
+
+##### When you look at your home directory using the GUI file explorer, does the file show up?
+
+If you are in your home directory, you can observe this newly generated
+file by typing 'ls' at the command line prompt.
+
+'my_file.txt' can also be viewed in your GUI file explorer.
+
+##### Use ls -l to inspect the files. How large is my_file.txt?
+
+When you inspect the file with 'ls -l', note that the size of
+'my_file.txt' is 0kb.
+
+In other words, it contains no data. If you open 'my_file.txt' using
+your text editor it is blank.
+
+##### When might you want to create a file this way?
+
+Some programs do not generate output files by themselves but instead
+require empty files that have already been generated.
+
+When the program is running, it searches for an existing blank file to
+pipe the output to it.
+
+The touch command allows you to efficiently generate a blank text file
+to be used by such programs.
+
+## Question 2
+
+What happens when we type rm -i \~/ADS_L2/More_info2/words.txt
+
+Why would we want this protection when using rm?
+
+## Answer 2
+
+The -i argument will display a prompt before every removal.
+
+The Unix shell doesn't have a trash bin, so all the files removed will
+disappear forever.
+
+By using the -i flag, we have the chance to check that we are deleting
+only the files that we want to remove.
+
+## Question 3
+
+What is the output of the code shown below?
+
+```{r,eval=FALSE}
+$ pwd
+/Users/jamie/data
+$ ls
+proteins.dat
+$ mkdir recombine
+$ mv proteins.dat recombine/
+$ cp recombine/proteins.dat ../proteins-saved.dat
+$ ls
+```
+
+Is it:
+
+1.  proteins-saved.dat recombine
+
+2.  recombine
+
+3.  proteins.dat recombine
+
+4.  proteins-saved.dat
+
+#Answer 3
+
+We start in the /Users/jamie/data directory, and create a new folder
+called recombine.
+
+The second line moves (mv) the file proteins.dat to the new folder
+(recombine).
+
+The third line makes a copy of the file we just moved.
+
+The tricky part here is where the file was copied to.
+
+Recall that .. means "go up a level", so the copied file is now in
+/Users/jamie.
+
+Notice that .. is interpreted with respect to the current working
+directory, not with respect to the location of the file being copied.
+
+So, the only thing that will show using ls (in /Users/jamie/data) is the
+recombine folder - Option 2.
+
+## Question 4
+
+Jamie is working on a project and she sees that her files aren't very
+well organized:
+
+```{r,eval=FALSE}
+$ ls -F
+#analyzed/  fructose.dat    raw/   sucrose.dat
+```
+
+The fructose.dat and sucrose.dat files contain output from her data
+analysis.
+
+What command(s) does she need to run so that the commands below will
+produce the output shown?
+
+```{r,eval=FALSE}
+$ ls -F
+analyzed/   raw/
+
+$ ls analyzed
+fructose.dat    sucrose.dat
+
+
+```
+
+## Answer 4
+
+```{r,eval=FALSE}
+mv *.dat analyzed
+
+```
+
+Jamie needs to move her files fructose.dat and sucrose.dat to the
+analyzed directory.
+
+The shell will expand \*.dat to match all .dat files in the current
+directory.
+
+The mv command then moves the list of .dat files to the "analyzed"
+directory.
+
+## Bonus question! That is for those who want to go further beyond!
+
+##### Another essential part of the shell is writing code with variables, solve the following questions.
+
+Let us have a look at the syntax of the if-else code.
+
+```{r,eval=FALSE}
+if [condition]
+then
+   statement1
+else
+   statement2
+fi
+
+```
+
+1.  Using if-else write a code to check whether a number is even or not.
+
+2.  Using if-else write a code to check whether two numbers are equal or
+    not. (hint use -eq in the if condition)
+
+Here is a nice site for writing the code:
+
+<https://www.onlinegdb.com/online_bash_shell>
+
+## Bonus question Answer
+
+1.  
+
+```{r,eval=FALSE}
+echo "---- EVEN OR ODD IN SHELL SCRIPT -----"
+echo -n "Enter a number:"
+read n
+echo -n "RESULT: "
+if [ `expr $n % 2` == 0 ]
+then
+	echo "$n is even"
+else
+	echo "$n is Odd"
+fi
+```
+
+or:
+
+```{r,eval=FALSE}
+n=9
+if [ $((n%2)) -eq 0 ]
+then
+  echo "The number is even."
+else
+  echo "The number is odd."
+fi
+```
+
+
+2.  
+
+```{r,eval=FALSE}
+
+q=1
+w=2
+
+if [ $q -eq $w ]
+then
+        echo "Both variables are the same"
+else
+        echo "Both variables are different"
+fi
+
+```

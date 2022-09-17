@@ -1,0 +1,1095 @@
+---
+title: "Advanced data science for Geographers"
+author: "Professor Itai Kloog"
+institute: "The Department of Geography and Environmental Development<br/> Ben Gurion University"
+date: "(Updated: `r Sys.Date()`)"
+format:
+  revealjs:
+    title-slide-attributes:
+      data-background-color: "Orange"
+    logo: "https://www.dropbox.com/s/gw1nba9povyjty1/ppic123.png?raw=1" 
+    scrollable: true
+    slide-number: true
+    show-slide-number: all 
+---
+
+
+# Week 5: Rstudio projects and RMarkdown  {background-color="Gold"}
+
+
+# File managment  {background-color="#008494"}
+
+## file management is crucial for reproducible research {.smaller}
+
+Careful file management is crucial for reproducible research. 
+
+There are two important guidelines:
+
+• Explicitly tie your files together.
+
+• Have a plan to organize, store, and make your files available.
+
+
+## file management {.smaller}
+
+File management is  important for you as a researcher, because if your files are well organized you will be able to more easily make changes, benefit from work you have already done, and collaborate with others.
+
+Using tools such as `R`, `knitr/rmarkdown`, and other markup languages like LaTeX requires fairly detailed knowledge of where files are stored in your computer. 
+
+
+Handling files professionally and in academia to enable reproducibility require you to use `command-line` tools to access and organize your files. 
+
+
+R and Unix-like shell programs allow you to control files–creating, deleting, relocating–in powerful and really reproducible ways as we have seen in previous lessons 
+
+
+
+## file management {.smaller}
+
+
+By typing and coding these commands you are documenting every step you take (CLI history, Git, Rstudio etc..)
+
+
+This is a major advantage over graphical user interface-type systems where you organize files by clicking and dragging them with the cursor. 
+
+
+## File Paths & Naming Conventions: Root directories {.smaller}
+
+A root directory is the first level in a disk, such as a hard drive. 
+
+It is the root out of which the file tree ‘grows’. 
+
+All other directories are subdirectories of the root directory.
+
+## File Paths & Naming Conventions: Root directories {.smaller}
+
+On Windows computers you can have multiple root directories, one for each storage device or partition of a storage device. 
+
+The root directory is given a drive letter assignment. If you use Windows regularly you will most likely be familiar with `C:\` used to denote the C partition of the hard drive. This is a root directory. 
+
+On Unix-like systems, including Macs and Linux computers, the root directory is simply denoted by a forward slash (/) with nothing before it.
+
+
+## Subdirectories & parent directories {.smaller}
+
+You will probably not store all of your files in the root directory. 
+
+This would get very messy. 
+
+Instead you will likely store your files in subdirectories of the root directory. 
+
+Inside of these subdirectories may be further subdirectories and so on. Directories inside of other directories are also referred to as child directories of a parent directory.
+
+## Subdirectories & parent directories {.smaller}
+
+
+On Windows computers separate subdirectories are indicated with a back slash (\).
+
+For example, if we have a folder called Data inside of a folder called ExampleProject which is located in the C root directory it has the address `C:\ExampleProject\Data`
+
+## Working directories
+When you use R, markup languages, and many of the other tools, it is important to keep in mind what your current working directory is.
+
+The working directory is the directory where the program automatically looks for files and other directories, unless you tell it to look elsewhere. 
+
+It is also where it will save files. 
+
+
+## Absolute vs. relative paths {.smaller}
+For reproducible research, collaborative research, and even if you ever change the computer you work on, it is a good idea to use relative rather than absolute file paths. 
+
+Absolute file paths give the entire path of a given file or directory on a specific system. 
+
+For example:
+`/ExampleProject/Data` is an absolute path as it specifies the path of the Data child directory all the way back to the root directory. 
+
+## Absolute vs. relative paths {.smaller}
+
+However, if our current working directory is ExampleProject and we want to link to the Data child directory or a file in it, we don’t need the absolute path. We could simply use `Data/`, i.e. the path relative to the working directory.
+
+
+It is good practice to use relative paths when possible and organize your files such that using relative paths is easy. 
+
+This makes your code less dependent on the particular file structure of a particular computer. 
+
+## Absolute vs. relative paths {.smaller}
+
+For example, imagine you use `C:\\ExampleProject\\Data` in your source code to link to the Data directory. 
+
+Someone, a collaborator, a researcher reproducing your work, or even you then tries to run the code on a different computer. The code will **break** if they are, for instance, using a Unix-like system or have placed `ExampleProject` in a different partition of their hard drive. T
+
+his can be fixed relatively straightforwardly by changing the file path in the source. However, this is tedious (often not well documented) and unnecessary if you use relative file paths.
+
+## directory & file names
+It is generally good practice to avoid putting spaces in your file and directory names. 
+
+dont use special charaecters such as `*,!` etc..
+
+## example research project file tree
+
+![](https://www.dropbox.com/s/8ej4ijbn4shxxuu/ppic381.png?raw=1){.r-stretch}
+
+
+## R File Manipulation Commands {.smaller}
+
+R has a range of commands for handling and navigating through files. 
+
+Including these commands in your source code files allows you to more easily replicate your actions.
+
+
+the `getwd` command
+
+```{r}
+#| echo: true
+#| eval: false
+getwd()
+### [1] "/home/radha/garage/RR/Rep-Res-Book-master/Source/Children/Chapter4"
+```
+
+## list.files  {.smaller}
+
+Use the list.files command to see all of the files and subdirectories in the current working directory. 
+
+You can list the files in other directories too by adding the directory path as an argument to the command.
+
+```{r}
+#| echo: true
+#| eval: false
+list.files()
+### [1] "auto" "chapter4.Rnw" "images4"
+```
+
+## setwd  {.smaller}
+The setwd command sets the current working directory. 
+
+```{r}
+#| echo: true
+#| eval: false
+setwd("/ExampleProject/Data/GatherSource")
+```
+
+
+## additional less common comands  {.smaller}
+
+You can can reset the directory by feeding a new file path to the root.dir option:
+
+```{r}
+#| echo: true
+#| eval: false
+opts_knit$set(root.dir = '/ExampleProject/Analysis')
+```
+
+## other commands  {.smaller}
+
+```{r}
+#| echo: true
+#| eval: false
+dir.create("C:\\ExampleProject")
+file.create("C:\\ExampleProject\\SourceCode.R")
+
+```
+
+## unix commands  {.smaller}
+
+of course all your previous CLI tools work as well
+
+ie, `cat`, `less`, `cd`, `mkdir` etc..
+
+```{r}
+#| echo: true
+#| eval: false
+cd C:/Users/Me/Desktop
+```
+
+# Rstudio Projects  {background-color="#008494"}
+
+## Rstudio Projects  {.smaller}
+
+A project in RStudio is a collection of work organized in a work folder.
+
+RStudio provides tools that will help you manage your work on projects.
+
+RStudio remembers what files you had open and what tabs were displayed, when you close a project.
+
+When you open the project again, RStudio will open the same files and display the same tabs.
+
+
+## Rstudio Projects  {.smaller}
+
+This will allow you to quickly pick up your work again. 
+
+RStudio can be configured to save and restore the session memory. 
+
+The default is to start a new session when you open a project, so some previously executed commands may need to be run again.
+
+
+## Rstudio Projects  {.smaller}
+
+
+Almost any R work can be structured as a project. 
+
+You might consider creating a project for an individual class, thesis, or research project.
+
+We will create a project to organize the work for the this course 
+
+
+
+## Create a new Project {.smaller}
+
+From the file menu (which is along the top of the RStudio window), select New Project.
+
+![](https://www.dropbox.com/s/vvln53dniepbb06/ppic382.png?raw=1){.r-stretch}
+
+
+A New Project window will be opened with three options for creating a new project.
+
+We will use a new directory for this project, so select the New Directory icon.
+
+The menu in the New Project window will now display options for the type of project to start. We are starting an empty project, select the Empty project icon.
+
+
+## Create a new Project {.smaller}
+
+The option to create a project in an existing directory is used when R programs have already been written and saved in a directory. 
+
+To do this, you would open the New Project window as was done above.
+
+You would select Existing Directory from the menu in the New Project window instead of New Directory option. 
+
+This will create the RStudio project (the .Rproj file), but does not set up source control for this project. 
+
+You will need to use a Git GUI to setting up source control for this project.
+
+## Create a new Project {.smaller}
+
+The Version Control option is used to start a local project folder from an existing project, provided the existing project is using Git. 
+
+This is often a project which is shared by researchers.
+
+We will create a project using the version control option soon.
+
+
+## Organizing Project Files In Folders in Rstudio {.smaller}
+If your project is small, keeping all your files in the one project folder created by RStudio is convenient.
+
+For larger projects with multiple documents, scripts, figures, etc., using subfolders to organize your work will make life easier.
+
+Some suggestions for organizing folders within a project.
+
+Create a sub-folder for your original data
+
+Use a sub-folder for cleaned-up data
+
+Use a sub-folder for your scripts
+
+Use a folder if you need to save figures
+
+
+
+## Quitting A Project
+
+When you are within a project and choose to either Quit, close the project, or open another project the following actions are taken:
+
+.RData and/or .Rhistory are written to the project directory (if current options indicate they should be)
+
+The list of open source documents is saved (so it can be restored next time the project is opened)
+
+Other RStudio settings (as described above) are saved.
+
+The R session is terminated.
+
+
+
+## Working With Multiple Projects At Once
+
+You can work with more than one RStudio project at a time by simply opening each project in its own instance of RStudio. 
+
+There are two ways to accomplish this:
+
+1.  Use the Open Project in New Window command located on the Project menu.
+
+2.  Opening multiple project files via the system shell (i.e. double-clicking on the project file).
+
+
+
+## Project Options {.smaller}
+
+There are several options that can be set on a per-project basis to customize the behavior of RStudio. 
+
+You can edit these options using the Project Options command on the Project menu:
+
+![](https://www.dropbox.com/s/5wiin1zpxhaq5mq/ppic383.png?raw=1){.r-stretch}
+
+
+## General project {.smaller}
+
+Note that the General project options are all overrides of existing global options. 
+
+To inherit the default global behavior for a project you can specify (Default) as the option value.
+
+-   **Restore .RData into workspace at startup** — Load the .RData file (if any) found in the initial working directory into the R workspace (global environment) at startup. If you have a very large .RData file then unchecking this option will improve startup time considerably.
+
+-   **Save workspace to .RData on exit** — Ask whether to save .RData on exit, always save it, or never save it. Note that if the workspace is not dirty (no changes made) at the end of a session then no prompt to save occurs even if Ask is specified.
+
+## General project {.smaller}
+
+**Always save history (even when not saving .RData)**
+
+Make sure that the .Rhistory file is always saved with the commands from your session even if you choose not to save the .RData file when exiting.
+
+
+
+# Rstudio And Git  {background-color="#008494"}
+
+## Git Ignore {.smaller}
+
+As you remember Git ignore is used to identify files which you do not intend to include in source control. 
+
+Ignoring a files removes it from the Git Status display, in the Git tab. 
+
+We can ignore ie the RFR.Rproj file.
+
+From the tools menu in the Git tab (the icon which looks like a gear or cog) select Ignore.
+
+![](https://www.dropbox.com/s/m5lg0oqn5rtvprd/ppic385.png?raw=1){.r-stretch}
+
+
+## A Git Ignore Window Will Be Displayed.
+
+![](https://www.dropbox.com/s/3u8h5w1pibink0v/ppic386.png?raw=1){.r-stretch}
+
+Click save in the Git Ignore window.
+
+The Git Ignore window will disappear and the RFR.Rproj file will no longer be displayed in the Git tab pane.
+
+
+## Using Git in Rstudio {.smaller}
+
+Now that we have our project and repositories (both local and remote) set up in the previous lesson, it's finally time to learn how to use Git in RStudio!  
+
+Typically, when using Git your workflow will go something like this:   
+
+1. You create/delete and edit files in your project directory on your computer as usual (saving these changes as you go)  
+
+2. Once you've reached a natural 'break point' in your progress (i.e. you'd be sad if you lost this progress) you **stage** these files
+
+3. You then **commit** the changes you made to these staged files (along with a useful commit message) which creates a permanent snapshot of these changes  
+
+4. You keep on with this cycle until you get to a point when you would like to **push** these changes to GitHub  
+
+5. If you're working with other people on the same project you may also need to **pull** their changes to your local computer  
+
+
+## Using Git in Rstudio {.smaller}
+
+In RStudio lets open up the `ADS_course.Rproj` 
+ 
+(`File` -> `Open Project` menu or click on the top right project icon and select the appropriate project) 
+
+![](https://www.dropbox.com/s/12d3t3kbwq82qlo/ppic604.png?raw=1){.r-stretch}
+
+
+## Using Git in Rstudio {.smaller}
+
+Lets create a Quarto document inside this project by clicking on the `File` -> `New File` -> `Quarto document`
+![](https://www.dropbox.com/s/wen21n5u8gwqe49/ppic606.png?raw=1){.r-stretch}
+
+## Using Git in Rstudio {.smaller}
+
+Once created, we can delete all the example Quarto code (except the YAML header) as usual and write some interesting Quarto text and include a plot. 
+
+![](https://www.dropbox.com/s/xo1tdqbmuk3tuu8/ppic607.png?raw=1){.r-stretch}
+
+## Using Git in Rstudio {.smaller}
+
+We'll use the inbuilt `cars` dataset to do this. Save this file (cmd + s for Mac or ctrl + s in Windows). 
+
+![](https://www.dropbox.com/s/7fwmnmu4r830xd9/ppic610.png?raw=1){.r-stretch}
+
+## Using Git in Rstudio {.smaller}
+
+Your Quarto document should look something like the following (it doesn't matter if it's not exactly the same).
+
+![](https://www.dropbox.com/s/iqcehlzp4q3xh4v/ppic608.png?raw=1){.r-stretch}
+
+## Using Git in Rstudio {.smaller}
+
+Take a look at the 'Git' tab which should list your new Quarto document (`first_doc.qmd` in this example) along with `first_repo.Rproj`, and `.gitignore`
+
+![](https://www.dropbox.com/s/cl6p9arm7x7sl1t/ppic611.png?raw=1){.r-stretch}
+
+## Staging {.smaller}
+
+Following our workflow, we now need to **stage** these files. 
+
+To do this tick the boxes under the 'Staged' column for all files. 
+
+> Notice that there is a status icon next to the box which gives you an indication of how the files were changed. 
+
+![](https://www.dropbox.com/s/urtlca2rnt0qu0z/ppic612.png?raw=1){.r-stretch}
+
+## Staging {.smaller}
+
+Other staging options presented in the icons:
+
+![](https://www.dropbox.com/s/cu7j7e0riiep5kz/ppic617.png?raw=1){.r-stretch}
+
+## Commiting {.smaller}
+
+After you have staged the files the next step is to **commit** the files. 
+
+This is done by clicking on the 'Commit' button.
+
+![](https://www.dropbox.com/s/ur5xb489jy06bim/ppic614.png?raw=1){.r-stretch}
+
+## Commiting {.smaller}
+
+After clicking on the 'Commit' button you will be taken to the 'Review Changes' window. 
+
+You should see the files you staged from the previous step in the left pane. 
+
+If you click on the file name `first_doc.qmd` you will see the changes you have made to this file highlighted in the bottom pane. 
+
+Any content that you have added is highlighted in green and deleted content is highlighted in red. 
+
+As you have only just created this file, all the content is highlighted in green. 
+
+![](https://www.dropbox.com/s/x9xl7cfza28od3y/ppic615.png?raw=1){.r-stretch}
+
+
+## Commiting {.smaller}
+
+To commit these files (take a snapshot) first enter a mandatory commit message in the 'Commit message' box. 
+
+This message should be relatively short and informative 
+
+![](https://www.dropbox.com/s/zh0h40xrfj9g4nb/ppic616.png?raw=1){.r-stretch}
+
+## Commiting {.smaller}
+
+
+A summary of the commit you just performed will be shown. Now click on the 'Close' button to return to the 'Review Changes' window. Note that the staged files have now been removed.
+![](https://www.dropbox.com/s/kswbj2z6at6stn7/ppic618.png?raw=1){.r-stretch}
+
+## Pushing to a remote site (github) {.smaller}
+Now that you have committed your changes the next step is to **push** these changes to GitHub. 
+
+Before you push your changes it's good practice to first **pull** any changes from GitHub. 
+
+This is especially important if both you and your collaborators are working on the same files as it keeps you local copy up to date and avoids any potential conflicts. 
+
+## Pushing to a remote site (github) {.smaller}
+
+To do this, click on the 'Pull' button on the top right of the 'Review Changes' window. 
+
+Once you have pulled any changes click on the green 'Push' button to push your changes. 
+
+You will see a summary of the push you just performed. 
+
+Hit the 'Close' button and then close the 'Review Changes' window. 
+
+![](https://www.dropbox.com/s/ceo1adtfw6sji8f/ppic619.png?dl=0){.r-stretch}
+
+## Pushing to a remote site (github) {.smaller}
+
+To confirm the changes you made to the project have been pushed to GitHub, open your GitHub page, click on the Repositories link and then click on the  `first_repo` repository. 
+
+You should see four files listed including the `first_doc.qmd` you just pushed. Along side the file name you will see your last commit message ('First commit' in this case) and when you made the last commit.
+
+
+## Tracking changes {.smaller}
+
+After following the steps outlined above, you will have successfully modified an RStudio project by creating a new R markdown document, staged and then committed these changes and finally pushed the changes to your GitHub repository. 
+
+Now let's make some further changes to your R markdown file and follow the workflow once again but this time we 'll take a look at how to identify changes made to files, examine the commit history and how to restore to a previous version of the document.  
+
+## Tracking changes {.smaller}
+
+In RStudio open up the `first_repo.Rproj` file you created previously (if not already open) then open the `first_doc.qmd` file (click on the file name in the `Files` tab in RStudio).  
+
+Let's make some changes to this document.
+
+Delete the line beginning with 'My first version controlled ...' and replace it with something more informative (see figure below). We will also change the plotted symbols to red and give the plot axes labels. 
+
+## Tracking changes {.smaller}
+
+Lastly, let's add a summary table of the dataframe using the `kable()`\index{kable()} and `summary()`\index{summary()} functions (you may need to install the `knitr`\index{knitr package} package if you haven't done so previously to use the `kable()` function) and finally render this document to pdf by changing the YAML option to `output: pdf_document`.
+
+
+
+\  
+
+```{r mod1, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod1.png")
+```
+
+\  
+
+Now save these changes and then click the `knit` button to render to pdf. A new pdf file named `first_doc.pdf` will be created which you can view by clicking on the file name in the `Files` tab in RStudio.  
+
+Notice that these two files have been added to the `Git` tab in RStudio. The status icons indicate that the `first_doc.qmd` file has been modified (capital M) and the `first_doc.pdf` file is currently untracked (question mark).
+
+\  
+
+```{r mod2, echo=FALSE, out.width="60%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod2.png")
+```
+
+\  
+
+To stage these files tick the 'Staged' box for each file and click on the 'Commit' button to take you to the 'Review Changes' window
+
+\  
+
+```{r mod3, echo=FALSE, out.width="60%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod3.png")
+```
+
+\  
+
+Before you commit your changes notice the status of `first_doc.pdf` has changed from untracked to added (A). You can view the changes you have made to the `first_doc.qmd` by clicking on the file name in the top left pane which will provide you with a useful summary of the changes in the bottom pane (technically called diffs). Lines that have been deleted are highlighted in red and lines that have been added are highlighted in green (note that from Git's point of view, a modification to a line is actually two operations: the removal of the original line followed by the creation of a new line). Once you're happy, commit these changes by writing a suitable commit message and click on the 'Commit' button.
+
+\  
+
+```{r mod4, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod4.png")
+```
+
+\  
+
+To push the changes to GitHub, click on the 'Pull' button first (remember this is good practice even though you are only collaborating with yourself at the moment) and then click on the 'Push' button. Go to your online GitHub repository and you will see your new commits, including the `first_doc.pdf` file you created when you rendered your R markdown document. 
+ 
+\  
+
+```{r mod5, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod5.png")
+```
+
+\  
+
+To view the changes in `first_doc.qmd` click on the file name for this file.
+
+\  
+
+```{r mod6, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/mod6.png")
+```
+
+### Commit history 
+
+One of the great things about Git and GitHub is that you can view the history of all the commits you have made along with the associated commit messages. You can do this locally using RStudio (or the Git command line) or if you have pushed your commits to GitHub you can check them out on the GitHub website.  
+
+To view your commit history in RStudio click on the 'History' button (the one that looks like a clock) in the Git pane to bring up the history view in the 'Review Changes' window. You can also click on the 'Commit' or 'Diff' buttons which takes you to the same window (you just need to additionally click on the 'History' button in the 'Review Changes' window).  
+
+\ 
+
+```{r his1, echo=FALSE, out.width="60%", fig.align="center",, eval=FALSE}
+knitr::include_graphics(path = "images/c_history.png")
+```
+
+\  
+
+The history window is split into two parts. The top pane lists every commit you have made in this repository (with associated commit messages) starting with the most recent one at the top and oldest at the bottom. You can click on each of these commits and the bottom pane shows you the changes you have made along with a summary of the **Date** the commit was made, **Author** of the commit and the commit message (**Subject**). There is also a unique identifier for the commit (**SHA** - Secure Hash Algorithm) and a **Parent** SHA which identifies the previous commit. These SHA identifiers are really important as you can use them to view and revert to previous versions of files (details [below](#undo)). You can also view the contents of each file by clicking on the 'View file @ SHA key` link (in our case 'View file @ 2b4693d1').  
+
+\  
+
+```{r his2, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/c_history2.png")
+```
+
+\  
+
+You can also view your commit history on GitHub website but this will be limited to only those commits you have already pushed to GitHub. To view the commit history navigate to the repository and click on the 'commits' link (in our case the link will be labelled '3 commits' as we have made 3 commits).
+
+\  
+
+```{r his3, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/c_history3.png")
+```
+
+\  
+
+You will see a list of all the commits you have made, along with commit messages, date of commit and the SHA identifier (these are the same SHA identifiers you saw in the RStudio history). You can even browse the repository at a particular point in time by clicking on the `<>` link. To view the changes in files associated with the commit simply click on the relevant commit link in the list.
+
+\  
+
+```{r his4, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/c_history4.png")
+```
+
+\  
+
+Which will display changes using the usual format of green for additions and red for deletions.
+
+\  
+
+```{r his5, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/c_history5.png")
+```
+
+### Reverting changes {#undo}
+
+One the great things about using Git is that you are able to revert to previous versions of files if you've made a mistake, broke something or just prefer and earlier approach. How you do this will depend on whether the changes you want to discard have been staged, committed or pushed to GitHub. We'll go through some common scenarios below mostly using RStudio but occasionally we will need to resort to using the Terminal (still in RStudio though).  
+
+#### Changes saved but not staged, committed or pushed {-}
+
+If you have saved changes to your file(s) but not staged, committed or pushed these files to GitHub you can right click on the offending file in the Git pane and select 'Revert ...'. This will roll back all of the changes you have made to the same state as your last commit. Just be aware that you cannot undo this operation so use with caution. 
+
+\  
+
+```{r rev1, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert1.png")
+```
+
+\  
+
+You can also undo changes to just part of a file by opening up the 'Diff' window (click on the 'Diff' button in the Git pane). Select the line you wish to discard by double clicking on the line and then click on the 'Discard line' button. In a similar fashion you can discard chunks of code by clicking on the 'Discard chunk' button.  
+
+\  
+
+```{r rev2, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert2.png")
+```
+
+#### Staged but not committed and not pushed {-}
+
+If you have staged your files, but not committed them then simply unstage them by clicking on the 'Staged' check box in the Git pane (or in the 'Review Changes' window) to remove the tick. You can then revert all or parts of the file as described in the section above. 
+
+#### Staged and committed but not pushed {-}
+
+If you have made a mistake or have forgotten to include a file in your last commit which you have not yet pushed to GitHub, you can just fix your mistake, save your changes, and then amend your previous commit. You can do this by staging your file and then tick the 'Amend previous commit` box in the 'Review Changes' window before committing.   
+
+\  
+
+```{r rev3, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert3.png")
+```
+
+\  
+
+If we check out our commit history you can see that our latest commit contains both changes to the file rather than having two separate commits. We use the amend commit approach alot but it's important to understand that you should **not** do this if you have already pushed your last commit to GitHub as you are effectively rewriting history and all sorts bad things may happen! 
+
+\  
+
+```{r rev4, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert4.png")
+```
+
+\  
+
+If you spot a mistake that has happened multiple commits back or you just want to revert to a previous version of a document you have a number of options.   
+
+**Option 1** - (probably the easiest but very unGit - but like, whatever!) is to look in your commit history in RStudio, find the commit that you would like to go back to and click on the 'View file @ ' button to show the file contents.
+
+\  
+
+```{r rev5, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert5.png")
+```
+
+\  
+
+You can then copy the contents of the file to the clipboard and paste it into your current file to replace your duff code or text. Alternatively, you can click on the 'Save As' button and save the file with a different file name. Once you have saved your new file you can delete your current unwanted file and then carry on working on your new file. Don't forget to stage and commit this new file.
+
+\  
+
+```{r rev6, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert6.png")
+```
+
+\
+
+**Option 2** - (Git like) Go to your Git history, find the commit you would like to roll back to and write down (or copy) its SHA identifier. 
+
+\  
+
+```{r rev7, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert7.png")
+```
+
+\  
+
+Now go to the Terminal in RStudio and type `git checkout <SHA> <filename>`. In our case the SHA key is `2b4693d1` and the filename is `first_doc.qmd` so our command would look like this:
+
+```
+git checkout 2b4693d1 first_doc.qmd
+```
+
+The command above will copy the selected file version from the past and place it into the present. RStudio may ask you whether you want to reload the file as it now changed - select yes. You will also need to stage and commit the file as usual.  
+
+If you want to revert all your files to the same state as a previous commit rather than just one file you can use (the single 'dot' `.` is important otherwise your HEAD will detach!):
+
+```
+git rm -r .
+git checkout 2b4693d1 .
+
+```
+
+Note that this will delete all files that you have created since you made this commit so be careful!
+
+#### Staged, committed and pushed {-}
+
+If you have already pushed your commits to GitHub you can use the `git checkout` strategy described above and then commit and push to update GitHub (although this is not really considered 'best' practice). Another approach would be to use `git revert` (Note: as far as we can tell `git revert` is not the same as the 'Revert' option in RStudio). The `revert` command in Git essentially creates a new commit based on a previous commit and therefore preserves all of your commit history. To rollback to a previous state (commit) you first need to identify the SHA for the commit you wish to go back to (as we did above) and then use the `revert` command in the Terminal. Let's say we want to revert back to our 'First commit' which has a SHA identifier `d27e79f1`. 
+
+\  
+
+```{r rev8, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert8.png")
+```
+
+\  
+
+We can use the `revert` command as shown below in the Terminal. The `--no-commit` option is used to prevent us from having to deal with each intermediate commit. 
+
+```
+git revert --no-commit d27e79f1..HEAD
+```
+
+Your `first_doc.qmd` file will now revert back to the same state as it was when you did your 'First commit'. Notice also that the `first_doc.pdf` file has been deleted as this wasn't present when we made our first commit. You can now stage and commit these files with a new commit message and finally push them to GitHub. Notice that if we look at our commit history all of the commits we have made are still present.
+
+\  
+
+```{r rev9, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert9.png")
+```
+
+\  
+
+and our repo on GitHub also reflects these changes
+
+\  
+
+```{r rev10, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/revert10.png")
+```
+
+### Collaborate with Git {#collab}
+
+GitHub is a great tool for collaboration, it can seem scary and complicated at first, but it is worth investing some time to learn how it works. What makes GitHub so good for collaboration is that it is a *distributed system*, which means that every collaborator works on their own copy of the project and changes are then merged together in the remote repository. There are two main ways you can set up a collaborative project on GitHub. One is the workflow we went through above, where everybody connects their local repository to the same remote one; this system works well with small projects where different people mainly work on different aspects of the project but can quickly become unwieldy if many people are collaborating and are working on the same files (merge misery!). The second approach consists of every collaborator creating a copy (or **fork**) of the main repository, which becomes their remote repository. Every collaborator then needs to send a request (a **pull request**) to the owner of the main repository to incorporate any changes into the main repository and this includes a review process before the changes are integrated. More detail of these topics can be found in the [Further resources](#resources) section.
+
+### Git tips
+
+Generally speaking you should commit often (including amended commits) but push much less often. This makes collaboration easier and also makes the process of reverting to previous versions of documents much more straight forward. We generally only push changes to GitHub when we're happy for our collaborators (or the rest of the world) to see our work. However, this is entirely up to you and depends on the project (and who you are working with) and what your priorities are when using Git. 
+
+\  
+
+If you don't want to track a file in your repository (maybe they are too large or transient files) you can get Git to ignore the file by right clicking on the filename in the Git pane and selecting 'Ignore...'
+
+\  
+
+```{r tip1, echo=FALSE, out.width="70%", fig.align="center", eval=FALSE}
+knitr::include_graphics(path = "images/tip1.png")
+```
+
+\  
+
+This will add the filename to the `.gitignore` file. If you want to ignore multiple files or a particular type of file you can also include wildcards in the `.gitignore` file. For example to ignore all `png` files you can include the expression `*.png` in your `.gitignore` file and save.
+
+\  
+
+If it all goes pear shaped and you end up completely trashing your Git repository don't despair (we've all been there!). As long as your GitHub repository is good, all you need to do is delete the offending project directory on your computer, create a new RStudio project and link this with your remote GitHub repository using [Option 2](#opt2). Once you have cloned the remote repository you should be good to go. 
+
+## Further resources {#resources}
+
+There are many good online guides to learn more about git and GitHub and as with any open source software there is a huge community that can be a great resource:
+
+- The British Ecological Society guide to [Reproducible Code][BES_code_guide]
+
+- The [GitHub guides][github_guides]
+
+- The Mozilla Science Lab [GitHub for Collaboration on Open Projects guide][mozilla]
+
+- Jenny Bryan's [Happy Git and GitHub][git_happy]. We borrowed the idea (but with different content) of RStudio first, RStudio second in the 'Setting up a version controlled Project in RStudio' section. 
+
+- Melanie Frazier's [GitHub: A beginner's guide to going back in time (aka fixing mistakes)][revert-git]. We followed this structure (with modifications and different content) in the 'Reverting changes' section.   
+
+- If you have done something terribly wrong and don't know how to fix it try [Oh Shit, Git][Oh_Shit_Git] or if you're easily offended [Dangit, Git][dang_it_git]
+
+These are only a couple of examples, all you need to do is Google "version control with git and GitHub" to see how huge the community around these open source projects is and how many free resources are available for you to become a version control expert.
+
+```{r links, child="links.md",eval=FALSE}
+```
+
+
+
+
+
+# Hello, Quarto!  {background-color="#008494"}
+
+## Quarto
+
+Quarto provides an authoring framework for data science. You can use a single Quarto file to both
+
+-   save and execute code
+-   generate high quality reports that can be shared with an audience
+
+R Markdown documents are fully reproducible and support dozens of static and dynamic output formats. 
+
+
+
+Like the rest of R, Quarto is free and open source. You can install the Quarto package from CRAN with:
+
+```{r}
+#| echo: true
+#| eval: false
+    install.packages("quarto")
+```
+
+
+
+
+This is an Quarto file, a plain text file that has the extension .qmd. 
+You can download a copy from moodle. 
+
+!***The file should be updated to .qmd***!
+
+[Example](https://www.dropbox.com/s/olbo1w86xafm8tv/1-example.qmd?dl=0)
+
+
+
+Notice that the file contains three types of content:
+
+-   An (optional) YAML header 
+-   R code chunks surrounded by graves
+-   text mixed with simple text formatting
+
+
+## A Notebook Interface
+
+When you open the file in the RStudio IDE, it becomes a notebook interface for R. 
+
+You can run each code chunk by clicking the 'play' icon. 
+
+RStudio executes the code and display the results inline with your file.
+
+
+
+
+![](https://www.dropbox.com/s/558qoi8n72u3bg0/ppic405.png?raw=1){.r-stretch}
+
+
+
+To generate a report from the file, run the render command:
+
+***I tried this but it didnt really work***
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages("quarto")
+quarto::quarto_render("1-example.qmd")
+or:
+quarto::quarto_render("1-example.qmd")
+  
+```
+
+you can also use the “Knit” button in the RStudio IDE to render the file and preview the output with a single click.
+
+
+
+![](https://www.dropbox.com/s/eqiws8plf7v7a2a/ppic406.png?raw=1){.r-stretch}
+
+
+
+Quarto generates a new file that contains selected text, code, and results from the .Qmd file. 
+
+The new file can be a finished web page, PDF, MS Word document, slide show, notebook, handout, book, dashboard, package vignette or other format.
+
+
+
+## How It Works
+
+When you render a Quarto document, first knitr executes all of the code chunks and creates a new markdown (.md) document which includes the code and its output. The markdown file generated is then processed by pandoc, which creates the finished format. The Render button encapsulates these actions and executes them in the right order for you.
+
+An updated image can be found at the end of this page:
+
+https://quarto.org/docs/get-started/hello/rstudio.html
+
+
+![](https://www.dropbox.com/s/jsgt2uagwu6hm05/ppic407.png?raw=1){.r-stretch}
+
+
+
+
+## Code Chunks
+
+The Quarto file below contains three code chunks.
+
+***The picture should be updated with a .qmd file.***
+
+![](https://www.dropbox.com/s/y0mhko2qsi3gqkg/ppic408.png?raw=1){.r-stretch}
+
+
+## use:
+
+-   the keyboard shortcut Ctrl + Alt + I
+-   the Add Chunk  command in the editor toolbar
+-   or by typing the chunk delimiters {r} .
+
+When you render your .Qmd file, Quarto will run each code chunk and embed the results beneath the code chunk in your final report.
+
+
+## Chunk Options
+
+
+Chunk output can be customized with knitr options, arguments set in the {} of a chunk header. 
+
+Above, we use five arguments:
+
+-   include = FALSE prevents code and results from appearing in the finished file. R Markdown still runs the code in the chunk, and the results can be used by other chunks.
+-   echo = FALSE prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.
+-   message = FALSE prevents messages that are generated by code from appearing in the finished file.
+-   warning = FALSE prevents warnings that are generated by code from appearing in the finished.
+-   fig.cap = "&#x2026;" adds a caption to graphical results.
+
+> See the Quarto Reference Guide for a complete list of knitr chunk options.
+
+
+## Inline Code
+
+Code results can be inserted directly into the text of a `.qmd` file by enclosing the code with a r code chunk
+
+The file below uses such chunks twice to call  `colorFunc`, which returns “heat.colors.” 
+
+***The picture should be updated with a .qmd file.***
+
+
+![](https://www.dropbox.com/s/hcxhudxkptiwf9q/ppic415.png?raw=1){.r-stretch}
+
+
+## R Markdown Will Always
+
+
+-   display the results of inline code, but not the code
+-   apply relevant text formatting to the results
+
+As a result, inline output is indistinguishable from the surrounding text. Inline expressions do not take knitr options.
+
+
+## Code Languages
+Notice that .qmd file can execute code in bash and python.
+
+*** Bash no longer works on Quarto  ***
+
+![](https://www.dropbox.com/s/lb7xhpt3d8baccb/ppic409.png?raw=1){.r-stretch}
+
+
+
+## Knitr Can Execute Code In Many Languages Besides R.
+
+Some of the available language engines include:
+
+
+***The principal languages supported by Quarto are Python, R, Julia, and Observable JavaScript***
+
+
+-   Python
+-   SQL
+-   Bash
+-   Rcpp
+-   Stan
+-   JavaScript
+-   CSS
+
+
+
+
+To process a code chunk using an alternate language engine, replace the r at the start of your chunk declaration with the name of the language such as `{bash}`
+
+> Note that chunk options like echo and results are all valid when using a language engine like python. 
+
+
+
+## Markdown Basics
+
+
+
+Format the text in your Quarto file with Pandoc’s *Markdown*, a set of markup annotations for plain text files.  (Is it right?)
+
+When you render your file, Pandoc transforms the marked up text into formatted text in your final file format:
+
+![](https://www.dropbox.com/s/dd2g2tjbi4wp93l/ppic414.png?raw=1){.r-stretch}
+
+
+## You Can Use Pandoc’s Markdown To Make:
+
+-   Headers
+-   Lists
+-   Links
+-   Images
+-   Block quotes
+-   Latex equations
+-   Horizontal rules
+-   Tables
+-   Slide breaks
+-   Italicized text
+-   Bold text
+-   Superscripts
+-   Subscripts
+-   Strikethrough text
+
+
+## Markdown Example
+
+
+!***Needs an Update***!
+
+![](https://www.dropbox.com/s/d98hmipbbigcads/ppic416.png?raw=1){.r-stretch}
+
+!***Needs an Update***!
+
+## Output Formats
+
+
+Set the output format argument of render to render your `.qmd` file into any of Quarto’s supported formats. 
+
+For example, the code below renders 1-example.qmd to a Microsoft Word document:
+
+
+***The command didnt work for me***
+
+```{r}
+#| echo: true
+#| eval: false
+    library(quarto)
+    quarto::quarto_render("1-example.qmd", output_format = "word_document") 
+
+```
+
+
+
+If you do not select a format, Quarto renders the file to its default format, which you can set in the output field of a .qmd file’s header. 
+
+The header of 1-example.qmd shows that it renders to an HTML file by default.
+
+The RStudio IDE render button renders a file to the first format listed in its output field. 
+
+
+
+![](https://www.dropbox.com/s/thm2w3kt35r5x14/ppic412.png?raw=1){.r-stretch}
+
+## The Following Output Formats Are Available To Use With R Markdown:
+
+
+-   html<sub>notebook</sub> - Interactive R Notebooks
+-   html<sub>document</sub> - HTML document w/ Bootstrap CSS
+-   pdf<sub>document</sub> - PDF document (via LaTeX template)
+-   word<sub>document</sub> - Microsoft Word document (docx)
+-   odt<sub>document</sub> - OpenDocument Text document
+-   rtf<sub>document</sub> - Rich Text Format document
+-   md<sub>document</sub> - Markdown document (various flavors)
+
+
+## Presentations (slides)
+
+-   ioslides<sub>presentation</sub> - HTML presentation with ioslides
+-   revealjs::revealjs<sub>presentation</sub> - HTML presentation with reveal.js  **(THIS is what I use to create these slides.. ;-))**
+-   slidy<sub>presentation</sub> - HTML presentation with W3C Slidy
+-   beamer<sub>presentation</sub> - PDF presentation with LaTeX Beamer
+
+
+Each format will intuitively divide your content into slides, with a new slide beginning at each first or second level header.
+
+Insert a horizontal rule (**\***) into your document to create a manual slide break. Create incremental bullets with >-, as in the .qmd file below.
+
+![](https://www.dropbox.com/s/7wn39obybw5rfsw/ppic411.png?raw=1){.r-stretch}

@@ -1,0 +1,402 @@
+---
+title: "Lecture 7 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+ggplot2 is a system for declaratively creating graphics, based on The
+Grammar of Graphics. You provide the data, tell ggplot2 how to map
+variables to aesthetics, and what graphical primitives to use, and it
+takes care of the details.
+
+Today's lesson will be about visualizing YouTube video statistics!
+
+The youtube.csv file includes the following columns:
+
+-   Video ID: The Video Identifier.
+
+-   Published At: The date the video was published in YYYY-MM-DD.
+
+-   Keyword: The keyword associated with the video.
+
+-   Likes: The number of likes the video received.
+
+-   Comments: The number of comments the video has.
+
+-   Views: The number of views the video got.
+
+## Question 1
+
+1.  Read youtubedata.csv into R.
+
+2.  As always the first we need to do is to check our data! use the
+    summary `function` to review all variables and look for NAs and
+    outliers.
+
+## Answer 1
+
+```{r}
+youtube = read.csv("Youtubedata.csv")
+summary(youtube)
+```
+
+We can see in the column of the comments and in the column of likes that
+there is a value of minus one, a very problematic value for us. We will
+fix it now.
+
+------------------------------------------------------------------------
+
+```{r}
+youtube = youtube[youtube$Likes>=0,]
+youtube = youtube[youtube$Comments>=0,]
+summary(youtube)
+```
+
+Now the data looks correct, in the views column, we can see a very wide
+range of values. It makes sense because there are unpopular videos on
+YouTube, and on the other hand, there are also viral videos with
+hundreds of millions of views and more.
+
+## Question 2
+
+Scatter plots are great for visualizing relationships between variables.
+
+1.  By using ggplot2 create a scatter plot between likes and views.
+
+2.  By using ggplot2 create a scatter plot between comments and views.
+
+3.  Add a regression line to both plots, Does the data fit the
+    regression line?
+
+# Answer 2
+
+```{r}
+library(ggplot2)
+```
+
+### By using ggplot2 create a dot plot between likes and views.
+
+```{r}
+ggplot(youtube, aes(Likes, Views)) +
+  geom_point()
+
+```
+
+### By using ggplot2 create a dot plot between comments and views.
+
+```{r}
+ggplot(youtube, aes(Comments, Views)) +
+  geom_point()
+
+```
+
+------------------------------------------------------------------------
+
+### Add a regression line to both plots, Does the data fit the regression line?
+
+```{r, message=FALSE}
+ggplot(youtube, aes(Likes, Views)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r, message=FALSE}
+ggplot(youtube, aes(Comments, Views)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+In both plots, we see not an exactly complete fit to the regression
+line, but there is potential for some regression.
+
+## Question 3
+
+One approach to linearising relationships is to apply a transformation
+to one or both variables. Try transforming the views variable with
+either a natural log (log()) or square root (sqrt()) transformation.
+
+1.  Create new variables in the youtube data frame for your transformed
+    variables.
+
+2.  Use these variables when creating your new plots, which
+    transformation best linearises this relationship?
+
+## Answer 3
+
+### Create new variables in the youtube dataframe for your transformed variables.
+
+```{r}
+youtube$Views.log = log(youtube$Views)
+
+youtube$Views.sqrt = sqrt(youtube$Views)
+
+
+```
+
+```{r, message=FALSE}
+ggplot(youtube, aes(Likes, Views.log)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r, message=FALSE}
+ggplot(youtube, aes(Likes, Views.sqrt)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+### Use these variables when creating your new plots, which transformation best linearises this relationship?
+
+Both plots do not exactly fit the regression line, but undoubtedly the
+log creates a plot that better fits the regression line.
+
+## Question 4
+
+One of the most powerful aspects of the R plotting package ggplot2 is
+the ease with which you can create multi-panel plots. With a single
+function, you can split a single plot into many related plots using
+`facet_wrap()`
+
+1.  Using `facet_wrap()` create a multi-plot by the Keyword factor to
+    the best fit plot from the previous question, In addition, add the
+    dark theme.
+
+2.  Add a proper title.
+
+## Answer 4
+
+```{r,message=FALSE}
+ggplot(youtube, aes(Likes, Views.log)) +
+  geom_point() +
+  facet_wrap(~Keyword) +
+  geom_smooth(method = "lm") +
+  theme_dark() +
+  ggtitle("Scatterplots of the number of likes in relation to the number of views (log) ")
+  
+#Using facet_wrap() create a multi-plot by the Keyword factor to the best fit plot from the previous question, In addition, add the dark theme.
+
+#Add a proper title.
+```
+
+## Question 5
+
+When exploring your data it is often useful to visualize the
+distribution of the variables.
+
+1.  Using ggplot 2 create histograms for the Likes of the 50 least liked
+    videos.
+
+2.  Experiment with different breaks on the likes variable.
+
+3.  Make the histogram green with a red external Layer.
+
+## Answer 5
+
+### Using ggplot 2 create histograms for the Likes of the 50 least liked videos.
+
+```{r,message=FALSE}
+
+TOP50 = youtube[order(youtube$Likes),]
+TOP50 = TOP50[1:50,]
+
+
+ggplot(TOP50, aes(x=Likes)) + geom_histogram()
+
+```
+
+### Experiment with different breaks on the Views variable.
+
+```{r}
+ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 10) 
+
+
+
+```
+
+```{r}
+ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 50) 
+
+
+```
+
+```{r}
+ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 100) 
+
+
+```
+
+### Make the histogram green with a red external Layer.
+
+```{r,message=FALSE}
+
+ggplot(TOP50, aes(Likes)) + geom_histogram(color="red", fill="green") 
+
+
+```
+
+## Lecture 7 Homework
+
+## Question 1
+
+Run the following code:
+
+```{r,eval=FALSE}
+library(ggplot2)
+ggplot(data = mpg)
+```
+
+1.  What do you get?
+
+## Answer 1
+
+ggplot with no aesthetics just shows a grey square, since it produces a
+background with no plot on it.
+
+## Question 2
+
+1.  What does the drv variable describe?
+
+Read the help for `?mpg` to find out.
+
+## Answer 2
+
+```{r,eval=FALSE}
+?mpg
+```
+
+Typing ? into the console gets you a guide on functions and other
+objects. The variable drv describes the type of drive train, where f =
+front-wheel drive, r = rear-wheel drive, 4 = 4wd.
+
+## Question 3
+
+1.  Use ggplot 2 to make a scatter plot of hwy in relation to cyl.
+
+## Answer 3
+
+```{r}
+ggplot(mpg, aes(x=cyl, y=hwy)) + geom_point()
+
+```
+
+## Question 4
+
+1.  What happens if you make a scatter plot of class in relation to drv.
+
+2.  Why is the plot not useful?
+
+## Answer 4
+
+```{r}
+ggplot(mpg, aes(x=class, y=drv)) + geom_point()
+
+```
+
+Both variables are categorical data, the points show us if there were
+any combinations of those categories.
+
+## Question 5
+
+1.  What is wrong with the following code?
+
+2.  Try to fix the code.
+
+```{r,eval=FALSE}
+ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy, color = "manufacturer"))
+```
+
+## Answer 5
+
+```{r}
+ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy, color = manufacturer))
+```
+
+The manufacturer variable is defined as text and not as a parameter, the
+quotation marks should be deleted.
+
+## Question 6
+
+1.  What is wrong with the following code? (Why are the points not
+    blue?)
+
+2.  Try to fix it and present the points in blue.
+
+```{r}
+ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+## Answer 6
+
+```{r}
+ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+The points are not blue because the "blue" is being interpreted as a
+vector (c("blue")), to map to an aesthetic, just like hwy or displ.
+
+## Question 7
+
+1.  Run the following code and try to analyze it.
+
+```{r,eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+      geom_point() + 
+      geom_smooth(se = FALSE)
+```
+
+## Answer 7
+
+```{r,eval=TRUE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+      geom_point() + 
+      geom_smooth(se = FALSE)
+```
+
+This plot shows that four-wheel drive cars generally have somewhat worse
+highway fuel consumption than two-wheel drives and that higher engine
+displacement is generally associated with worse fuel consumption.
+
+AWD and 4WD drive systems can add hundreds of pounds to a car's curb
+weight, and that extra bulk can have a big impact on fuel economy.
+That's because an engine has to work harder to move a heavier car, which
+means more fuel is used to move an AWD car the same distance as one with
+2WD.
+
+## Question 8
+
+1.  Looking back at the previous code, what the `se = FALSE` argument
+    does?
+
+## Asnwer 8
+
+`se` specifies whether to add a translucent background showing the
+confidence interval.
+
+## Question 9
+
+1.  Will these two graphs look different?
+
+```{r,eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+      geom_point() + 
+      geom_smooth()
+```
+
+```{r,eval=FALSE}
+ggplot() + 
+      geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+      geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+```
+
+They will look the same.
+
+It does not matter whether data and mapping are specified in the initial
+ggplot() or in the geom.
