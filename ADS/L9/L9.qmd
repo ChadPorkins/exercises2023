@@ -1,0 +1,424 @@
+---
+title: "Lecture 9 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+It is often said that 80% of data analysis is spent on cleaning and
+preparing data. Furthermore, it is not only the first step in each data
+science project, but a process that must be repeated throughout the
+analysis as new problems come to light or new data is collected. To get
+a handle on the problem, this exercise focuses on an essential aspect of
+data called data tidying: structuring datasets to facilitate analysis.
+
+-   The general principle of "tidy data" is this:
+
+-   Every column is a variable Every row is an observation
+
+-   Every cell is a single value.
+
+## Question 1
+
+### 1.1 - relig_income data tibble
+
+```{r,message=FALSE,warning=FALSE}
+library(tidyverse)
+relig_income
+```
+
+relig_income is a tibble that contains the result of the religion and
+income survey.
+
+1.  Why is the data in the tibble not tidy?
+
+2.  Tidy the relig_income tibble.
+
+### 1.2 - fish_encounters tibble
+
+```{r}
+fish_encounters
+```
+
+fish_encounters is a tibble containing information about fish swimming
+down a river. Each station represents an autonomous monitor that records
+if a tagged fish was seen at that location.
+
+1.  Why is the data in the tibble not tidy?
+
+2.  Tidy the fish_encounters tibble.
+
+3.  What problem appeared in the new tibble? Try to fix it.
+
+## Answer 1.1
+
+The issue is that all the columns except for religion aren't really
+variables. They are realizations of a different variable - that is,
+income. So we need to make this tibble go from "wide" (more columns) to
+"long" (fewer columns, more rows). Our function for this in tidyr is
+`pivot_longer()`.
+
+```{r}
+relig_income %>%
+  pivot_longer(cols = -religion, names_to = "income", values_to = "value")
+```
+
+## Answer 1.2
+
+fish_encounters has the opposite problem of relig_income. The variables
+"Release" and "I80_1," etc., are condensed under one variable,
+"station." In essence, not every row is an observation that holds other
+variables fixed. We need to go from having a "long" dataset with many
+rows to a "wider" dataset that has more columns. We will use the
+`pivot_wider()` function for this.
+
+```{r}
+fish_encounters %>%
+  pivot_wider(names_from = station, values_from = seen)
+```
+
+------------------------------------------------------------------------
+
+In the new tibble, we have plenty of NA values, and we can fix it with a
+small adjustment to the previous code.
+
+```{r}
+fish_encounters %>%
+  pivot_wider(names_from = station, values_from = seen, values_fill = 0)
+```
+
+## Question 2
+
+```{r}
+df <- data.frame(Player=c('Frodo Baggins', 'Frodo Baggins', 'Samwise Gamgee', 'Samwise Gamgee', 'Grover Cleveland', 'Grover Cleveland'),
+                 Year=c(1999, 2000, 1999, 2000, 1999, 2000),
+                 Points=c(31, 22, 30, 15, 16, 17),
+                 Assists=c(3, 5, 4, 6, 2, 1))
+```
+
+Sometimes we want to turn two variables into one single variable or one
+variable into several variables.
+
+1.  Combine the "points" and "assists" columns into a single column
+    called Player_Stat.
+
+2.  Separate the Player column to Personal Name and Family Name.
+
+## Answer 2
+
+Combine the "points" and "assists" columns into a single column called
+Player_Stat.
+
+```{r}
+df %>% 
+unite(col='Player_Stat', c('Points', 'Assists'), sep='-')
+
+```
+
+------------------------------------------------------------------------
+
+Separate the Player column to Personal Name and Family Name.
+
+```{r}
+df %>% 
+unite(col='Player_Stat', c('Points', 'Assists'), sep='-') %>%
+separate(Player, into = c("Personal Name", "Family Name"), sep = " ", convert = TRUE)  
+
+```
+
+## Question 3
+
+```{r}
+tidy_pets <- tibble::tribble(
+  ~rank, ~pet_type, ~breed,
+  1L,        NA,    "Boston Terrier",
+  2L,        NA,    "Retrievers (Labrador)",
+  3L,        NA,    "Retrievers (Golden)",
+  4L,        NA,    "French Bulldogs",
+  5L,        NA,    "Bulldogs",
+  6L,     "Dog",    "Beagles",
+  1L,        NA,    "Persian",
+  2L,        NA,    "Maine Coon",
+  3L,        NA,    "Ragdoll",
+  4L,        NA,    "Exotic",
+  5L,        NA,    "Siamese",
+  6L,     "Cat",    "American Short"
+)
+
+tidy_pets
+```
+
+1.  What values are we missing in tibble?
+
+2.  Complete the missing values.
+
+## Answer 3
+
+We can see that there are many missing values regarding the pet type.
+
+```{r}
+tidy_pets %>%
+  fill(pet_type, .direction = "up")
+
+```
+
+## Question 4
+
+```{r}
+head(iris)
+```
+
+This famous (Fisher's or Anderson's) iris data set gives the
+measurements in centimeters of the variables sepal length and width and
+petal length and width, respectively, for 50 flowers from each of the
+three species of iris. The species are Iris setosa, versicolor, and
+virginica.
+
+1.  Convert the data frame into a tibble.
+
+2.  Tidy the data - create one column of Measures.
+
+3.  Separate the data in Measures into "Part" and "Measure."
+
+4.  Using `geom_jitter()`, plot the Species in relation to the Values.
+    The color needs to be the "Part." Facet by "Measure."
+
+You should get something like that:
+
+```{r, echo=FALSE}
+iris %>%
+  pivot_longer(cols = -Species, names_to = "Measures", values_to = "Values") %>%
+  separate(col = Measures, into = c("Part", "Measure")) %>%
+  ggplot(aes(Species, Values, color = Part)) + 
+    geom_jitter() + 
+    facet_grid(~Measure)
+```
+
+## Answer 4
+
+Convert the data frame into a tibble.
+
+```{r}
+iris2 = as_tibble(iris)
+
+```
+
+------------------------------------------------------------------------
+
+Tidy the data - create one column of Measures.
+
+```{r}
+iris2 %>%
+  pivot_longer(cols = -Species, names_to = "Measures", values_to = "Values")
+```
+
+------------------------------------------------------------------------
+
+Separate the data in Measures into "Part" and "Measure."
+
+```{r}
+iris2 %>%
+  pivot_longer(cols = -Species, names_to = "Measures", values_to = "Values") %>%
+  separate(col = Measures, into = c("Part", "Measure"))
+```
+
+------------------------------------------------------------------------
+
+Using `geom_jitter()`, plot the Species in relation to the Values. The
+color needs to be the "Part." Facet by "Measure."
+
+```{r}
+iris2 %>%
+  pivot_longer(cols = -Species, names_to = "Measures", values_to = "Values") %>%
+  separate(col = Measures, into = c("Part", "Measure")) %>%
+  ggplot(aes(Species, Values, color = Part)) + 
+    geom_jitter() + 
+    facet_grid(~Measure)
+```
+
+## Lecture 9 Homework
+
+## Question 1
+
+We are working on table1, table2, table3, table4a from the lecture.
+
+Are those tables tidy, or aren't they tidy?
+
+## Answer 1
+
+```{r}
+table1
+```
+
+Table 1 is tidy. All columns have their unique variable; for example,
+the year column contains only years, and the country column contains
+only countries.
+
+For example, if we got a data set where we have country and then two
+columns for males and females, that would be untidy because both columns
+should be in a column called gender.
+
+------------------------------------------------------------------------
+
+```{r}
+table2
+```
+
+Table2 is not a tidy dataset. If we had something like different
+sicknesses in the type column, this would be tidy, but the type, in this
+case, is not tidy. So we have two different variables inside the type
+column.
+
+------------------------------------------------------------------------
+
+```{r}
+table3
+```
+
+Table3 is non-tidy because we cannot work with values in the rate
+column; the values are characters and not numeric.
+
+\_\_
+
+```{r}
+table4a
+```
+
+Table4a is not a tidy dataset because of the "1999" and "2000" columns.
+Both of these columns should be under a "Year" column.
+
+## Question 2
+
+Calculate the rate of illnesses in table2.
+
+You will need to perform six steps:
+
+1.  Extract the cases values for each country by year (use filter).
+
+2.  Extract the population value for each country by year.
+
+3.  Combine the two tables into one table (use bind_cols).
+
+4.  Create the rate column by dividing cases by population and
+    multiplying by 10000.
+
+5.  From the tables you created, Delete the unneeded columns.
+
+6.  Bind the two tables into one using bind_rows.
+
+## Answer 2 
+
+### 1 
+
+```{r}
+library(tidyverse)
+fyear_cases_1999 =
+  table2 %>%
+  filter(year == 1999,
+         type == "cases")
+
+
+fyear_cases_2000 =
+  table2 %>%
+  filter(year == 2000,
+         type == "cases")
+
+```
+
+___
+
+### 2
+
+```{r}
+fyear_pop_1999 =
+  table2 %>%
+  filter(year == 1999,
+         type == "population")
+
+fyear_pop_2000 =
+  table2 %>%
+  filter(year == 2000,
+         type == "population")
+
+```
+
+___
+
+### 3 
+
+```{r}
+rate_1999 =
+  bind_cols(fyear_cases_1999, fyear_pop_1999)
+rate_2000 =
+  bind_cols(fyear_cases_2000, fyear_pop_2000)
+```
+
+___
+
+### 4
+
+```{r}
+rate_1999 <- rate_1999 %>%
+  mutate(rate = (count...4/count...8)*10000)
+
+
+rate_2000 <- rate_2000 %>%
+  mutate(rate = (count...4/count...8)*10000)
+
+```
+
+___
+
+### 5 
+
+```{r}
+rate_1999 <- rate_1999 %>%
+  select(country...1,year...2,count...4,rate )
+
+rate_2000 <- rate_2000 %>%
+  select(country...1,year...2,count...4,rate )
+
+```
+
+___
+
+### 6 
+
+```{r}
+bind_rows(rate_1999, rate_2000)
+
+```
+
+### Bonus Question  
+
+Create the following data frame:
+
+```{r}
+dfz <- tibble(
+  x = 1:3,
+  y = c("a", "d,e,f", "g,h"),
+  z = c("1", "2,3,4", "5,6")
+)
+
+dfz
+```
+
+___
+
+Separate the rows to get the following result:
+
+```{r,echo=FALSE}
+separate_rows(dfz, y, z, convert = TRUE)
+
+```
+
+## Bonus Answer
+
+```{r}
+separate_rows(dfz, y, z, convert = TRUE)
+
+```
+

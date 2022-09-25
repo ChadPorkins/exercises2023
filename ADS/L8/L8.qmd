@@ -1,0 +1,410 @@
+---
+title: "Lecture 8 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+dplyr is a package for data manipulation, developed by Hadley Wickham
+and Romain Francois. It is built to be fast, highly expressive, and
+open-minded about how your data is stored. It is installed as part of
+the tidyverse meta-package and, as a core package.
+
+## Before we start
+
+1.  Install dplyr and run it.
+
+2.  Install the gapminder package, have a look in the data set.
+
+## Before we start guide
+
+Install dplyr and run it.
+
+```{r,eval=FALSE}
+install.packages("dplyr")
+library(dplyr)
+```
+
+Install the gapminder package, have a look in the data set.
+
+```{r,eval=FALSE}
+install.packages("gapminder")
+library(gapminder)
+gapminder
+
+```
+
+Gapminder has data on life expectancy, GDP per capita, and population by
+country.
+
+## Question 1
+
+### 1.1 Use `filter()` to subset data row-wise
+
+1.  Find observations where life expectancy is less than 35.
+
+2.  Find observations from Poland after the year 1985.
+
+3.  Find observations from both Albania and Vietnam.
+
+### 1.2 Pipe operator.
+
+1.  Print the first 6 rows of the gapminder data using a pipe.
+
+## Answer 1.1
+
+```{r,include=FALSE}
+library(dplyr)
+library(gapminder)
+
+```
+
+```{r}
+filter(gapminder, lifeExp < 29)
+```
+
+
+___
+
+
+```{r}
+filter(gapminder, country == "Poland", year > 1985)
+```
+
+
+___
+
+
+```{r}
+filter(gapminder, country %in% c("Albania", "Vietnam"))
+
+```
+
+
+## Answer 1.2
+
+```{r}
+gapminder |> head(6)
+
+#or
+
+gapminder %>% head(6)
+```
+
+This is equivalent to head(gapminder). The pipe operator takes the thing
+on the left-hand-side and pipes it into the function call on the
+right-hand-side -- literally, drops it in as the first argument.
+
+## Question 2 - Select and Mutate.
+
+### 2.1 Use `select()` to subset the data on variables or columns.
+
+1.  Select the year and lifeExp columns, and pipe the data to show only
+    3 rows.
+
+2.  Get the year and lifeExp variables for Sudan.
+
+### 2.2 Use `mutate()` to add new variables.
+
+We want to recover each country's GDP. After all, the Gapminder data has
+a variable for population (pop) and GDP per capita (gdpPercap). Let's
+multiply them together.
+
+## Answer 2.1
+
+```{r}
+gapminder |>
+select(year, lifeExp) |>
+head(3)
+```
+
+___
+
+```{r}
+gapminder |>
+filter(country == "Sudan") |>
+select(year, lifeExp)
+```
+
+## Answer 2.2
+
+```{r}
+gapminder2 = gapminder |> mutate(gdp = pop * gdpPercap)
+
+```
+
+## Question 3 - Arrange and Rename.
+
+### 3.1 Use `arrange()` to row-order data in a principled way
+
+1.  Order the data by year then country, as opposed to by country then
+    the year.
+
+2.  Or maybe you want just the data from 2000, sorted on life
+    expectancy?
+
+3.  Oh, you'd like to sort on life expectancy in descending order? Then
+    use desc().
+
+### 3.2 Use `rename()` to rename variables
+
+1.  Rename gdpPercap to gdp_percap.
+
+2.  Rename lifeExp to life_exp.
+
+## Answer 3.1
+
+```{r}
+gapminder %>%
+  arrange(year, country)
+```
+
+___
+
+```{r}
+gapminder %>%
+  filter(year == 2000) %>%
+  arrange(lifeExp)
+```
+
+___
+
+```{r}
+gapminder %>%
+  filter(year == 2000) %>%
+  arrange(desc(lifeExp))
+```
+
+## Answer 3.2
+
+```{r}
+
+gapminder  %>%
+  rename(gdp_percap = gdpPercap, life_exp = lifeExp
+        )
+```
+
+## Question 4 - Group by and Summarize
+
+`group_by()` adds extra structure to your dataset -- grouping
+information -- which lays the groundwork for computations within the
+groups.
+
+summarize() takes a dataset with n observations, computes requested
+summaries, and returns a dataset with 1 observation.
+
+1.  Let's start with simple counting. How many observations do we have
+    per continent?
+
+2.  How many unique countries are in each continent?
+
+-   (You can compute multiple summaries inside `summarize()`. Use the
+    `n_distinct()` function to count the number of distinct countries
+    within each continent.)
+
+3.   compute the average life expectancy by continent.
+
+4.  Let's focus just on Asia. What are the minimum and maximum life
+    expectancies seen by year?
+
+5.  Pipe the data to create a line plot with the minimum and maximum
+    life expectancies. (Feel free to add colors and a legend to the plot :) )
+    
+You should get something like that:
+
+```{r,echo=FALSE}
+library(ggplot2)
+gapminder %>%
+  filter(continent == "Asia") %>%
+  group_by(year) %>%
+  summarize(min_lifeExp = min(lifeExp), max_lifeExp = max(lifeExp)) %>%
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = min_lifeExp, color = "min_lifeExp")) + 
+  geom_line(aes(y = max_lifeExp, color = "max_lifeExp")) +
+  ylab("Life Expectancy") +
+  scale_color_manual(name='Life Expectancy',
+                     breaks=c('min_lifeExp', 'max_lifeExp'),
+                     values=c('min_lifeExp'='red', 'max_lifeExp'='blue'))
+
+  
+```
+  
+
+## Answer 4
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(n = n())
+```
+
+___
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(n = n(),
+            n_countries = n_distinct(country))
+```
+
+
+___
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(avg_lifeExp = mean(lifeExp))
+```
+
+___
+
+```{r}
+gapminder %>%
+  filter(continent == "Asia") %>%
+  group_by(year) %>%
+  summarize(min_lifeExp = min(lifeExp), max_lifeExp = max(lifeExp))
+```
+
+
+___
+
+```{r}
+library(ggplot2)
+gapminder %>%
+  filter(continent == "Asia") %>%
+  group_by(year) %>%
+  summarize(min_lifeExp = min(lifeExp), max_lifeExp = max(lifeExp)) %>%
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = min_lifeExp, color = "min_lifeExp")) + 
+  geom_line(aes(y = max_lifeExp, color = "max_lifeExp")) +
+  ylab("Life Expectancy") +
+  scale_color_manual(name='Life Expectancy',
+                     breaks=c('min_lifeExp', 'max_lifeExp'),
+                     values=c('min_lifeExp'='red', 'max_lifeExp'='blue'))
+
+  
+```
+
+## Lecture 8 Homework
+
+In this exercise, we will use the dataset from the nycflights13 package.
+
+The data set contains all the 336,776 flights that departed from New
+York City in 2013. See `?flights` for the documentation.
+
+## Question 1
+
+1.  Run ?flights to see which one of the carriers is 'Delta Air Lines
+    Inc.'
+
+2.  Use filter() to get only the flights from May that belong to the
+    Delta Air Lines Inc. carrier.
+
+## Answer 1
+
+```{r}
+library(nycflights13)
+filter(flights, month == 5, carrier == "DL")
+
+```
+
+## Question 2
+
+1.  Add 'Envoy Air' carrier to your filtering from question 1. This time
+    use `%in%` in your answer.
+
+## Answer 2
+
+```{r}
+
+filter(flights, month == 5, carrier %in% c("DL", "MQ"))
+
+```
+
+## Question 3
+
+It is not clear if your filtering is working because the 'carrier'
+column is in the middle of all columns.
+
+1.  Filter the data like in the previous questions, and then present the
+    'carrier' column at the beginning of your data frame, with all
+    columns coming after it.
+
+-   Hint: use a pipe to combine the previous question with this one.
+
+## Answer 3
+
+```{r}
+flights %>%
+      filter(month == 5, carrier %in% c("DL", "MQ")) %>%
+      select(carrier, everything())
+```
+
+Instead of working with two steps, you can easily use %\>% to filter and
+than immediately select.
+
+## Question 4
+
+-   Save the result from question 3 to 'flights_new'.
+
+-   Arrange the data in a way that the shortest flight will be in the
+    first row and the longest will be the last.
+
+## Answer 4
+
+```{r}
+ flights_new = flights %>%
+                   filter(month == 5, carrier %in% c("DL", "MQ")) %>%
+                   select(carrier, everything()) %>%
+                   arrange(distance)
+```
+
+## Question 5
+
+The distance between two airports is listed in miles.
+
+-   Create a new column in flights_new that will compute the distance in
+    kilometers.
+
+```{r}
+flights_new = mutate(flights_new,
+                         distance_km = distance * 1.609344)
+
+select(flights_new, distance, distance_km)
+
+```
+
+## Question 6
+
+1.  Between 'Delta Air Lines Inc.' and 'Envoy Air', Which airline had a
+    lower average "delay rate" in May?
+
+```{r}
+flights_new %>%
+group_by(carrier) %>%
+summarise (count = n(), delay = mean(arr_delay, na.rm = T))
+```
+
+With `group_b`y and `summarise`, you can see that 'Envoy Air' had a mean
+delay of 11.9 minutes in May. On the other hand, 'Delta' had a minus
+delay mean, which is an ideal situation. We used count = n() to see the
+number of total flights from each carrier.
+
+## Question 7
+
+Going back to the original flights data frame.
+
+1.  Which carrier had the most flights in the summer? (June, July,
+    August)
+
+## Answer 7
+
+```{r}
+flights %>% 
+filter(month %in% c(6:8)) %>%
+count(carrier) %>%
+arrange(-n)
+```
