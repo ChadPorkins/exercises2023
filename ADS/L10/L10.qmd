@@ -1,0 +1,434 @@
+---
+title: "Lecture 10 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+The main purpose of this exercise is to practice data join skills. The
+functions and their purposes are listed as follows:
+
+-   `inner_join()` Keeps observations appear in both datasets.
+
+-   `left_join()` Keeps all observations in left dataset.
+
+-   `right_join()` Keeps all observations in right dataset.
+
+-   `full_join()` Keeps all observations in both datasets.
+
+-   `semi_join()` Keeps all observations in the left dataset that match
+    the right dataset.
+
+-   `anti_join()` Drops all observations in the left dataset that match
+    the right dataset.
+
+## Question 1
+
+In Question 1, you will practice the skills using the datasets from the
+R package `Lahman.` This database includes data related to baseball
+teams. It provides summary statistics about how the players performed on
+offense and defense for several years. It also provides
+
+personal information about the players. The Batting data frame contains
+the offensive statistics for all players for many years. (For more
+details of the dataset, run `?Batting` in the console.)
+
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+library(Lahman)
+library(tidyverse)
+
+
+```
+
+```{r}
+head(Batting,5)
+```
+
+------------------------------------------------------------------------
+
+Who are these players? We see an ID, but not the names. The player names
+are in this table.
+
+```{r}
+head(People,5)
+```
+
+------------------------------------------------------------------------
+
+### 1.1
+
+1.  From the Batting data frame, create a new data frame counting the
+    top 10 home run hitters in 2015, and name the new data frame `top.`
+
+2.  Use the proper join function to create a data frame called top1,
+    which contains information on the 10 top home run hitters. The table
+    should have the following columns: playerID, nameFirst, nameLast,
+    and the number of home runs (HR).
+
+------------------------------------------------------------------------
+
+### 1.2
+
+Data Salaries contains the baseball player salary data.
+
+```{r}
+head(Salaries,5)
+
+```
+
+You may be curious about the salaries of the top 10 hitters in 2015.
+
+1.  Create a new data frame called top2 by adding the top 10 home run
+    hitters' salaries to the top1 and including only nameFirst,
+    nameLast, teamID, HR, and salary columns.
+
+2.  Rename the original columns to FirstName, LastName, Team, Homeruns,
+    and Salary.
+
+3.  Arrange the data frame by Salary in descending order.
+
+## Answer 1.1
+
+```{r}
+top = Batting %>% 
+  filter(yearID == 2015) %>%
+  arrange(desc(HR)) %>%
+  slice(1:10)
+
+top
+```
+
+------------------------------------------------------------------------
+
+```{r}
+top1 = top %>% 
+  left_join(People, by = 'playerID') %>%
+  select(playerID, nameFirst, nameLast, HR)
+
+top1
+```
+
+## Answer 1.2
+
+```{r}
+top2 = Salaries %>%
+filter(yearID==2015) %>%
+right_join(top1,by='playerID') %>%
+select(FirstName=nameFirst, LastName=nameLast, Team=teamID, Homeruns=HR, Salary=salary) %>%
+arrange(desc(Salary))
+top2  
+```
+
+## Question 2
+
+In this question, we will explore relational data from nycflights13,
+which contains four data frames related to the `flights` table you used
+in previous exercises.
+
+Data `airports` gives information about each airport, such as latitude
+and longitude, identified by the `faa` airport code.
+
+```{r}
+library(nycflights13)
+head(airports,5)
+
+```
+
+1.  Based on flights, compute the average arrival delay by destination
+    (dest) and ignore missing values, join the airports data frame, and
+    show the coordination of delays.
+
+## Answer 2
+
+```{r}
+delay = flights %>%
+  group_by(dest) %>%
+  summarise(avg_arr_delay=mean(arr_delay,na.rm=T)) %>%
+  inner_join(airports,by=c(dest='faa')) %>%
+  select(avg_arr_delay,lat, lon)
+delay
+```
+
+## Question 3
+
+Data `planes` gives information about each plane, identified by its
+tailnum. Note that the year column in planes represents the year a plane
+was manufactured, which is different from the year column in flights.
+
+```{r}
+head(planes,5)
+
+```
+
+------------------------------------------------------------------------
+
+### 3.1
+
+1.  Use the `planes` data to calculate planes' age, assuming the current
+    year is 2013. Keep only tailnum and age in the output table
+    `plane_ages`.
+
+### 3.2
+
+Is there a relationship between the age of a plane and its delays?
+
+1.  Join the plane_ages with flights, keeping observations with matches
+    in both datasets.
+
+2.  Summarize the average departure delay by plane age.
+
+3.  Plot a scatterplot of plane age vs. average departure delay.
+
+### 3.3
+
+1.  What does it mean for a flight to have a missing tailnum?
+
+## Answer 3.1
+
+```{r}
+plane_ages = 
+  planes %>%
+  mutate(age = 2013 - year) %>%
+  select(tailnum, age)
+plane_ages
+```
+
+## Answer 3.2
+
+```{r}
+flights %>%
+inner_join(plane_ages, by = "tailnum") %>%
+group_by(age) %>%
+summarise(avg_dep_delay = mean(dep_delay,na.rm=T)) %>%
+ggplot(aes(x = age, y = avg_dep_delay)) +
+geom_point()
+```
+
+## Answer 3.3
+
+```{r}
+flights %>%
+  filter(is.na(tailnum))
+```
+
+*The flights have missing tailnum are canceled flights.*
+
+## Question 4
+
+-   What do the tail numbers that don't have a matching record in planes
+    have in common?
+
+## Answer 4
+
+```{r}
+flights %>% 
+  anti_join(planes,by='tailnum') %>%
+  count(carrier) %>%
+  arrange(desc(n))
+```
+
+American Airways (AA) and Envoy Air (MQ) report fleet numbers rather
+than tail numbers so can't be matched.
+
+## Lecture 10 Homework
+
+In this homework, we will continue working primarily with the four
+Tibbles: Airlines, airports, planes, and weather from the "nycflights13"
+library.
+
+## Question 1
+
+1.  Combine weather and airports.
+
+Notice that both tables share a similar variable, with a different name.
+
+## Answer 1
+
+```{r}
+weather %>%
+      left_join(airports, by = c("origin" = "faa"))
+```
+
+## Question 2
+
+You want to draw the route each plane flies from its origin to its
+destination.
+
+1.  What variables would you need?
+
+2.  What Tibbles would you need to combine?
+
+3.  Join the proper Tibbles.
+
+## Answer 2
+
+To draw the route (a line between two airports), we must have: A) origin
+and dest from flights table. B) longitude and latitude from the airports
+table. First, we need to find the key which will be used for the join.
+The key is the airport name which is origin/dest in the `flights` table,
+and faa in the `airports` table than we join flights with airports
+twice.
+
+The first join adds the location of the origin airport (origin). The
+second join adds the location of the destination airport (dest).
+
+```{r}
+flights %>%
+      left_join(airports, by = c("origin" = "faa")) %>%
+      left_join(airports, by = c("dest" = "faa")) %>%
+      select(origin, lat.x, lon.x, dest, lat.y, lon.y)
+```
+
+## Question 3
+
+Identify the keys in the following datasets:
+
+1.  babynames::babynames
+
+2.  nasaweather::atmos
+
+3.  fueleconomy::vehicles
+
+## Answer 3
+
+The primary key for babynames::babynames is year, sex, name.
+
+It is no simply year, name since names can appear for both sexes with
+different counts.
+
+```{r,eval=FALSE}
+library(babynames)
+babynames::babynames %>%
+      group_by(year, sex, name) %>%
+      filter(n() > 1) %>%
+      nrow()
+```
+
+------------------------------------------------------------------------
+
+The primary key for nasaweather::atmos is the location and time of the
+measurement: lat, long, year, month.
+
+```{r}
+library(nasaweather)
+nasaweather::atmos %>%
+      group_by(lat, long, year, month) %>%
+      filter(n() > 1) %>%
+      nrow()
+```
+
+------------------------------------------------------------------------
+
+The column id (unique EPA identifier) is the primary key for
+fueleconomy::vehicles.
+
+```{r}
+library(fueleconomy)
+fueleconomy::vehicles %>%
+    group_by(id) %>%
+    filter(n() > 1) %>%
+    nrow()
+```
+
+## Question 4
+
+The State of Utah has four big airports:
+
+-   Provo Municipal Airport.
+
+-   Salt Lake City Intl.
+
+-   St George Muni.
+
+-   Wendover.
+
+1.  Search on Wikipedia (List of airports in Utah) or in airports
+    dataset for the "faa" of each airport.
+
+2.  From flights, select only the flights that landed in Utah.
+
+## Answer 4
+
+First, we can search the faa in airports dataset using the following
+code.
+
+```{r}
+ airports %>%
+      filter(name %in% c("Provo Municipal Airport",
+                         "Salt Lake City Intl",
+                         "St George Muni",
+                         "Wendover")
+      )
+
+```
+
+------------------------------------------------------------------------
+
+Now that we know the "faa" of each airport, we can simply select the
+needed rows.
+
+```{r}
+flights_2 = flights %>% 
+  filter(dest %in% c("ENV", "PVU", "SGU", "SLC"))
+head(flights_2)
+
+```
+
+## Question 5
+
+Looking back at the result from the last question.
+
+How many flights have landed in Utah overall?
+
+What seems to be the problem?
+
+## Answer 5
+
+```{r}
+flights_2 %>%
+      count(dest)
+```
+
+Reading the documentation on Wikipedia, it is clear to see why. SLC
+(Salt Lake City International Airport) is the biggest airport in the
+state of Utah, while the other airports are local with fewer passenger
+boardings. Remember that the flights dataset is from nycflights13, which
+are flights that departed NYC in 2013, so we can conclude that in that
+year, all flights from NYC to Utah landed at the SLC airport.
+
+## Question 6
+
+Create a boxplot plot to see the differences in air_time between all
+carriers that have landed in Utah.
+
+## Answer 6
+
+```{r,warning=FALSE}
+ggplot(flights_2, aes(carrier, air_time, colour = carrier)) + 
+        geom_boxplot() + 
+        labs(x = "", y = "Flight Time (Minutes)", title = "Air time per carrier")
+```
+
+## Bonus question! That is for those who want to go further beyond!
+
+From Answer 2 in the Lecture 10 exercises, Use ggplot 2 to draw a
+scatterplot with dots representing destination locations. The colors of
+the dots should represent the average arrival delay on a US map. Hint!
+
+For `coord_quickmap()` to work, you need to install `maps` packages. If
+you haven't installed the package before, please
+install.packages('maps') in Console.
+
+## Bounus Answer
+
+```{r}
+library(maps)
+delay %>%
+ggplot(aes(lon, lat,color=avg_arr_delay)) +
+borders("state") +
+geom_point() +
+coord_quickmap()
+```
