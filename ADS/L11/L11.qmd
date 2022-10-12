@@ -1,0 +1,408 @@
+---
+title: "Lecture 11 Exercises"
+format:
+  html: 
+    theme: literal
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+`Data.table` is an R package that provides an enhanced version of
+data.frames. It provides a faster and more efficient way to manipulate
+data while drastically reducing the amount of memory required. It is an
+excellent addition to your R vernacular, mainly if you work with massive
+datasets.
+
+In this lesson we will work with the wine quality dataset. The following
+dataset contains info on red and white variants of the Portuguese "Vinho
+Verde" wine. Unfortunately, due to privacy and logistic issues, only
+physicochemical (inputs) and sensory (the output) variables are
+available (e.g., there is no data about grape types, wine brands, or
+wine selling prices).
+
+Input variables (based on physicochemical tests):
+
+-   Fixed acidity - most acids involved with wine or fixed or
+    nonvolatile (do not evaporate readily).
+
+-   Volatile acidity - the amount of acetic acid in wine, which at too
+    high of levels can lead to an unpleasant vinegar taste.
+
+-   Citric acid - found in small quantities, citric acid can add
+    'freshness' and flavor to wines.
+
+-   Residual sugar - the amount of sugar remaining after fermentation
+    stops, it's rare to find wines with less than 1 gram/liter, and
+    wines with greater than 45 grams/liter are considered sweet.
+
+-   Chlorides - the amount of salt in the wine.
+
+-   Free sulfur dioxide - the free form of SO2 exists in equilibrium
+    between molecular SO2 (as a dissolved gas) and bisulfite ion; it
+    prevents microbial growth and the oxidation of wine.
+
+-   Total sulfur dioxide - amount of free and bound forms of S02; in low
+    concentrations, SO2 is mostly undetectable in wine, but at free SO2
+    concentrations over 50 ppm, SO2 becomes evident in the nose and
+    taste of wine.
+
+-   Density - the density of water is close to that of water depending
+    on the percent alcohol and sugar content.
+
+-   PH - describes how acidic or basic a wine is on a scale from 0 (very
+    acidic) to 14 (very basic); most wines are between 3-4 on the pH
+    scale.
+
+-   Sulphates - a wine additive which can contribute to sulfur dioxide
+    gas (S02) levels, wich acts as an antimicrobial and antioxidant.
+
+-   Alcohol - alcohol prenectage.
+
+Output variable (based on sensory data):
+
+-   Quality - score between 0 and 10 .
+
+## Question 1 - Basic row manipulations.
+
+1.  Read the `winequality.csv` file as a data.table.
+
+2.  Extract rows 80 to 100 as new data.table ('mysubset')
+
+3.  What is the average pH value in this subset.
+
+4.  Round the average pH value to one digit.
+
+5.  Create a data.table with all rows except the ones with a pH value
+    0-4.
+
+## Answer 1
+
+1.  
+
+```{r,warning=FALSE,message=FALSE,results='hide'}
+library(data.table)
+wine = fread("winequality.csv")
+head(wine)
+```
+
+------------------------------------------------------------------------
+
+2.  
+
+```{r,results='hide'}
+mysubset = wine[80:100]; head(mysubset)
+
+```
+
+------------------------------------------------------------------------
+
+3.  
+
+```{r}
+mean.pH = mysubset[,mean(pH)]; mean.pH
+
+```
+
+------------------------------------------------------------------------
+
+4.  
+
+```{r}
+round(mean.pH, digits = 0)
+
+```
+
+------------------------------------------------------------------------
+
+5.  
+
+```{r,results='hide'}
+wine[!(pH) %between% c(0,4)]
+
+```
+
+## Question 2 - Basic column operations
+
+1.  What are the top 10 sweetest wines?
+
+2.  What are the top 10 wines regarding the citric acid vs. chloride
+    ratio? Add a new column to the data.table. (Create a new ratio using
+    standard syntax)
+
+3.  What are the top 10 sweetest wines and a pH value of 3 or less?
+
+### Answer 2
+
+1.  
+
+```{r}
+head(wine[order(-Residual_Sugar), ID],10)
+
+```
+
+------------------------------------------------------------------------
+
+2.  
+
+```{r,,results='hide'}
+ratio = wine$Citric_Acid/wine$Chlorides
+wine_ratio = data.table(wine, ratio); head(wine_ratio)
+head(wine_ratio[order(-ratio), .(ID, ratio, Citric_Acid, Chlorides)],10)
+
+
+```
+
+------------------------------------------------------------------------
+
+3.  
+
+```{r,,results='hide'}
+sweet_and_low_ph = wine[pH <= 3] 
+head(sweet_and_low_ph[order(-Residual_Sugar), .(ID, Residual_Sugar, pH)],10)
+
+```
+
+## Question 3
+
+1.  Add a new column called "Premium" to the data.table. The column
+    should have an integer value of 1 for all wines with a quality above
+    7, and all other wines below 7 should have an integer value of 0.
+
+2.  Remove the "Premium" column.
+
+3.  Add a new column "Sulfur_ratio" which is the ratio of
+    (Free_sulfur_dioxide/Total_Sulfur_Dioxide). Get the first ten
+    observations starting with the highest ratio. The whole code should
+    be coded in one line.
+
+4.  How many of those wines have a pH value of 3.8 and above.
+
+## Answer 3
+
+1.  
+
+```{r,results='hide'}
+wine[Quality >7, Premium := 1] +
+wine[Quality <7, Premium := 0]; tail(wine)   
+
+```
+
+------------------------------------------------------------------------
+
+2.  
+
+```{r,results='hide'}
+wine[, c("Premium") := NULL]; tail(wine)
+
+```
+
+------------------------------------------------------------------------
+
+3.  
+
+```{r,results='hide'}
+head(wine[,Sulfur_ratio := Free_sulfur_dioxide/Total_Sulfur_Dioxide] [order(-Sulfur_ratio)],10)
+```
+
+------------------------------------------------------------------------
+
+4.  
+
+```{r}
+r_sulf= wine[,Sulfur_ratio := Free_sulfur_dioxide/Total_Sulfur_Dioxide] [order(-Sulfur_ratio)]
+
+r_sulf[pH >= 3.8, .N]
+
+  
+```
+
+## Question 4
+
+1.  Set two keys to your "Wine" data.table: 'Free_sulfur_dioxide' and
+    Total_Sulfur_Dioxide'. Check if the order has changed.
+
+2.  Is there a college with exactly 34 Free_sulfur_dioxide and 52
+    Total_Sulfur_Dioxide?
+
+## Answer 2
+
+1.  
+
+```{r,results='hide'}
+setkey(wine, Free_sulfur_dioxide, Total_Sulfur_Dioxide);
+head(wine)
+```
+
+------------------------------------------------------------------------
+
+2.  
+
+```{r,results='hide'}
+wine[.(34, 52)]
+
+```
+
+## Question 5
+
+1.  Create a data.table with all columns except "ID," "pH," and
+    "Quality." Use at least two different ways for this.
+
+## Answer 5
+
+```{r,results='hide'}
+wine[, !c("ID", "pH", "Quality"), with = T]
+
+wine[, -c("ID", "pH", "Quality"), with = F]
+```
+
+## Question 6
+
+1.  How many wines with a quality score of 7 or less have a pH of 3 and
+    above?
+
+2.  What is the mean score of wines with a quality score of 5 or above
+    with a pH of 3.5 and below and a chlorides value below 0.05?
+
+## Answer 6
+
+```{r}
+wine[Quality >= 7, .N, by = (pH <= 3)]
+
+```
+
+```{r}
+wine[Quality >= 5, mean(Quality) , by = (pH >= 3.5 & Chlorides < 0.05 )]
+
+```
+
+## Lecture 11 Homework
+
+## Question 1
+
+1.  Import the mpg dataset. To do this, you need to load ggplot2
+    library.
+
+2.  Convert mpg to a data.table object.
+
+3.  Find rows where the manufacturer is Audi, year is 2008, and the
+    class is compact.
+
+## Answer 1
+
+1.
+
+```{r}
+library(ggplot2)
+library(data.table)
+mpg = mpg
+```
+
+2.
+
+```{r}
+dtmpg = data.table(mpg, keep.rownames = T); class(dtmpg)
+```
+
+3.
+
+```{r}
+dtmpg[manufacturer == "audi" & year == 2008 & class == "compact"]
+```
+
+
+## Question 2
+
+1.  Calculate minimum engine displacement (displ) and median highway
+    miles per gallon (hwy) by manufacturer and class.
+
+2.  Repeat 1. but for the year 2008, only.
+
+3.  Calculate the number of observations by manufacturer.
+
+## Answer 2
+
+1\.
+
+```{r,results='hide'}
+dtmpg[,.(mean_displ = min(displ), mean_hwy = mean(hwy)), by = .(manufacturer,  class)]
+```
+
+2\.
+
+```{r,results='hide'}
+dtmpg[year == 2008,.(mean_displ = min(displ), mean_hwy = mean(hwy)), by = .(manufacturer,  class)]
+```
+
+3\.
+
+```{r,results='hide'}
+dtmpg[,(no_obs = .N), by = (manufacturer)]
+```
+
+## Question 3
+
+1.  Create drv_description data.table using this code:
+
+```{r}
+drv_description <- data.table(drv = c("f", "r", "4"), drv_desc = c("front-wheel drive", "reer-wheel drive", "four-wheel drive"), key = "drv")
+```
+
+1.  Join mpg and drv_description data.tables on drv variable using
+    `DT1[DT2]` syntax
+
+2.  Join mpg and drv_description data.tables on drv variable using the
+    `merge()` function
+
+## Answer 3
+
+1.  
+
+```{r}
+drv_description = data.table(drv = c("f", "r", "4"), drv_desc = c("front-wheel drive", "reer-wheel drive", "four-wheel drive"), key = "drv")
+```
+
+2.  
+
+```{r,results='hide'}
+dtmpg[drv_description, on = .(drv)]
+```
+
+3.  
+
+```{r,results='hide'}
+merge(dtmpg, drv_description, all = TRUE)
+
+```
+
+## Bonus question! That is for those who want to go further beyond!
+
+1.  Create a manual_car, an indicator of whether the transmission is
+    manual. Hint! Do you remember how we search for a specific value on
+    with shell?
+
+2.  Repeat 1. but this time, create a row_id, all in one go.
+
+3.  Let us assume that displ was entered incorrectly. Then, use
+    sub-assign to update displ with the value of less than 2 to equal 2.
+
+## Bonus Answer
+
+1\.
+
+```{r}
+dtmpg[,manual_car := grepl("manual", trans) ]
+```
+
+2\.
+
+```{r}
+dtmpg[, `:=` ("manual_car" = grepl("manual", trans), row_id = .I)]
+```
+
+3\.
+
+```{r}
+dtmpg[displ < 2, displ := 2]
+
+```
