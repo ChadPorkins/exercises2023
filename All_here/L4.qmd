@@ -1,7 +1,8 @@
 ---
 title: "Lecture 4 Exercises"
 format:
-  html: 
+   html:
+    self-contained: true
     theme: literal
 ---
 
@@ -9,9 +10,9 @@ format:
 
 `plot()` is the main graphing function in R. it automatically produces simple plots for vectors, functions or data frames.
 
-As part of our research on functions and mathematics at university, we want to visualize functions.
+As part of our university research on functions and mathematics, we want to visualize functions.
 
-##### 1.1 Plot the following vectors in R. try to think what the x and y axis represents.
+##### 1.1 Plot the following vectors in R. try to think what the x and y-axis represents.
 
 ```{r}
 x <- seq(0,8*pi,length.out=100)
@@ -29,7 +30,7 @@ plot(x,y)
 
 Another useful argument is changing the type of the plot!
 
-##### 1.2 Using the `plot()` function, add the **type** argument for the following criteria,and **write down** what changed in the plot.
+##### 1.2 Using the `plot()` function, add the **type** argument for the following criteria and **write down** what changed in the plot.
 
 1.  type = "p"
 
@@ -49,9 +50,9 @@ Another useful argument is changing the type of the plot!
 
 ##### 1.3 There are many ways to change the plot we created in R and to change it to our needs!
 
-1.  using the `plot()` function, add the **pch** argument between 1 and 25, In addition use the **rainbow color** argument with 5 unique colors.
+1.  Using the `plot()` function, add the **pch** argument between 1 and 25, In addition use the **rainbow color** argument with 5 unique colors.
 
-2.  Save the plot to a pdf file, name it "fancy1"
+2.  Save the plot to a pdf file, and name it "fancy1"
 
 you should get something like this:
 
@@ -62,7 +63,6 @@ fancy1
 
 ```
 
-
 ## Answer 1.1
 
 ```{r}
@@ -72,41 +72,36 @@ plot(x,y)
 
 ```
 
-The x-axis represents the values of the vector x that we created, the
-y-axis represents the values of the vector x after the mathematical
-function of sine.
+The x-axis represents the values of the vector x that we created, the y-axis represents the values of the vector x after the mathematical function of sine.
 
 ## Answer 1.2
 
-The type indicating the type of plotting. The following changes will
-occur accordingly: 
+The type indicating the type of plotting. The following changes will occur accordingly:
 
-“p” for points.
+"p" for points.
 
-“l” for lines.
+"l" for lines.
 
-“b” for both points and lines.
+"b" for both points and lines.
 
-“c” for empty points joined by lines.
+"c" for empty points joined by lines.
 
-“o” for overplotted points and lines.
+"o" for overplotted points and lines.
 
-“s” and “S” for stair steps.
+"s" and "S" for stair steps.
 
-“n” does not produce any points or lines.
-
+"n" does not produce any points or lines.
 
 ## Answer 1.3
 
-using the plot() function, add the pch argument between 1 and 25, In
-addition use the rainbow color argument with 5 unique colors.
+Using the plot() function, add the pch argument between 1 and 25, In addition use the rainbow color argument with 5 unique colors.
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 plot(x,y, pch = 1:25, col=rainbow(5))
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r, warning=FALSE, message=FALSE}
 # Step 1: Call the pdf command to start the plot
@@ -125,20 +120,19 @@ dev.off()
 
 ## Question 2
 
-### 2. Now we want to create a summary boxplot, using both speed and distance columns from the built-in data set **cars**.
+### 2. Now we want to create a summary boxplot using both speed, and distance columns from the built-in data set ***cars***.
 
-1.  Use boxplot to plot the varriable speed, what can you learn from this boxplot?
+1.  Use a boxplot to plot the varriable speed, what can you learn from this boxplot?
 
-2.  Use boxplot to compare the column speed and dist from the built-in data set cars. (To plot these we use the boxplot command with a slightly different syntax `boxplot(y ~ x)`.)
+2.  Use a boxplot to compare the column speed and dist from the built-in data set cars. (To plot this, we use the boxplot command with a slightly different syntax `boxplot(y ~ x)`.)
 
 3.  Add to this plot the title "Car Speed Against Stopping Distance" with font number 3.
 
-4.  Give the axis Their proper names.
+4.  Give the axis their proper names.
 
 5.  The boxplot should be in red.
 
-6.  Create the same plots with **violin plots**, Which one do you prefer more?
-
+6.  Create the same plots as violin plots; which one do you prefer more?
 
 ## Answer 2
 
@@ -147,9 +141,10 @@ dev.off()
 boxplot(cars$speed)
 
 ```
-The line represents the median of speed, which is 15. The box itself shows the upper and lower quartiles. The whiskers show the range (i.e. the largest and smallest values).
 
-___
+The line represents the median speed, which is 15. The box itself shows the upper and lower quartiles. The whiskers show the range (i.e., the largest and smallest values).
+
+------------------------------------------------------------------------
 
 ```{r}
 boxplot(speed ~ dist, data = cars,
@@ -158,10 +153,9 @@ boxplot(speed ~ dist, data = cars,
     title(main="Car Speed Against Stopping Distance", font.main = 3)
 ```
 
-A summary boxplot with all the guidance.
+The boxplot with all the instructions.
 
-
-___
+------------------------------------------------------------------------
 
 ```{r, message=FALSE, warning=FALSE}
 
@@ -169,7 +163,6 @@ library(vioplot)
 vioplot(cars$speed)
 
 ```
-
 
 ```{r, message=FALSE, warning=FALSE}
 library(vioplot)
@@ -181,17 +174,17 @@ vioplot(speed ~ dist, data = cars,
 
 ## Question 3
 
-### 3. As part of our research we would like to create complex graphs according to certain indicators (factors). We will return to the data file of the whales.
+### 3. As part of our research on the data file of the whales, we would like to create a high-quality graph according to certain indicators (factors).
 
 1.  Read the data file again as "whale".
 
-2.  Create a plot of the number of whales in relation to the depth, the plot should be categorized by the noise level.
+2.  Create a plot of the number of whales in relation to the depth. The plot should be categorized by the noise level.
 
-3.  Give suitable names to the axes and give each category a different color.
+3.  Give proper names to the axes and give each category a different color..
 
-An example of this can be seen in the presentation on slides 72-73.
+An example of this can be seen in the presentation on slide 79.
 
-You should get something like that:
+You should get something like this:
 
 ```{r, echo = FALSE}
 whale = read.csv("whaledata.csv")
@@ -201,7 +194,7 @@ whale = read.csv("whaledata.csv")
 par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
 plot(whale$number.whales, whale$depth,
        type = "n",
-       xlab = "Nnumber of whales",
+       xlab = "Number of whales",
        ylab = expression(paste("Depth (m) ")),
        xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
        las = 1, cex.axis = 0.8, tcl = -0.2)
@@ -236,7 +229,7 @@ whale = read.csv("whaledata.csv")
 par(mar = c(4.0, 4.0, 4.0, 1.9), xaxs="i", yaxs="i")
 plot(whale$number.whales, whale$depth,
        type = "n",
-       xlab = "Nnumber of whales",
+       xlab = "Number of whales",
        ylab = expression(paste("Depth (m) ")),
        xlim = c(0, 30), ylim = c(0, 1700), bty = "l",
        las = 1, cex.axis = 0.8, tcl = -0.2)
@@ -264,19 +257,17 @@ legend(x = 25, y = 800, col = leg_cols, pch = leg_sym,
 
 ## Lecture 4 Homework
 
-
 ## Question 1
 
-
-### 1. We have already learned about histograms, however in this homework we will learn to control their output.
+### 1. We have already learned about histograms; however, in this homework, we will learn to control their output.
 
 1.  Load beersheva.csv from moodle and plot a histogram of the column tempcmax.
 
-2.  Add the title "Max Temperature in Beersheva".
+2.  Add the title "Max Temperature in Beersheva."
 
-3.  Name x-axis "Max Temp" and make the histogram to be gold-colored.
+3.  Name the x-axis "Max Temp" and make the histogram to be gold-colored.
 
-4.  Make the histogram to have 9 breaks.
+4.  Make the histogram have nine breaks.
 
 ## Answer 1
 
@@ -296,14 +287,13 @@ xlab = "Max Temp", col = "Gold", breaks = 9)
 
 ## Question 2
 
-### 2. Histograms are great, however Kernal density plots are usually a much more effective way to view the distribution of a variable.
+### 2. Histograms are great; however, Kernal density plots are usually a much more effective way to view the distribution of a variable.
 
-1.  Create a kernel density plot from the same data as before
+1.  Create a kernel density plot from the same data as before.
 
 2.  The plot should be with the same title as before, filled with light green color and a dark green border.
 
-3.  which one is better - histogram of kernel density plot?
-
+3.  Which one is better - a histogram of kernel density plot?
 
 ## Answer 2
 
@@ -316,15 +306,15 @@ polygon(density(beersheva$tempcmax), col = "lightgreen", border = "darkgreen")
 
 ```
 
-There is no right or wrong way when dealing with graphics. It all depend on what you want to display, In this case both ways of displaying beersheva max tempratures are good.
+There is no right or wrong way when dealing with graphics. It all depends on what you want to display; in this case, both ways of displaying Beer-Sheva max temperatures are good.
 
 ## Question 3
 
-### 3. let's check for outliers in the built-in mtcars dataset.
+### 3. Let's check for outliers in the built-in mtcars dataset.
 
-1.  using the `dotchart` function do you think there are outliers in the horsepower column?
+1.  Using the `dotchart` function, do you think there are outliers in the horsepower column?
 
-(Hint! you can use `boxplot` function to check your answer )
+(Hint! You can use the `boxplot` function to check your answer )
 
 ## Answer 3
 
@@ -332,15 +322,15 @@ There is no right or wrong way when dealing with graphics. It all depend on what
 dotchart(mtcars$hp)
 ```
 
-We see that we have a suspicious dot with 300 plus horsepower that is much more to the right than most of the spots in the plot, so we will suspect that dot as an outlier.
+We see that we have a suspicious dot with 300 plus horsepower that is much more to the right than most of the spots in the plot, so we will suspect that dot is an outlier.
 
 ```{r}
 boxplot(mtcars$hp)
 ```
 
-By using the boxplot we see that the point of the 300 plus horse power is beyond the box, therefore this point is undoubtedly an aoutlier!
+By using the boxplot, we see that the point of the 300-plus horse power is beyond the box; therefore, this point is undoubtedly an outlier!
 
-(for anyone wondering the dot is a sports car)
+(for anyone wondering, the dot is a sports car)
 
 ## Bonus question! That is for those who want to go further beyond!
 
@@ -383,7 +373,6 @@ In our case we want to display the calculated columns (tempcmax, tempcmin, tempc
 
     <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>
 
-
 ## Bonus answer
 
 ```{r}
@@ -395,7 +384,7 @@ pie(gears,col = rainbow(length(gears)), labels = percent , main = '% of Gears', 
 legend("topright", c("Gear-3","Gear-4","Gear-5"), cex=0.8, fill=  rainbow(length(gears)))
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 #Subset the data so you will have only the needed columns
@@ -412,6 +401,3 @@ beersheva_means = colMeans(subset_beersheva)
 barplot(beersheva_means,lwd = 5, main="Beersheva Means",xlab="Categories",
 col=c("darkseagreen3", "lightslategray", "red4", "plum1", "tan2", "navyblue"))
 ```
-
-
-

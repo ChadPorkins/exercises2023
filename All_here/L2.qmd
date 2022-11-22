@@ -1,7 +1,8 @@
 ---
 title: "Lecture 2 Exercises"
 format:
-  html: 
+   html:
+    self-contained: true
     theme: literal
 ---
 
@@ -19,19 +20,21 @@ At the heart of almost everything you will do in R is the concept that everythin
 
 4.  sqrt(81)
 
-5.  5\^2 (7 + 5) / 2
+5.  5\^2
 
-6.  22 %% 4
+6.  (7 + 5) / 2
 
-7.  1:10
+7.  22 %% 4
 
-8.  100:90
+8.  1:10
+
+9.  100:90
 
 ### 1.2. Assign values to the different vectors.
 
 1.  Assign the value 35 to the vector Object_1
 
-2.  Assign the text value "*Ben Gurion University* " to the vector Object_2
+2.  Assign the text value "*Ben Gurion University*" to the vector Object_2
 
 3.  Divide the vector Object_1 by the vector Object_2, What do you get?
 
@@ -41,15 +44,13 @@ At the heart of almost everything you will do in R is the concept that everythin
 
 6.  Create a **new** vector Object_3 by subtracting the vector Object_1 and the vector Object_2
 
-7.  Assign the text value "*Good* " to the vector Object_x
+7.  Assign the text value "*Good*" to the vector Object_x
 
 8.  Assign the text value "*Morning"* to the vector Object_y
 
 9.  Add the vector Object_x to the vector Object_y, What do you get?
 
-
-
-## Answer 1.1 
+## Answer 1.1
 
 ```{r}
 32 + 98
@@ -73,7 +74,7 @@ sqrt(81)
 100:90
 ```
 
-## Answer 1.2 
+## Answer 1.2
 
 ```{r, eval=FALSE}
 
@@ -169,13 +170,11 @@ z & q are logical vectors.
 
 ## Answer 2.2
 
-
 ```{r}
 matrix(ncol = 3, nrow = 3, 1:9)
 ```
 
-___
-
+------------------------------------------------------------------------
 
 ```{r}
 matrix(ncol = 3, nrow = 2, 1:9)
@@ -184,7 +183,7 @@ matrix(ncol = 3, nrow = 2, 1:9)
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 matrix(ncol = 4, nrow = 4, 1:9)
@@ -192,7 +191,7 @@ matrix(ncol = 4, nrow = 4, 1:9)
 #The matrix is larger than the numbers entered in the code, therefore the matrix will complete the missing places by repeating the numbers between 1 and 9.
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 matrix( nrow = 3, 1:9)
@@ -200,8 +199,7 @@ matrix( nrow = 3, 1:9)
 #The matrix automatically completed the amount of columns to contain the numbers between 1 and 9.
 ```
 
-___
-
+------------------------------------------------------------------------
 
 ```{r}
 matrix(ncol = 3, nrow = 3, 1:9, byrow = TRUE)
@@ -264,7 +262,7 @@ max(GIS)
 min(GIS)
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 mean(Ecology)
@@ -280,14 +278,13 @@ Profit
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 # New data frame 
 df = data.frame(Day,GIS,Ecology,Profit)
 df
 ```
-
 
 ## Answer 3.2
 
@@ -341,7 +338,6 @@ The following week, Daniel had server failures and because of this, the new tabl
 
 6.  From the Ecology vector find the values between the second value and the fifth value.
 
-
 ## Question 4 Answer
 
 ```{r}
@@ -351,7 +347,7 @@ Ecology = c(100,200,300,-500,NA,50,NA)
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 mean(GIS, na.rm = T)
@@ -360,7 +356,7 @@ min(GIS, na.rm = T)
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 mean(Ecology, na.rm = T)
@@ -368,21 +364,20 @@ max(Ecology, na.rm = T)
 min(Ecology, na.rm = T)
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 Profit = sum(Ecology,na.rm = T) + sum(GIS,na.rm = T)
 Profit
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 GIS[3]
 
 Ecology[2:5]
 ```
-
 
 ## Lecture 2 Homework
 
@@ -418,7 +413,6 @@ random_vector
 
 9.  use `sort()` and `order()` functions on random_vector , what is the difference between the two functions?
 
-
 ## Answer 1
 
 ```{r}
@@ -438,7 +432,7 @@ random_vector[random_vector<=4] = 5
 random_vector
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 
@@ -448,7 +442,6 @@ order(random_vector)
 ```
 
 `sort()` sorts the vector in an ascending order, however `order()` returns the indices of the vector in a sorted order.
-
 
 ## Question 2
 
@@ -462,7 +455,6 @@ c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George
 
 ```
 
-
 ## Answer 2
 
 ```{r}
@@ -475,7 +467,6 @@ c("George_Washington","Andrew_Jackson","Abraham_Lincoln","Ronald Reagan","George
 ```{r}
 cbind(usa_presidents,names)
 ```
-
 
 ## Question 3
 
@@ -493,7 +484,6 @@ df2<-data.frame(Student_Name,Student_class)
 
 ```
 
-
 ## Answer 3
 
 ```{r}
@@ -510,8 +500,6 @@ df2<-data.frame(Student_Name,Student_class)
 ```{r}
 rbind(df1,df2)
 ```
-
-
 
 ## Bonus question! That is for those who want to go further beyond!
 
@@ -538,6 +526,7 @@ paste("I", "want", "to", "combine", "text", "values")
 ```{r}
 c(1, 2, 3) + c(1, 2, 3, 4, 5, 6)
 ```
+
 When one of the vectors is of length 3 and the other is of length 6, the shorter vector (of length 3) is replicated 2 times.
 
 ```{r}
@@ -552,8 +541,4 @@ Here, c(NA,99) is replicated three times, also to match the subset of length 6.
 paste("I", "want", "to", "combine", "text", "values")
 ```
 
-The proper way to combine text values in R. 
-
-
-
-
+The proper way to combine text values in R.
