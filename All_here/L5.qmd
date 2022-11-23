@@ -1,7 +1,8 @@
 ---
 title: "Lecture 5 Exercises"
 format:
-  html: 
+ html:
+    self-contained: true
     theme: literal
 editor_options: 
   markdown: 

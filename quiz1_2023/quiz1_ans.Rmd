@@ -52,11 +52,14 @@ mean(florida_cars$Price,na.rm = T)
 cheap_cars = cars[order(cars$Price),]
 ```
 
+
 ```{r}
 #q6
 
 Top_50 = cheap_cars[1:50,]
+Top_50 = Top_50[,-12]
 ```
+
 
 ```{r}
 #Q7
