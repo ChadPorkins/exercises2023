@@ -1,0 +1,177 @@
+---
+title: "Quiz 1 - 2022/2023"
+author: "Introduction to data science for Geographers"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+## Before we start!
+
+Starting time of the quiz: 9:00
+
+Ending time of the quiz: 11:00
+
+Added time 25% (Only for students with extra time approval) : 11:30
+
+___
+
+**All the code must be submitted in an R file; use # to write the question number and then the answer.**
+
+Example:
+
+```{r,eval=FALSE}
+#Question 1
+
+#My code  
+
+x = c(1,2,3,4)
+
+mean(x)
+
+
+```
+
+
+**Use # to answer questions that require a verbal answer!!!**
+
+**It is recommended to answer the questions in English. Those who prefer to answer the questions in Hebrew must add a Word file with the answers in Hebrew to the submission box.**
+
+**All files should be saved and submitted with your ID number!
+For example:**
+
+`111111111.R`
+
+___
+
+## Part 1 (30 Points)
+
+## Question 1
+
+### How a data frame and a matrix are differing from each other?
+
+A. Unlike data frame, the dimension (dim) of a matrix will always be 2 by 2.
+
+B. Data frame can include different type of data but matrix can contain only similar type of data.
+
+C. Matrix can be consisting only of numbers (numerics), while data frame deals with all data types.
+
+D. It is possible to write a csv file from a data frame, however not from a matrix.
+
+
+## Question 2
+
+### How many plotting symbols are there as part of the pch argument?
+
+A. 25
+
+B. 15
+
+C. 18
+
+D. 20
+
+
+## Question 3
+
+### What are Factors in R?
+
+A. Factors are text values on which you can perform mathematical operations.
+
+B. Factors are the data objects which you can perform and categorize ‏binary operations.
+
+C. Factors are the data objects which are used to categorize the data and store it as levels.
+
+D. Factors are a data type designed to handle and order complex numbers.
+
+## Part 2 (70 Points)
+
+The USA cars data set includes information about brands of clean and used vehicles for sale in the US. The data set has the following columns:
+
+* Id - The Id number of the car.
+
+* Price - The sale price of the vehicle in the ad.
+
+* Brand	 - The brand of the car.
+
+* Model	- The model of the vehicle.
+
+* Year - The vehicle registration year.
+
+* Title_status - This feature included binary classification, which are clean   title vehicles and salvage insurance.
+
+* Mileage - The miles traveled by vehicle.
+
+* Color - The color of the vehicle.
+
+* Vin - The vehicle identification number is a collection of 17 characters.   (digits and capital letters)
+
+* State - The location in which the car is being available for purchase.
+
+* Country	- The location in which the car is being available for purchase.
+
+* Sell_time	- Sales target in terms of time.
+
+## Question 1
+
+* Import the USA_cars_datasets.csv file into R.
+
+## Question 2
+
++ Display the first 10 rows of the data frame.
+
++ Display the last 10 rows of the data frame.
+
+## Question 3
+
+* Change the name of the "Vin" column to "Vehicle_identification_number".
+
+## Question 4
+
+* Answer the following questions:
+
+A.  What is the total number of NAs in the data set? 
+B.  What is the highest Mileage in the data set?  
+C.  What is the lowest price in the data set? 
+D.  How many "ford" cars are in the data set? 
+E.  What is the average car price in Florida?
+
+
+## Question 5
+
+* From the original USA_cars_datasets.csv, create a new data set named cheap_cars that will be ordered so that the lowest price will be first and the highest price will last.
+
+
+## Question 6
+
+* From cheap_cars, create a new data frame named Top_50 that will include the first 50 cheapest cars.
+
+* Delete the last column from Top_50.
+
+
+
+## Question 7
+
++ Create a plot of Cars mileage in relation to the Cars price from the **USA_cars_datasets.csv.**
+
++ The color of the plot should be purple.
+
++ Add the title of "Cars mileage in relation to the Cars price"
+
++ Rename the x-axis to "Car Price"
+
++ Rename the y-axis to "Car mileage"
+
++ Is there an abnormal dot/dots in the plot?
+
+You should get something like this:
+
+
+```{r,echo=FALSE}
+cars = read.csv("USA_cars_datasets.csv")
+plot(cars$Price, cars$Mileage, col = "purple", main="Cars price in relation to car mileage", xlab = "Car Price", ylab = "Car mileage")
+```
+
+

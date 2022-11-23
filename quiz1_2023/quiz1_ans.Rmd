@@ -1,0 +1,69 @@
+---
+title: "quiz1Ans"
+author: "Jakob Alderson"
+date: "2022-11-23"
+output: html_document
+---
+
+## Part 1
+
+```{r}
+#Q1 - B
+#Q2 - 25
+#Q3- C
+```
+
+## Part 2
+
+```{r}
+#Q1
+cars = read.csv("USA_cars_datasets.csv")
+```
+
+
+```{r}
+#Q2
+
+head(cars,10)
+
+tail(cars,10)
+```
+
+```{r}
+#Q3
+
+colnames(cars)[9] =  "Vehicle_identification_number"
+
+```
+
+```{r}
+#Q4
+sum(is.na(cars))
+max(cars$Mileage,na.rm = T)
+min(cars$Price,na.rm = T)
+ford_cars = cars[cars$Brand == "ford",]
+dim(ford_cars)
+florida_cars = cars[cars$State == "florida",]
+mean(florida_cars$Price,na.rm = T)
+```
+
+```{r}
+#q5
+cheap_cars = cars[order(cars$Price),]
+```
+
+```{r}
+#q6
+
+Top_50 = cheap_cars[1:50,]
+```
+
+```{r}
+#Q7
+
+ars = read.csv("USA_cars_datasets.csv")
+plot(cars$Price, cars$Mileage, col = "purple", main="Cars price in relation to car mileage", xlab = "Car Price", ylab = "Car mileage")
+
+#Yes the dot in the top of the chart
+```
+
