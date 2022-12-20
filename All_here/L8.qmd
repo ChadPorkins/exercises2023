@@ -1,16 +1,16 @@
 ---
 title: "Lecture 8 Exercises"
 format:
-  html: 
-    theme: literal
+  html:
+    self-contained: true
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
-In our research this week we will focus on analyzing information about
-soccer players from England, Italy, and Germany. Read football_info.csv
-into R. The data consist of information on 15,000 football players.
+This week's research will focus on analyzing information about football
+players from England, Italy, and Germany. Read football_info.csv into R.
+The data consist of information on 15,000 football players.
 
 football_info.csv has the following variables: age, height, weight and
 foot (which is the strongest foot of the player), Country, and the
@@ -22,11 +22,11 @@ player score from 0 to 100.
 
 1.  Read football_info.csv into R.
 
-2.  As you probably know by now, the first thing we do with a new
-    dataframe is to examine it. Check the different values and variables
-    in the table, look for NA and delete outliers if you notice them.
+2.  As you know by now, the first thing we do with a new dataframe is to
+    examine it. Check the different values and variables in the table,
+    look for NA and delete outliers if you notice them.
 
-3.  By using a histogram and QQ-plot which of the continuous variables
+3.  By using a histogram and QQ-plot, which of the continuous variables
     in the data is normally distributed? (Hint! you can use the
     `qqnorm()` and the `qqline()` functions).
 
@@ -95,10 +95,9 @@ qqnorm(info$Age)
 qqline(info$Age, col="red")
 ```
 
-You cannot be sure that the data is normally distributed with plots,
-however, you can rule out if it is NOT normally distributed. In this, it
-seems that all three variables have a good chance to be normally
-distributed.
+You cannot be sure that the data is normally distributed with plots.
+However, you can rule out if it is NOT normally distributed. All three
+variables have a good chance of being normally distributed.
 
 ## Question 2
 
@@ -137,7 +136,7 @@ plot(info$Standard_Height, info$Height,
 
 ## Question 3
 
-### 3. As part of our research we want to check if there are differences between the players from the different countries.
+### 3. As part of our research, we want to check if there are differences between the players from different countries.
 
 1.  By using the ANOVA test, check whether there is a significant
     difference in the height of the players from the different
@@ -201,7 +200,7 @@ There are 14 Israeli football players in the info dataset with dual
 citizenship.
 
 Their weights are: 62, 82, 64, 59, 71, 68, 78, 61, 67, 76, 80, 68, 60,
-71.
+and 71.
 
 We want to compare their weights to the average of all the players.
 
@@ -246,7 +245,7 @@ The mean weight of the Israeli players is significantly different from
 
 ## Question 1
 
-### 1. follow the instructions below.
+### 1. Follow the instructions below.
 
 An Independent (or unpaired two-sample) t-test is used to compare the
 means of two unrelated groups of samples.
