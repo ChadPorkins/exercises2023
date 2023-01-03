@@ -1,3 +1,13 @@
+---
+title: "Lecture 10 Exercises"
+format:
+ html:
+    self-contained: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
 ## Question 1
 
 In R, dates are represented by Date objects, while times are represented
@@ -9,7 +19,7 @@ number of seconds since the 1st of January in 1970.
 The 1st of January in 1970 is the common origin for representing times
 and dates in a wide range of programming languages.
 
-### 1.1 Follow the instructions below.
+### 1. Follow the instructions below.
 
 1.  Using R get the current date, and store the result into a variable -
     today_date.
@@ -21,7 +31,25 @@ and dates in a wide range of programming languages.
 
 4.  Use the `unclass()` on the time_now vector, what do you get?
 
-    ------------------------------------------------------------------------
+## Answer 1
+
+```{r}
+today_date = Sys.Date()
+
+unclass(today_date)
+
+#The result shows many days passed since 1 January 1970.
+
+
+time_now = Sys.time()
+
+unclass(time_now)
+
+#The result shows many seconds passed since 1 January 1970.
+
+```
+
+## Question 2
 
 To create a date object from a simple character string in R, you can use
 the `as.Date()` function. The character string has to obey a format that
@@ -44,7 +72,9 @@ January, 1999):
 
 8.  %b: abbreviated month. (Jan)
 
-### 1.2 follow the instructions below.
+------------------------------------------------------------------------
+
+### 2. follow the instructions below.
 
 1.  Read the dates.csv file
 
@@ -58,25 +88,7 @@ January, 1999):
     should select the abbreviated month and the 4-digit year, separated
     by a space.
 
-## Answer 1.1
-
-```{r}
-today_date = Sys.Date()
-
-unclass(today_date)
-
-#The result shows many days passed since 1 January 1970.
-
-
-time_now = Sys.time()
-
-unclass(time_now)
-
-#The result shows many seconds passed since 1 January 1970.
-
-```
-
-## Answer 1.2
+## Answer 2
 
 Four character columns representing dates are in the dates data file.
 **Convert the first three columns to dates** using the proper function,
@@ -104,11 +116,9 @@ third_col = as.Date(dates$year_month_day,  # Character vector to convert
              format= "%Y-%m-%d")            # Format of the dates to convert
 ```
 
-
-Using `format()`. From the first date, select the day of the month.
-From the second date, select the weekday. From the third date, you
-should select the abbreviated month and the 4-digit year, separated
-by a space.
+Using `format()`. From the first date, select the day of the month. From
+the second date, select the weekday. From the third date, you should
+select the abbreviated month and the 4-digit year, separated by a space.
 
 ```{r}
 
@@ -118,8 +128,7 @@ format(third_col, "%b %Y")
 
 ```
 
-
-## Question 2
+## Question 3
 
 Similar to working with dates, you can use `as.POSIXct()` to convert
 from a character string to a POSIXct object. Again, you have a wide
@@ -142,7 +151,7 @@ symbols!
 
 ------------------------------------------------------------------------
 
-### 2. Follow the instructions below.
+### 3. Follow the instructions below.
 
 1.  Convert the fourth column to a date using the proper function.
 
@@ -154,8 +163,7 @@ symbols!
 4.  From the fourth column, how many days passed between the first and
     second dates?
 
-## Answer 2
-
+## Answer 3
 
 ```{r}
 
@@ -180,14 +188,14 @@ fourth_col[2] - fourth_col[1]
 
 ```
 
-## Question 3
+## Question 4
 
 In the next part, we will use `Lubridate`.
 
-Lubridate makes it easier to do the things R does with date-times , and
-possible to do the things R does not.
+Lubridate makes it easy to do the things R does with date-times and
+makes it possible to do the things R doesn't.
 
-### 3. Follow the instructions below.
+### 4. Follow the instructions below.
 
 1.  Convert each column with the appropriate lubridate function.
 
@@ -201,7 +209,7 @@ possible to do the things R does not.
     syntax, and plot the stock price values. The plot needs to be red
     and have connected lines.
 
-you should get something like that:
+You should get something like this:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 
@@ -229,10 +237,10 @@ col4_dates = parse_date_time(dates[,4],
 
 years = year(col4_dates)
 
-plot(years,dates$stock_price, col = "red", type = "l")
+plot(years,dates$stock_price, col = "red", type = "l", ylab = "Stock Price" , xlab = "Years")
 ```
 
-## Answer 3
+## Answer 4
 
 ```{r}
 
@@ -266,14 +274,12 @@ round_date(col4_dates,
 
 ```
 
-
-
 ```{r}
 #From fourth column extract the year value and plot the stock price values. The plot needs to be red and have connected lines.
 
 years = year(col4_dates)
 
-plot(years,dates$stock_price, col = "red", type = "l")
+plot(years,dates$stock_price, col = "red", type = "l", ylab = "Stock Price" , xlab = "Years")
 ```
 
 ## Lecture 10 Homework
@@ -320,7 +326,6 @@ plot(st_geometry(Jan_rain))
 
 ```
 
-
 Plot the stations that had less than 5 mm of rain in April.
 
 ```{r}
@@ -329,7 +334,8 @@ plot(st_geometry(April_rain))
 
 ```
 
-Find the station that had the lowest mm of rain in December, and print the station name.
+Find the station that had the lowest mm of rain in December, and print
+the station name.
 
 ```{r}
 Dec_rain = rainfall[which.min(rainfall$dec),]
@@ -337,8 +343,8 @@ print(Dec_rain$name)
 
 ```
 
-Find the station that had the highest mm of rain in February, and print the station name.
-
+Find the station that had the highest mm of rain in February, and print
+the station name.
 
 ```{r}
 Feb_rain = rainfall[which.max(rainfall$feb),]
@@ -357,14 +363,12 @@ print(Feb_rain$name)
 2.  Check the rainfall averages in the spring months - March, April, and
     May, is one of the summer months significantly different in the
     amount of rain?
-    
-    
+
 ## Answer 2
 
-Check the rain averages in the winter months - December, January,
-and February, is one of the winter months significantly different in
-the amount of rainfall?
-
+Check the rain averages in the winter months - December, January, and
+February, is one of the winter months significantly different in the
+amount of rainfall?
 
 ```{r}
 
@@ -389,11 +393,11 @@ TukeyHSD(aov.model)
   
 ```
 
-___
+------------------------------------------------------------------------
 
 Check the rainfall averages in the spring months - March, April, and
-May, is one of the summer months significantly different in the
-amount of rain?
+May, is one of the spring months significantly different in the amount
+of rain?
 
 ```{r}
 
@@ -418,9 +422,7 @@ TukeyHSD(aov.model2)
   
 ```
 
-
 ## Bonus question! That is for those who want to go further beyond!
-
 
 ### Create the value and time vectors representing the water level of the BGU river in January and August during 2000-2006.
 
@@ -465,6 +467,7 @@ text(Jan[length(Jan)], Aug[length(Aug)],labels = year[which.max(year)], pos = 3,
 ```
 
 ## Bonus Answer
+
 ```{r}
 value = c(1,0.8,1.2,0.5,1.8,1.5,1.1,0.8,1.3,0.3,1,0.8,1.5,1.1,1.9,1.2)
 time = rep(2000:2006, each = 2)
@@ -487,7 +490,3 @@ text(Jan[length(Jan)], Aug[length(Aug)],labels = year[which.max(year)], pos = 3,
 
 
 ```
-
-    
-    
-    

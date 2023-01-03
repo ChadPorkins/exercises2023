@@ -1,8 +1,8 @@
 ---
 title: "Lecture 11 Exercises"
 format:
-  html: 
-    theme: literal
+  html:
+    self-contained: true
 editor_options: 
   markdown: 
     wrap: 72
@@ -10,15 +10,14 @@ editor_options:
 
 ## Question 1
 
-In this exercise, you will combine everything that you've learned so
-far.
+In this exercise, you will combine everything you've learned so far.
 
-Do you remember Daniel from the first class with the GIS and
-ecology companies? Every company has a website that he manages (a very
+Do you remember Daniel from the first class with the GIS and ecology
+companies? Every company has a website he manages (he is a very
 hardworking guy). Let's help him write code that will give him a summary
 of views on each web page.
 
-Here are pre-defined two vectors: GIS and Ecology, They are the number
+Here are two pre-defined vectors: GIS and Ecology. They are the number
 of views on each site on the last day.
 
 ```{r}
@@ -28,13 +27,13 @@ Ecology = 19
 
 ### 1. Follow the instructions below.
 
-1.  If both GIS and Ecology are 30 or higher, set Views equal to double
-    the sum of GIS and Ecology.
+1.  If both GIS and Ecology are 30 or higher, set the Views equal to
+    twice the sum of GIS and Ecology.
 
-2.  If both GIS and Ecology are strictly below 20, set Views equal to
+2.  If both GIS and Ecology are strictly below 20, set Views to equal
     half the sum of GIS and Ecology.
 
-3.  In all other cases, set Views equal to GIS and Ecology.
+3.  In all other cases, set Views to equal GIS plus Ecology.
 
 4.  Finally, print the resulting Views variable.
 
@@ -59,7 +58,6 @@ expr3
 expr4
 
 }
-
 
 ## Answer 1
 
@@ -90,10 +88,9 @@ A for loop is used to iterate over a vector in R programming.
 q = 1
 ```
 
-
-1.  Create a new loop that multiplies the value of q by 4 each time, as
-    long as q is less than 16, after each multiplication the next q
-    should increase by 1.
+1.  Create a new loop that multiplies the value of q by 4 each time, the
+    loop should run as long as q is less than 16, and after each
+    multiplication, the following q should increase by 1.
 
 2.  The loop is stopped with a brake argument if the multiplication by 4
     of q is divisible by 8, but still, print out the result before the
@@ -109,7 +106,21 @@ expr
 
 }
 
-## Answer 2
+## Answer 2.1
+```{r}
+# Initialize i as 1 
+q = 1
+
+# Code the while loop
+while (q < 16) {
+  print(q * 4)
+  q = q + 1
+}
+
+```
+
+
+## Answer 2.2
 
 ```{r}
 # Initialize i as 1 
@@ -117,14 +128,13 @@ q = 1
 
 # Code the while loop
 while (q <= 16) {
-  print(q * 4)
+   print(q * 4)
   if (q %% 8 == 0) {
     break
   }
   q = q + 1
 }
 ```
-
 
 ## Question 3
 
@@ -162,7 +172,7 @@ for (var2 in seq2) {
 
 }
 
-You should get something like that:
+You should get something like this:
 
 \[1\] "On row 1 and column 1 the board contains O"
 
@@ -182,7 +192,6 @@ You should get something like that:
 
 \[1\] "On row 3 and column 3 the board contains O"
 
-
 ## Answer 3
 
 ```{r}
@@ -199,8 +208,6 @@ for (x in 1:nrow(m)) {
   }
 }
 ```
-
-
 
 ## Question 4
 
@@ -241,10 +248,9 @@ circle.area(cir.diam)
 
 ## Lecture 11 Homework
 
-
 ## Question 1
 
-R disposes of the `apply()` function family, which consists of iterative
+R has a wide `apply()` function family, which consists of iterative
 functions that aim at minimizing your need to explicitly create loops.
 
 `lapply()` applies a function to every element of a list.
@@ -274,7 +280,7 @@ The syntax is: `lapply(list, function)`
 
 ------------------------------------------------------------------------
 
-`sapply()` is a 'wrapper' function for `lapply()`, but returns a
+`sapply()` is a 'wrapper' function for `lapply()`, it returns a
 simplified output as a vector, instead of a list.
 
 ### 1.2 Follow the instructions below.
@@ -289,8 +295,6 @@ simplified output as a vector, instead of a list.
 
 The syntax is: `mapply(list, function)`
 
-
-
 # Asnwer 1.1
 
 ```{r}
@@ -298,7 +302,6 @@ SimulatedData = list(SimpleSequence = 1:4, Norm10 = rnorm(10),
     Norm20 = rnorm(20, 1), Norm100 = rnorm(100, 5))
 
 ```
-
 
 ```{r}
 #Lapply mean to each element of the list
@@ -321,8 +324,6 @@ lapply(SimulatedData,shapiro.test)
 ```
 
 # Asnwer 1.2
-
-
 
 ```{r}
 #Sapply mean to each element of the list
@@ -354,16 +355,15 @@ sapply(SimulatedData,shapiro.test)
 2.  Get your function to print out your result in the following format:
     "Farenheit : value of oF is equivalent to value oC centigrade."
 
-You should get something like that:
+You should get something like this:
 
-\[1\] "Fahrenheit: 50 oF is equivalent to" \[1\] "Centigrade: 10 oC"
+ "Fahrenheit: 50 oF is equivalent to"  "Centigrade: 10 oC"
 
 ## Answer 2
 
 Write a function to convert farenheit to centegrade (oC = (oF - 32) x
 5/9). Get your function to print out your result in the following
 format: "Farenheit : value of oF is equivalent to value oC centigrade."
-
 
 ```{r}
 far.cent <- function(a) {
@@ -398,7 +398,7 @@ poppySeeds = c(20, 35, 11, 77, 79)
 
 `tapply()` is used to apply a function over subsets of a vector.
 
-It is primarily used when the dataset contains dataset contains
+It is primarily used when the  dataset contains
 different groups (i.e. levels/factors) and we want to apply a function
 to each of these groups.
 
@@ -409,9 +409,18 @@ to each of these groups.
 The following question will be about the [Ricker
 model](https://en.wikipedia.org/wiki/Ricker_model).
 
-The Ricker model is defined as: Where Nt is the population size at time t, r is the population growth rate and K is the carrying capacity. Write a function to simulate this model so you can conveniently determine the effect of changing r and the initial population size N0. K is often set to 100 by default, but you want the option of being able to change this with your function. So, you will need a function with the following arguments; nzero which sets the initial population size, r which will determine the population growth rate, time which sets how long the simulation will run for and K which we will initially set to 100 by default.
+The Ricker model is defined as: Where Nt is the population size at time
+t, r is the population growth rate and K is the carrying capacity. Write
+a function to simulate this model so you can conveniently determine the
+effect of changing r and the initial population size N0. K is often set
+to 100 by default, but you want the option of being able to change this
+with your function. So, you will need a function with the following
+arguments; nzero which sets the initial population size, r which will
+determine the population growth rate, time which sets how long the
+simulation will run for and K which we will initially set to 100 by
+default.
 
-#Bonus answer
+## Bonus answer
 
 ```{r}
 
@@ -432,7 +441,7 @@ mapply(max, lilySeeds, poppySeeds)
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 #get the mean hp by cylinder groups form the mtcars data-set.
@@ -441,7 +450,7 @@ tapply(mtcars$hp, mtcars$cyl, FUN = mean)
 
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 # function to simulate Ricker model
@@ -462,6 +471,3 @@ Ricker.model <- function(nzero, r, time, K = 1) {
 # To run play around with the different parameters, especially r
 Ricker.model(nzero = 0.1, r = 1, time = 100)
 ```
-
-
-
