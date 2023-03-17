@@ -1,17 +1,15 @@
 ---
 title: "Lecture 2 Exercises"
 format:
-  html: 
+   html:
+    self-contained: true
     theme: literal
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 ## Before we start!
 
 Paste the lesson files into your home directory. Run the following code
-in cygwin:
+in Git Bash:
 
 ```{r,eval=FALSE}
 cd ~/ADS_L2
@@ -28,36 +26,34 @@ world. This lesson will introduce its key elements and show you how to
 use them efficiently.
 
 As part of your internship in the world of data, you were privileged to
-manage a company's database.You want and need to manage the data in the
+manage a company's database. You want and need to manage the data in the
 best possible way.
 
-### 1.1 The basis of any successful code is first of all to know which files we are working with and navigate through directories.
+### 1.1 The basis of any successful code is to know which files we are working with and navigate through directories.
 
-1.  Run pwd command (Print working directory), where are you right now?
-
-2.  Run `pwd` commnand (Print working directory), where are you right
+1.  Run `pwd` command (Print working directory), where are you right
     now?
 
-3.  Run the `ls -la` command what do you get?
+2.  Run the `ls -la` command what do you get?
 
-4.  change directory to the Report folder, what files are there?
+3.  Change the directory to the Report folder, what files are there?
 
-5.  where does cd . take you?
+4.  Where does cd . takes you?
 
-6.  where does cd .. take you?
+5.  Where does cd .. takes you?
 
-7.  where does cd \~ take you?
+6.  Where does cd \~ takes you?
 
-8.  Return back to the Report folder, where does cd \~/../. take you?
+7.  Return back to the Report folder, where does cd \~/../. take you?
 
 ## 1.1 Answer
 
-Run pwd commnand (Print working directory), where are you right now?
+Run the pwd command (Print working directory), where are you right now?
 
-You should be in \~/ADS_L2 inside the lesson directory that you copied
-to your home directory.
+You should be in \~/ADS_L2 inside the lesson directory you copied to
+your home directory.
 
-------------------------------------------------------------------------
+___
 
 Run the ls -la command what do you get?
 
@@ -71,7 +67,19 @@ permissions, ownership, file sizes, and timestamps
 -a: WIll list all of a directory's files, including hidden ones (that
 start with .)
 
-------------------------------------------------------------------------
+___
+
+Change the directory to the Report folder, what files are there?
+
+Q1.csv 
+
+Q2.csv
+
+Q3.csv 
+
+Q4.csv
+
+___
 
 where does cd . take you?
 
@@ -85,18 +93,21 @@ where does cd \~ take you?
 
 This command will take you to the home directory back.
 
+___
+
+
 Return back to the Report folder, where does cd \~/../. take you?
 
-`cd ~/ADS_L2`
-
 This command will return you one directory before the home directory.
+
+___
 
 ### 1.2 Now we will focus on creating new data and deleting unnecessary data.
 
 1.  Create a new folder named backup, Make a copy of Q1.csv in the
-    backup folder, and name the new file Q1.bck.
+    backup folder, and call the new file Q1.bck.
 
-2.  Copy Q2.csv and Q3.csv from the seasonal directory into the backup
+2.  Copy Q2.csv and Q3.csv from the Report directory into the backup
     directory without changing your current working directory.
 
 3.  Using a single command, move Q1.csv and Q4.csv from Report to the
@@ -112,15 +123,14 @@ This command will return you one directory before the home directory.
 7.  Now that the More_info directory is empty, use a single command to
     delete it.
 
-8.  create a new directory called yearly below your home directory. Now
-    that yearly exists, create another directory called 2017 inside it
-    without leaving your home directory.
+8.  Create a new directory called yearly below your home directory. Now that annually exists, create another directory called 2017 inside of it without leaving your home directory.
+    
 
 ## Answer 1.2
 
 ```{r,eval=FALSE}
 
-create a new folder named backup, Make a copy of Q1.csv in the backup folder, name the new file Q1.bck.
+Create a new folder named backup, Make a copy of Q1.csv in the backup folder, and call the new file Q1.bck.
 
 cd ~/ADS_L2
 
@@ -132,9 +142,10 @@ cp  ~/ADS_L2/Report/Q1.csv ~/ADS_L2/Backup/Q1.bck
 
 ```{r,eval=FALSE}
 
-Copy Q2.csv and Q3.csv from the seasonal directory into the backup directory without changing your current working directory.
+Copy Q2.csv and Q3.csv from the Report directory into the backup
+directory without changing your current working directory.
 
-cp  ~/ADS_L2/Report/Q1.csv ~/ADS_L2/Report/Q2.csv Backup
+cp  ~/ADS_L2/Report/Q2.csv ~/ADS_L2/Report/Q3.csv Backup
 
 ```
 
@@ -182,9 +193,7 @@ rmdir ~/ADS_L2/More_info
 ```
 
 ```{r, eval=FALSE}
-create a new directory called yearly below your home directory.
-Now that yearly exists, create another directory called 2017 inside it
-without leaving your home directory.
+Create a new directory called yearly below your home directory. Now that annually exists, create another directory called 2017 inside of it without leaving your home directory.
 
 Option A :
   
@@ -202,7 +211,7 @@ mkdir -p yearly/2017
 
 ### 1.3 Now we will focus on displaying data
 
-1.  view the content of Q3.csv from the Backup directory.
+1.  View the content of Q3.csv from the Backup directory.
 
 2.  Display only the first 3 lines of Q3.csv.
 
@@ -216,7 +225,7 @@ mkdir -p yearly/2017
 
 ```{r,eval=FALSE}
 
-view the content of Q3.csv from the Backup directory. 
+View the content of Q3.csv from the Backup directory. 
 
 cd ~/ADS_L2/Backup
 
@@ -238,7 +247,7 @@ Use tail with the argument of -n +7, what do you get?
   
 tail -n +7 Q3.csv
 
- -n +7 will display all lines but only the first six lines of Q3.csv
+The command "tail -n +7 Q3.csv" will display the contents of the file "Q3.csv" starting from the 7th line till the end of the file.
 
 ```
 
@@ -254,7 +263,7 @@ to specify columns and -d (meaning "delimiter") to specify the
 separator. You need to specify the latter because some files may use
 spaces, tabs, or colons to separate columns.
 
-##### Question 2.1 What command will select the first column (containing dates) from the file Q3.csv?
+#### Question 2.1 What command will select the first column (containing dates) from the file Q3.csv?
 
 ## Answer 2.1
 
@@ -298,7 +307,7 @@ Here are some common arguments:
 2.  Invert the match to find all of the lines that don't contain the
     value 2013 in Q3.csv.
 
-3.  Count how many lines contain the he word Italy in Forbes2000.csv.
+3.  Count how many lines contain the the word Italy in Forbes2000.csv.
 
 4.  Combine tail with redirection to save the last 3 lines of Q3.csv in
     a file called last_3.csv.
@@ -320,6 +329,8 @@ grep Italy Forbes2000.csv
 
 ```{r,eval=FALSE}
 
+Invert the match to find all of the lines that don’t contain the value 2013 in Q3.csv.
+
 cd ~/ADS_L2/Backup/
 
 grep -v -n 2013 Q3.csv
@@ -327,7 +338,7 @@ grep -v -n 2013 Q3.csv
 
 ```{r,eval=FALSE}
 
-Count how many lines contain the he word Italy in Forbes2000.csv
+Count how many lines contain the the word Italy in Forbes2000.csv
 
 cd ~/ADS_L2/More_info2/
 
@@ -341,7 +352,7 @@ Combine tail with redirection to save the last 3 lines of Q3.csv in a file calle
 
 cd ~/ADS_L2/Backup/
 
-tail -n 5 Q3.csv > last_3.csv  
+tail -n 4 Q3.csv > last_3.csv  
 
 ```
 
@@ -370,22 +381,7 @@ Ctrl + X: exit the editor.
 
 ### 3. Follow the instructions below:
 
-1.  Install nano.
-
--   Download nano for
-    [Windows](https://www.nano-editor.org/dist/win32-support/nano-git-0d9a7347243.exe).
-
--   Rename the file to nano.exe
-
--   Move it to C:\Program Files\Git\usr\bin
-
--   Open git for Windows and issue the following command: git config
-    --global core.editor "winpty nano"
-
--   And that's it! Next git opens a text editor, it will be nano run
-    inside of MINGW64.
-
-2.  Add your name and your birthday in the words.txt file.
+1.  Add your name and your birthday in the words.txt file.
 
 ## Answer 3
 
@@ -393,7 +389,7 @@ Ctrl + X: exit the editor.
 
 cd ~/ADS_L2/More_info2
 
-nano woeds.txt
+nano words.txt
 ```
 
 ## Lecture 2 Homework
@@ -407,7 +403,7 @@ cd ~
 touch my_file.txt  
 ```
 
-### 1.Follow the instructions below:
+### 1. Follow the instructions below:
 
 1.  What did the touch command do?
 
@@ -492,7 +488,7 @@ Is it:
 
 4.  proteins-saved.dat
 
-#Answer 3
+## Answer 3
 
 We start in the /Users/jamie/data directory, and create a new folder
 called recombine.
@@ -608,7 +604,6 @@ else
   echo "The number is odd."
 fi
 ```
-
 
 2.  
 
