@@ -1,23 +1,20 @@
 ---
 title: "Lecture 9 Exercises"
 format:
-  html: 
-    theme: literal
+ html:
+    self-contained: true
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
-It is often said that 80% of data analysis is spent on cleaning and
-preparing data. Furthermore, it is not only the first step in each data
-science project, but a process that must be repeated throughout the
-analysis as new problems come to light or new data is collected. To get
-a handle on the problem, this exercise focuses on an essential aspect of
-data called data tidying: structuring datasets to facilitate analysis.
+It is often said that 80% of data analysis is spent on cleaning and preparing data. Furthermore, it is not only the first step in each data science project but a process that must be repeated throughout the analysis as new problems come to light or new data is collected. To get a handle on the problem, this exercise focuses on an essential aspect of data called data tidying: structuring datasets to facilitate analysis.
 
--   The general principle of "tidy data" is this:
+The general principle of "tidy data" is this:
 
--   Every column is a variable Every row is an observation
+-   Every column is a variable.
+
+-   Every row is an observation.
 
 -   Every cell is a single value.
 
@@ -30,8 +27,7 @@ library(tidyverse)
 relig_income
 ```
 
-relig_income is a tibble that contains the result of the religion and
-income survey.
+relig_income is a tibble that contains the religion and income from survey results.
 
 1.  Why is the data in the tibble not tidy?
 
@@ -43,7 +39,7 @@ income survey.
 fish_encounters
 ```
 
-fish_encounters is a tibble containing information about fish swimming
+fish_encounters is a tibble containing data about fish swimming
 down a river. Each station represents an autonomous monitor that records
 if a tagged fish was seen at that location.
 
@@ -55,11 +51,8 @@ if a tagged fish was seen at that location.
 
 ## Answer 1.1
 
-The issue is that all the columns except for religion aren't really
-variables. They are realizations of a different variable - that is,
-income. So we need to make this tibble go from "wide" (more columns) to
-"long" (fewer columns, more rows). Our function for this in tidyr is
-`pivot_longer()`.
+The issue is that all the columns except religion aren’t variables. They are realizations of a different variable - that is, income. So we need to make this tibble go from “wide” (more columns) to “long” (fewer columns, more rows). Our function for this in tidyr is `pivot_longer()`.
+
 
 ```{r}
 relig_income %>%
@@ -70,8 +63,7 @@ relig_income %>%
 
 fish_encounters has the opposite problem of relig_income. The variables
 "Release" and "I80_1," etc., are condensed under one variable,
-"station." In essence, not every row is an observation that holds other
-variables fixed. We need to go from having a "long" dataset with many
+"station." We need to go from having a "long" dataset with many
 rows to a "wider" dataset that has more columns. We will use the
 `pivot_wider()` function for this.
 
@@ -83,7 +75,7 @@ fish_encounters %>%
 ------------------------------------------------------------------------
 
 In the new tibble, we have plenty of NA values, and we can fix it with a
-small adjustment to the previous code.
+slight adjustment to the previous code.
 
 ```{r}
 fish_encounters %>%
@@ -243,7 +235,7 @@ iris2 %>%
 
 ## Question 1
 
-We are working on table1, table2, table3, table4a from the lecture.
+We are working on table1, table2, table3, and table4a from the lecture.
 
 Are those tables tidy, or aren't they tidy?
 
@@ -281,7 +273,7 @@ table3
 Table3 is non-tidy because we cannot work with values in the rate
 column; the values are characters and not numeric.
 
-\_\_
+___
 
 ```{r}
 table4a
@@ -311,7 +303,7 @@ You will need to perform six steps:
 
 ## Answer 2 
 
-### 1 
+### 1. 
 
 ```{r}
 library(tidyverse)
@@ -330,7 +322,7 @@ fyear_cases_2000 =
 
 ___
 
-### 2
+### 2.
 
 ```{r}
 fyear_pop_1999 =
@@ -347,7 +339,7 @@ fyear_pop_2000 =
 
 ___
 
-### 3 
+### 3.
 
 ```{r}
 rate_1999 =
@@ -358,7 +350,7 @@ rate_2000 =
 
 ___
 
-### 4
+### 4.
 
 ```{r}
 rate_1999 <- rate_1999 %>%
@@ -372,7 +364,7 @@ rate_2000 <- rate_2000 %>%
 
 ___
 
-### 5 
+### 5. 
 
 ```{r}
 rate_1999 <- rate_1999 %>%
@@ -385,14 +377,16 @@ rate_2000 <- rate_2000 %>%
 
 ___
 
-### 6 
+### 6. 
 
 ```{r}
 bind_rows(rate_1999, rate_2000)
 
 ```
 
-### Bonus Question  
+## Bonus question! That is for those who want to go further beyond!
+
+Part 1:
 
 Create the following data frame:
 
@@ -415,10 +409,60 @@ separate_rows(dfz, y, z, convert = TRUE)
 
 ```
 
-## Bonus Answer
+## Bonus Answer - Part 1
 
 ```{r}
 separate_rows(dfz, y, z, convert = TRUE)
 
 ```
 
+___
+
+
+## Part 2
+
+You have a dataset that contains information about students and their test scores in different subjects. However, the data is in a messy format, and you need to tidy it. The dataset is stored in a data frame called messy_data with the following structure:
+
+```{r}
+messy_data <- data.frame(
+  student = c("Alice", "Bob", "Charlie"),
+  math_score_1 = c(80, 90, 75),
+  math_score_2 = c(85, 95, 80),
+  science_score_1 = c(70, 85, 90),
+  science_score_2 = c(75, 90, 95),
+  english_score_1 = c(85, 80, 90),
+  english_score_2 = c(90, 85, 95)
+)
+
+```
+
+The task is to tidy the messy_data into a new data frame called tidy_data with the following structure:
+
+```{r}
+tidy_data <- data.frame(
+  student = c("Alice", "Alice","Alice", "Bob", "Bob","Bob", "Charlie", "Charlie", "Charlie"),
+  subject = c("math", "science", "english", "math", "science", "english", "math", "science", "english"),
+  score_1 = c(80, 70, 85, 90, 85, 80, 75, 90, 90),
+  score_2 = c(85, 75, 90, 95, 90, 85,80,95, 95)
+)
+
+```
+
+
+## Bonus Answer - Part 2
+
+
+```{r}
+library(tidyr)
+
+tidy_data <- messy_data %>%
+  pivot_longer(
+    cols = -student,
+    names_to = c("subject", ".value"),
+    names_pattern = "(\\w+)_score_(\\d+)"
+  )
+
+```
+
+names_to = `c("subject", ".value")`: This indicates that the column names should be split into two parts: "subject" and the remaining part (".value"), which represents the suffix that will be used for the new columns.
+names_pattern = `(\\w+)_score_(\\d+)`: This regular expression pattern is used to extract the subject name and the score number from the original column names. The (\\w+) captures the subject name, and (\\d+) captures the score number.

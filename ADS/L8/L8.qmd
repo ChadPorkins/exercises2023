@@ -1,23 +1,23 @@
 ---
 title: "Lecture 8 Exercises"
 format:
-  html: 
+   html:
+    self-contained: true
     theme: literal
-editor_options: 
+editor: 
   markdown: 
     wrap: 72
 ---
 
-dplyr is a package for data manipulation, developed by Hadley Wickham
-and Romain Francois. It is built to be fast, highly expressive, and
-open-minded about how your data is stored. It is installed as part of
-the tidyverse meta-package and, as a core package.
+dplyr is a package for data manipulation developed by Hadley Wickham and
+Romain Francois. It is built to be fast, highly expressive, and
+open-minded about how your data is stored.
 
 ## Before we start
 
 1.  Install dplyr and run it.
 
-2.  Install the gapminder package, have a look in the data set.
+2.  Install the gapminder package, and have a look at the data set.
 
 ## Before we start guide
 
@@ -28,7 +28,7 @@ install.packages("dplyr")
 library(dplyr)
 ```
 
-Install the gapminder package, have a look in the data set.
+Install the gapminder package, and have a look at the data set.
 
 ```{r,eval=FALSE}
 install.packages("gapminder")
@@ -44,7 +44,7 @@ country.
 
 ### 1.1 Use `filter()` to subset data row-wise
 
-1.  Find observations where life expectancy is less than 35.
+1.  Find observations where life expectancy is less than 29.
 
 2.  Find observations from Poland after the year 1985.
 
@@ -66,23 +66,18 @@ library(gapminder)
 filter(gapminder, lifeExp < 29)
 ```
 
-
-___
-
+------------------------------------------------------------------------
 
 ```{r}
 filter(gapminder, country == "Poland", year > 1985)
 ```
 
-
-___
-
+------------------------------------------------------------------------
 
 ```{r}
 filter(gapminder, country %in% c("Albania", "Vietnam"))
 
 ```
-
 
 ## Answer 1.2
 
@@ -94,9 +89,9 @@ gapminder |> head(6)
 gapminder %>% head(6)
 ```
 
-This is equivalent to head(gapminder). The pipe operator takes the thing
-on the left-hand-side and pipes it into the function call on the
-right-hand-side -- literally, drops it in as the first argument.
+This is equivalent to head(gapminder). The pipe operator takes the data
+on the "left side" and pipes it into the function call on the "right
+side."
 
 ## Question 2 - Select and Mutate.
 
@@ -110,7 +105,7 @@ right-hand-side -- literally, drops it in as the first argument.
 ### 2.2 Use `mutate()` to add new variables.
 
 We want to recover each country's GDP. After all, the Gapminder data has
-a variable for population (pop) and GDP per capita (gdpPercap). Let's
+a variable for population (pop) and GDP per capita (gdpPercap). So let's
 multiply them together.
 
 ## Answer 2.1
@@ -121,7 +116,7 @@ select(year, lifeExp) |>
 head(3)
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder |>
@@ -140,16 +135,15 @@ gapminder2 = gapminder |> mutate(gdp = pop * gdpPercap)
 
 ### 3.1 Use `arrange()` to row-order data in a principled way
 
-1.  Order the data by year then country, as opposed to by country then
-    the year.
+1.  Order the data by year and then by country, as opposed to country
+    and year.
 
-2.  Or maybe you want just the data from 2000, sorted on life
-    expectancy?
+2.  Arrange the gapminder data from 2002 by life expectancy.
 
-3.  Oh, you'd like to sort on life expectancy in descending order? Then
-    use desc().
+3.  Using `desc()`, arrange the gapminder data from 2002 by life
+    expectancy in descending order.
 
-### 3.2 Use `rename()` to rename variables
+### 3.2 Use `rename()` to rename columns.
 
 1.  Rename gdpPercap to gdp_percap.
 
@@ -162,19 +156,19 @@ gapminder %>%
   arrange(year, country)
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder %>%
-  filter(year == 2000) %>%
+  filter(year == 2002) %>%
   arrange(lifeExp)
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder %>%
-  filter(year == 2000) %>%
+  filter(year == 2002) %>%
   arrange(desc(lifeExp))
 ```
 
@@ -190,11 +184,10 @@ gapminder  %>%
 ## Question 4 - Group by and Summarize
 
 `group_by()` adds extra structure to your dataset -- grouping
-information -- which lays the groundwork for computations within the
-groups.
+information and laying the groundwork for group computations.
 
-summarize() takes a dataset with n observations, computes requested
-summaries, and returns a dataset with 1 observation.
+`summarize()` takes a dataset with n observations, computes requested
+summaries, and returns a dataset with 1 column.
 
 1.  Let's start with simple counting. How many observations do we have
     per continent?
@@ -205,14 +198,15 @@ summaries, and returns a dataset with 1 observation.
     `n_distinct()` function to count the number of distinct countries
     within each continent.)
 
-3.   compute the average life expectancy by continent.
+3.  Compute the average life expectancy by continent.
 
 4.  Let's focus just on Asia. What are the minimum and maximum life
-    expectancies seen by year?
+    expectancies seen by the year column?
 
 5.  Pipe the data to create a line plot with the minimum and maximum
-    life expectancies. (Feel free to add colors and a legend to the plot :) )
-    
+    life expectancies. (Feel free to add colors and a legend to the plot
+    :) )
+
 You should get something like that:
 
 ```{r,echo=FALSE}
@@ -231,7 +225,6 @@ gapminder %>%
 
   
 ```
-  
 
 ## Answer 4
 
@@ -241,7 +234,7 @@ gapminder %>%
   summarize(n = n())
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder %>%
@@ -250,8 +243,7 @@ gapminder %>%
             n_countries = n_distinct(country))
 ```
 
-
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder %>%
@@ -259,7 +251,7 @@ gapminder %>%
   summarize(avg_lifeExp = mean(lifeExp))
 ```
 
-___
+------------------------------------------------------------------------
 
 ```{r}
 gapminder %>%
@@ -268,8 +260,7 @@ gapminder %>%
   summarize(min_lifeExp = min(lifeExp), max_lifeExp = max(lifeExp))
 ```
 
-
-___
+------------------------------------------------------------------------
 
 ```{r}
 library(ggplot2)
@@ -326,8 +317,8 @@ filter(flights, month == 5, carrier %in% c("DL", "MQ"))
 
 ## Question 3
 
-It is not clear if your filtering is working because the 'carrier'
-column is in the middle of all columns.
+It is unclear if your filtering is working because the 'carrier' column
+is in the middle of all columns.
 
 1.  Filter the data like in the previous questions, and then present the
     'carrier' column at the beginning of your data frame, with all
@@ -350,8 +341,8 @@ than immediately select.
 
 -   Save the result from question 3 to 'flights_new'.
 
--   Arrange the data in a way that the shortest flight will be in the
-    first row and the longest will be the last.
+-   Arrange the data so that the shortest flight will be in the first
+    row and the longest will be the last.
 
 ## Answer 4
 
@@ -372,7 +363,6 @@ The distance between two airports is listed in miles.
 ```{r}
 flights_new = mutate(flights_new,
                          distance_km = distance * 1.609344)
-
 select(flights_new, distance, distance_km)
 
 ```
@@ -381,6 +371,8 @@ select(flights_new, distance, distance_km)
 
 1.  Between 'Delta Air Lines Inc.' and 'Envoy Air', Which airline had a
     lower average "delay rate" in May?
+
+## Answer 6
 
 ```{r}
 flights_new %>%
@@ -407,4 +399,140 @@ flights %>%
 filter(month %in% c(6:8)) %>%
 count(carrier) %>%
 arrange(-n)
+```
+
+## Bonus question! That is for those who want to go further beyond!
+
+1.  Load the required libraries:
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+2.  Create a data frame for capybara food data:
+
+    ```{r}
+    capybara_food <- iris %>%
+      mutate(Species = as.character(Species)) %>%
+      filter(Species %in% c("setosa", "versicolor")) %>%
+      select(Species, Sepal.Length, Petal.Length)
+
+    ```
+
+3.  What is the median sepal length for the setosa species of capybara
+    food?
+
+4.  Create a box plot comparing the sepal length distribution between
+    the setosa and versicolor species of capybara food.
+
+5.  Calculate the mean petal length for each species of capybara food
+    and store the results in a new data frame.
+
+6.  Merge the mean_petal_length data frame with the capybara_food data
+    frame.
+
+7.  Create a scatter plot of petal length against sepal length, colored
+    by species, and add a smoothed trend line.
+
+8.  Calculate the proportion of capybara food observations that have
+    sepal length above the overall mean sepal length.
+
+9.  Create an advanced plot showing the relationship between Sepal
+    Length and Petal Length, colored by species, with different sizes of
+    points based on the sepal length.
+
+## Bonus question answer
+
+```{r}
+#1
+
+library(dplyr)
+library(ggplot2)
+
+```
+
+```{r}
+#2
+
+capybara_food <- iris %>%
+  mutate(Species = as.character(Species)) %>%
+  filter(Species %in% c("setosa", "versicolor")) %>%
+  select(Species, Sepal.Length, Petal.Length)
+
+
+```
+
+```{r}
+
+#3
+
+setosa_median_sepal_length <- capybara_food %>%
+  filter(Species == "setosa") %>%
+  summarise(Median_Sepal_Length = median(Sepal.Length))
+```
+
+```{r}
+
+#4
+
+ggplot(capybara_food, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  labs(x = "Species", y = "Sepal Length") +
+  theme_bw()
+```
+
+```{r}
+
+#5
+
+mean_petal_length <- capybara_food %>%
+  group_by(Species) %>%
+  summarise(Mean_Petal_Length = mean(Petal.Length))
+```
+
+```{r}
+
+#6
+
+capybara_food_merged <- left_join(capybara_food, mean_petal_length, by = "Species")
+
+```
+
+```{r}
+
+#7
+
+scatter_plot <- ggplot(capybara_food_merged, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Sepal Length", y = "Petal Length") +
+  theme_bw()
+
+scatter_plot
+```
+
+```{r}
+
+#8
+
+proportion_above_mean <- capybara_food %>%
+  summarise(Proportion_Above_Mean = mean(Sepal.Length > mean(Sepal.Length)))
+```
+
+```{r}
+
+#9
+
+advanced_plot <- capybara_food %>%
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species, size = Sepal.Length)) +
+  geom_point(alpha = 0.8) +
+  scale_color_manual(values = c("setosa" = "blue", "versicolor" = "orange")) +
+  scale_size_continuous(range = c(2, 8)) +
+  labs(x = "Sepal Length", y = "Petal Length", color = "Species", size = "Sepal Length") +
+  theme_bw()
+
+# Print the advanced plot
+print(advanced_plot)
+
 ```

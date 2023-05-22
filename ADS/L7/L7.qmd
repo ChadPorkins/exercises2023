@@ -1,21 +1,19 @@
 ---
 title: "Lecture 7 Exercises"
 format:
-  html: 
+   html:
+    self-contained: true
     theme: literal
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
-ggplot2 is a system for declaratively creating graphics, based on The
+ggplot2 is a system for declaratively creating graphics based on The
 Grammar of Graphics. You provide the data, tell ggplot2 how to map
 variables to aesthetics, and what graphical primitives to use, and it
 takes care of the details.
 
 Today's lesson will be about visualizing YouTube video statistics!
 
-The youtube.csv file includes the following columns:
+The Youtube_L7.csv file includes the following columns:
 
 -   Video ID: The Video Identifier.
 
@@ -31,24 +29,20 @@ The youtube.csv file includes the following columns:
 
 ## Question 1
 
-1.  Read youtubedata.csv into R.
+1.  Read Youtubedata_L7.csv into R.
 
-2.  As always the first we need to do is to check our data! use the
-    summary `function` to review all variables and look for NAs and
+2.  As always, the first thing we need to do is to check our data! Use
+    the `summary` function to review all columns and look for NAs and
     outliers.
 
 ## Answer 1
 
 ```{r}
-youtube = read.csv("Youtubedata.csv")
+youtube = read.csv("Youtube_L7.csv")
 summary(youtube)
 ```
 
-We can see in the column of the comments and in the column of likes that
-there is a value of minus one, a very problematic value for us. We will
-fix it now.
-
-------------------------------------------------------------------------
+### We can see in the comments column and in the likes column that there is a value of minus one, a very problematic value for us. So we will fix it now.
 
 ```{r}
 youtube = youtube[youtube$Likes>=0,]
@@ -56,8 +50,8 @@ youtube = youtube[youtube$Comments>=0,]
 summary(youtube)
 ```
 
-Now the data looks correct, in the views column, we can see a very wide
-range of values. It makes sense because there are unpopular videos on
+Now the data looks correct; we can see a vast range of values in the
+views column. It makes sense because there are unpopular videos on
 YouTube, and on the other hand, there are also viral videos with
 hundreds of millions of views and more.
 
@@ -65,12 +59,15 @@ hundreds of millions of views and more.
 
 Scatter plots are great for visualizing relationships between variables.
 
-1.  By using ggplot2 create a scatter plot between likes and views.
+1.  Using ggplot2, create a scatter plot between likes and views; base
+    the color on the `Keyword.`
 
-2.  By using ggplot2 create a scatter plot between comments and views.
+2.  Using ggplot2, create a scatter plot between comments and views;
+    base the color on the `Keyword.`
 
-3.  Add a regression line to both plots, Does the data fit the
-    regression line?
+3.  Remove the `color` and use `geom_smooth(method = "lm")` to add a
+    regression line to both plots. Does the data fit the regression
+    line?
 
 # Answer 2
 
@@ -78,25 +75,25 @@ Scatter plots are great for visualizing relationships between variables.
 library(ggplot2)
 ```
 
-### By using ggplot2 create a dot plot between likes and views.
+### Using ggplot2, create a scatter plot between likes and views; base the color on the `Keyword.`
 
 ```{r}
-ggplot(youtube, aes(Likes, Views)) +
+ggplot(youtube, aes(Likes, Views, color = Keyword)) +
   geom_point()
 
 ```
 
-### By using ggplot2 create a dot plot between comments and views.
+### Using ggplot2, create a scatter plot between comments and views; base the shape on the `Keyword.`
 
 ```{r}
-ggplot(youtube, aes(Comments, Views)) +
+ggplot(youtube, aes(Comments, Views, color = Keyword )) +
   geom_point()
 
 ```
 
 ------------------------------------------------------------------------
 
-### Add a regression line to both plots, Does the data fit the regression line?
+### Remove the `color` and use `geom_smooth(method = "lm")` to add a regression line to both plots. Does the data fit the regression line?
 
 ```{r, message=FALSE}
 ggplot(youtube, aes(Likes, Views)) +
@@ -110,46 +107,58 @@ ggplot(youtube, aes(Comments, Views)) +
   geom_smooth(method = "lm")
 ```
 
-In both plots, we see not an exactly complete fit to the regression
-line, but there is potential for some regression.
+In both plots, we see not an exact complete fit to the regression line,
+but there is potential for some regression.
 
 ## Question 3
 
 One approach to linearising relationships is to apply a transformation
-to one or both variables. Try transforming the views variable with
-either a natural log (log()) or square root (sqrt()) transformation.
+to one or both variables. For example, try transforming the columns with
+either a natural log (`log()`) or a square root (`sqrt()`)
+transformation.
 
-1.  Create new variables in the youtube data frame for your transformed
-    variables.
+1.  Create new columns in the youtube data frame for your transformed
+    columns.
 
-2.  Use these variables when creating your new plots, which
-    transformation best linearises this relationship?
+2.  Use these columns when creating your new plots, which transformation
+    best linearises this relationship?
+
+**Pro math tip! If you have values with 0, add +1 to your values to
+avoid math errors with the `log()` function!**
 
 ## Answer 3
 
-### Create new variables in the youtube dataframe for your transformed variables.
+### Create new columns in the youtube data frame for your transformed columns.
 
 ```{r}
 youtube$Views.log = log(youtube$Views)
 
 youtube$Views.sqrt = sqrt(youtube$Views)
 
+youtube$Likes.log = log(youtube$Likes)
+
+youtube$Likes.sqrt = sqrt(youtube$Likes)
+
+youtube$Comments.log = log(youtube$Comments)
+
+youtube$Comments.sqrt = sqrt(youtube$Comments)
+
 
 ```
 
+### Use these columns when creating your new plots, which transformation best linearises this relationship?
+
 ```{r, message=FALSE}
-ggplot(youtube, aes(Likes, Views.log)) +
+ggplot(youtube, aes(Likes.log, Views.log)) +
   geom_point() +
   geom_smooth(method = "lm")
 ```
 
 ```{r, message=FALSE}
-ggplot(youtube, aes(Likes, Views.sqrt)) +
+ggplot(youtube, aes(Likes.sqrt, Views.sqrt)) +
   geom_point() +
   geom_smooth(method = "lm")
 ```
-
-### Use these variables when creating your new plots, which transformation best linearises this relationship?
 
 Both plots do not exactly fit the regression line, but undoubtedly the
 log creates a plot that better fits the regression line.
@@ -161,21 +170,21 @@ the ease with which you can create multi-panel plots. With a single
 function, you can split a single plot into many related plots using
 `facet_wrap()`
 
-1.  Using `facet_wrap()` create a multi-plot by the Keyword factor to
-    the best fit plot from the previous question, In addition, add the
-    dark theme.
+1.  Using `facet_wrap()` create a multi-plot by the `Keyword` factor to
+    the best - fit plot from the previous question, In addition, add the
+    dark theme with `+ theme_dark()`
 
 2.  Add a proper title.
 
 ## Answer 4
 
 ```{r,message=FALSE}
-ggplot(youtube, aes(Likes, Views.log)) +
+ggplot(data = youtube, aes(x = Likes.log, y = Views.log)) +
   geom_point() +
   facet_wrap(~Keyword) +
   geom_smooth(method = "lm") +
   theme_dark() +
-  ggtitle("Scatterplots of the number of likes in relation to the number of views (log) ")
+  ggtitle("Scatterplots of the number of likes in relation to the number of views (log)")
   
 #Using facet_wrap() create a multi-plot by the Keyword factor to the best fit plot from the previous question, In addition, add the dark theme.
 
@@ -184,10 +193,10 @@ ggplot(youtube, aes(Likes, Views.log)) +
 
 ## Question 5
 
-When exploring your data it is often useful to visualize the
+When exploring your data, it is often helpful to visualize the
 distribution of the variables.
 
-1.  Using ggplot 2 create histograms for the Likes of the 50 least liked
+1.  Using ggplot2 create histograms for the Likes of the 50 least liked
     videos.
 
 2.  Experiment with different breaks on the likes variable.
@@ -200,31 +209,36 @@ distribution of the variables.
 
 ```{r,message=FALSE}
 
-TOP50 = youtube[order(youtube$Likes),]
-TOP50 = TOP50[1:50,]
+LOW50 = youtube[order(youtube$Likes),]
+LOW50 = LOW50[1:50,]
 
 
-ggplot(TOP50, aes(x=Likes)) + geom_histogram()
+ggplot(LOW50, aes(x=Likes)) + geom_histogram()
+
+```
+
+```{r}
+ggplot(LOW50, aes(x=Likes)) + geom_density()
 
 ```
 
 ### Experiment with different breaks on the Views variable.
 
 ```{r}
-ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 10) 
+ggplot(LOW50, aes(Likes)) + geom_histogram(bins = 10) 
 
 
 
 ```
 
 ```{r}
-ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 50) 
+ggplot(LOW50, aes(Likes)) + geom_histogram(bins = 50) 
 
 
 ```
 
 ```{r}
-ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 100) 
+ggplot(LOW50, aes(Likes)) + geom_histogram(bins = 100) 
 
 
 ```
@@ -233,8 +247,14 @@ ggplot(TOP50, aes(Likes)) + geom_histogram(bins = 100)
 
 ```{r,message=FALSE}
 
-ggplot(TOP50, aes(Likes)) + geom_histogram(color="red", fill="green") 
+ggplot(LOW50, aes(Likes)) + geom_histogram(color="red", fill="green") 
 
+
+```
+
+```{r}
+ggplot(LOW50, aes(x = Likes)) +
+geom_density(fill = "green", color = "red", alpha = 0.5)
 
 ```
 
@@ -253,8 +273,8 @@ ggplot(data = mpg)
 
 ## Answer 1
 
-ggplot with no aesthetics just shows a grey square, since it produces a
-background with no plot on it.
+ggplot with no aesthetics shows a grey square since it produces a
+background with no plot.
 
 ## Question 2
 
@@ -269,8 +289,8 @@ Read the help for `?mpg` to find out.
 ```
 
 Typing ? into the console gets you a guide on functions and other
-objects. The variable drv describes the type of drive train, where f =
-front-wheel drive, r = rear-wheel drive, 4 = 4wd.
+objects. For example, the variable drv describes the type of drive
+train, where f = front-wheel drive, r = rear-wheel drive, 4 = 4wd.
 
 ## Question 3
 
@@ -287,7 +307,7 @@ ggplot(mpg, aes(x=cyl, y=hwy)) + geom_point()
 
 1.  What happens if you make a scatter plot of class in relation to drv.
 
-2.  Why is the plot not useful?
+2.  Is the plot useful?
 
 ## Answer 4
 
@@ -375,7 +395,7 @@ means more fuel is used to move an AWD car the same distance as one with
 1.  Looking back at the previous code, what the `se = FALSE` argument
     does?
 
-## Asnwer 8
+## Answer 8
 
 `se` specifies whether to add a translucent background showing the
 confidence interval.
@@ -400,3 +420,99 @@ They will look the same.
 
 It does not matter whether data and mapping are specified in the initial
 ggplot() or in the geom.
+
+## Bonus question and reading! That is for those who want to go further beyond!
+
+For more information about transformations you can read in the following
+link!:
+
+https://www.datanovia.com/en/lessons/transform-data-to-normal-distribution-in-r/
+
+## Bonus question
+
+Use the diamonds dataset from ggplot2 library to create a stacked barplot that shows the frequency distribution of diamond cuts (cut) for different types of diamond clarity (clarity) levels.
+
+1.  Load the tidyverse library and the diamonds dataset.
+
+2.  Create a summary dataset that calculates the frequency of each combination of cut and clarity. Store the result in a new data frame called summary_df.
+
+3.  Create a stacked barplot using ggplot2, where the x-axis represents the different clarity levels (clarity), the y-axis represents the frequency of diamonds, and each stack of bars represents the different cuts (cut). Use the fill aesthetic to distinguish between cuts.
+
+4.  Add appropriate axis labels, a plot title, and a legend that explains the different cuts.
+
+5.  Add data labels to the stacked bars that display the count of each combination of cut and clarity. Use the position_stack() function to position the labels at the center of each stack.
+
+6.  Add a facet wrap to the plot to create separate barplots for each diamond cut.Modify the x-axis label to indicate that each plot represents a different diamond cut.
+
+## Bonus Answer
+
+```{r, message=FALSE}
+#1.
+
+library(tidyverse)
+data(diamonds)
+
+```
+
+```{r}
+#2.
+
+
+summary_df = diamonds %>%
+  group_by(cut, clarity) %>%
+  summarise(count = n())
+
+
+```
+
+```{r}
+#3.
+ggplot(summary_df, aes(x = clarity, y = count, fill = cut)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Diamond Clarity", y = "Frequency", 
+       title = "Distribution of Diamond Cuts by Clarity") +
+  scale_fill_discrete(name = "Diamond Cut")
+
+
+
+```
+
+```{r}
+#4.
+ggplot(summary_df, aes(x = clarity, y = count, fill = cut)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Diamond Clarity", y = "Frequency", 
+       title = "Distribution of Diamond Cuts by Clarity") +
+  scale_fill_discrete(name = "Diamond Cut") +
+  theme(legend.position = "bottom")
+
+
+```
+
+```{r}
+#5.
+ggplot(summary_df, aes(x = clarity, y = count, fill = cut)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), position = position_stack(vjust = 0.5)) +
+  labs(x = "Diamond Clarity", y = "Frequency", 
+       title = "Distribution of Diamond Cuts by Clarity") +
+  scale_fill_discrete(name = "Diamond Cut") +
+  theme(legend.position = "bottom")
+
+```
+
+
+```{r}
+#6.
+ggplot(summary_df, aes(x = clarity, y = count, fill = cut)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), position = position_stack(vjust = 0.5)) +
+  labs(x = "Diamond Clarity", y = "Frequency", 
+       title = "Distribution of Diamond Cuts by Clarity") +
+  scale_fill_discrete(name = "Diamond Cut") +
+  theme(legend.position = "bottom") +
+  facet_wrap(~ cut, nrow = 1) +
+  labs(x = "Diamond Clarity", y = "Frequency by Cut")
+
+```
+

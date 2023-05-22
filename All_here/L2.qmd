@@ -428,6 +428,7 @@ random_vector[random_vector == 5]
 random_vector[random_vector!=6]
 random_vector[random_vector<6 & random_vector >2]
 random_vector[random_vector<9 & random_vector >5]
+random_vector[5:6] = 1
 random_vector[random_vector<=4] = 5
 random_vector
 ```
